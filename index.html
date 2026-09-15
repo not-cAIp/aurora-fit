@@ -65,11 +65,16 @@
     padding:12px 22px;font-size:13.5px;font-weight:600;cursor:pointer;
   }
 
-  .glow-band{
-    height:120px;border-radius:20px;margin:0 0 50px;
-    background:linear-gradient(120deg,var(--grad1),var(--grad2) 45%,var(--grad3));
-    opacity:.9;
+  .hero-photo{
+    display:flex;align-items:center;justify-content:center;
+    height:320px;border-radius:24px;margin:0 0 50px;overflow:hidden;
+    background:
+      radial-gradient(circle at 30% 20%, rgba(109,109,255,.35), transparent 55%),
+      radial-gradient(circle at 75% 75%, rgba(168,105,255,.3), transparent 55%),
+      radial-gradient(circle at 50% 100%, rgba(49,201,201,.25), transparent 60%),
+      #12132a;
   }
+  .hero-photo img{height:88%;max-width:80%;object-fit:contain;filter:drop-shadow(0 18px 30px rgba(0,0,0,.45));}
 
   .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:56px;}
   .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;}
@@ -144,7 +149,7 @@
     </div>
   </section>
 
-  <div class="glow-band"></div>
+  <div class="hero-photo"><img src="aurora-band.png" alt="极光手环三代" /></div>
 
   <section class="grid3" id="sec-product">
     <div class="card"><div class="ic">💓</div><h3>连续心率监测</h3><p>全天候采样，异常波动主动提醒，数据每 5 分钟自动同步一次。</p></div>
