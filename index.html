@@ -111,6 +111,9 @@
   }
   .login-box button:hover{opacity:.88;}
   .login-err{font-size:11.5px;color:var(--warn);margin-top:10px;}
+  .forgot-pw{font-size:11.5px;color:var(--accent);margin-top:12px;text-align:center;cursor:pointer;}
+  .forgot-pw:hover{text-decoration:underline;}
+  .forgot-pw-hint{font-size:11.5px;color:var(--ink-faint);margin-top:8px;text-align:center;line-height:1.6;}
 
   /* ---------- 设备后台 ---------- */
   .dash{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;}
@@ -189,6 +192,8 @@
       <input id="li-pass" type="password" placeholder="密码" autocomplete="off" />
       <button id="li-btn">登录</button>
       <div id="li-msg"></div>
+      <div class="forgot-pw" id="forgot-pw-link">忘记密码？</div>
+      <div id="forgot-pw-msg"></div>
     </div>
 
     <div class="dash" id="dash" hidden></div>
@@ -200,7 +205,12 @@
 <script>
   const USERNAME = "zhouyx0721";
   const PASSWORD = "aurora2019";
-  const norm = (s) => s.trim().toLowerCase();
+  // 有些输入法手动打字时会把字母数字打成全角（ｚｈｏｕｙｘ０７２１），
+  // 肉眼几乎看不出来，但和半角字符串直接比较会判定不相等——粘贴进来的
+  // 内容不受输入法影响所以能通过，手打却总是提示"不正确"。这里统一转
+  // 回半角再比较，两种输入方式结果一致。
+  const toHalfWidth = (s) => s.replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)).replace(/　/g, " ");
+  const norm = (s) => toHalfWidth(s).trim().toLowerCase();
 
   document.getElementById("nav-product").addEventListener("click", () => document.getElementById("sec-product").scrollIntoView({ behavior: "smooth" }));
   document.getElementById("nav-news").addEventListener("click", () => document.getElementById("sec-news").scrollIntoView({ behavior: "smooth" }));
@@ -209,9 +219,15 @@
   document.getElementById("hero-portal-btn").addEventListener("click", () => document.getElementById("sec-portal").scrollIntoView({ behavior: "smooth" }));
   document.getElementById("hero-news-btn").addEventListener("click", () => document.getElementById("sec-news").scrollIntoView({ behavior: "smooth" }));
 
+  // 不是真的重置密码，只是给一个格式提示——具体注册年份得靠别处才能
+  // 拼出来，这里不会直接把完整密码摆出来。
+  document.getElementById("forgot-pw-link").addEventListener("click", () => {
+    document.getElementById("forgot-pw-msg").innerHTML = `<div class="forgot-pw-hint">密码已重置成：aurora + 注册账号年份</div>`;
+  });
+
   function tryLogin() {
     const u = norm(document.getElementById("li-user").value);
-    const p = document.getElementById("li-pass").value.trim();
+    const p = norm(document.getElementById("li-pass").value);
     const msg = document.getElementById("li-msg");
     if (u === USERNAME && p === PASSWORD) {
       document.getElementById("login-box").hidden = true;
@@ -231,6 +247,7 @@
         <div>
           <div class="who">设备持有人：周晏星</div>
           <div class="devid">设备编号 AF3-771092 · 极光手环三代</div>
+          <div class="devid">username：${USERNAME}</div>
         </div>
       </div>
       <div class="synclog">
