@@ -95,9 +95,9 @@
 
   /* ---------- 登录门户 ---------- */
   .portal{background:var(--surface-2);border-radius:18px;padding:34px 30px;margin-bottom:20px;}
-  .portal h2{font-size:16px;margin:0 0 4px;}
-  .portal p.sub{font-size:12.5px;color:var(--ink-faint);margin:0 0 20px;}
-  .login-box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;max-width:340px;}
+  .portal h2{font-size:16px;margin:0 0 4px;text-align:center;}
+  .portal p.sub{font-size:12.5px;color:var(--ink-faint);margin:0 0 20px;text-align:center;}
+  .login-box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;max-width:340px;margin:0 auto;}
   .login-box label{display:block;font-size:11px;color:var(--ink-faint);font-weight:600;margin:0 0 5px;letter-spacing:.02em;}
   .login-box input{
     width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;
@@ -122,14 +122,6 @@
   .synclog .row:last-child{border-bottom:none;}
   .synclog .row.hot{color:var(--warn);font-weight:700;}
   .disclaimer{font-size:11px;color:var(--ink-faint);margin-top:14px;line-height:1.7;}
-
-  .return-panel{
-    margin-top:22px; padding:16px; background:var(--surface); border:1px solid var(--line);
-    border-radius:10px; text-align:center;
-  }
-  .return-panel a{color:var(--accent);font-size:13px;text-decoration:none;font-weight:700;}
-  .return-panel a:hover{text-decoration:underline;}
-  .return-panel p{font-size:11.5px;color:var(--ink-faint);margin:0 0 10px;}
 
   footer{text-align:center;padding:30px 0;font-size:11px;color:var(--ink-faint);}
 </style>
@@ -206,7 +198,6 @@
 <footer>极光运动 AURORA © 本页面内容均为虚构</footer>
 
 <script>
-  const RETURN_BASE = "https://saraliuxt-coder.github.io/idol-fall/";
   const USERNAME = "zhouyx0721";
   const PASSWORD = "aurora2019";
   const norm = (s) => s.trim().toLowerCase();
@@ -254,14 +245,6 @@
       <div style="margin-top:18px;font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.02em;">个人设置 · 提醒事项</div>
       <div class="synclog" style="margin-top:8px;">
         <div class="row"><span>循环提醒</span><span>每年 06-22（未命名）</span></div>
-      </div>
-
-      <div id="return-slot"></div>
-    `;
-    document.getElementById("return-slot").innerHTML = `
-      <div class="return-panel">
-        <p>你看到了设备的完整同步记录。</p>
-        <a href="${RETURN_BASE}?clue=c35">‹ 返回超话继续调查</a>
       </div>
     `;
   }
