@@ -126,6 +126,54 @@
   .synclog .row.hot{color:var(--warn);font-weight:700;}
   .disclaimer{font-size:11px;color:var(--ink-faint);margin-top:14px;line-height:1.7;}
 
+  /* ---------- 设备云 tabs ---------- */
+  .dtabs{display:flex;gap:6px;margin-bottom:18px;}
+  .dtabs button{
+    flex:1;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-soft);
+    border-radius:9px;padding:9px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .dtabs button.active{background:var(--ink);color:#fff;border-color:var(--ink);}
+
+  /* ---------- 提醒/闹钟 ---------- */
+  .reminder-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);}
+  .reminder-row:last-child{border-bottom:none;}
+  .reminder-row .rtime{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:700;color:var(--ink);min-width:64px;}
+  .reminder-row .rlabel{font-size:12.5px;color:var(--ink-soft);flex:1;margin-left:12px;}
+  .reminder-row .rlabel.unnamed{color:var(--ink-faint);font-style:italic;}
+  .reminder-row .rrepeat{font-size:10.5px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;white-space:nowrap;}
+
+  /* ---------- 心率图表 ---------- */
+  .hr-wrap{background:var(--surface-2);border-radius:10px;padding:18px 16px 10px;position:relative;}
+  .hr-chart{width:100%;height:auto;display:block;touch-action:none;cursor:crosshair;}
+  .hr-tooltip{
+    position:absolute;pointer-events:none;background:var(--ink);color:#fff;border-radius:8px;
+    padding:6px 10px;font-size:11.5px;font-family:"JetBrains Mono",monospace;white-space:nowrap;
+    transform:translate(-50%,-120%);opacity:0;transition:opacity .1s;z-index:5;
+  }
+  .hr-tooltip.show{opacity:1;}
+  .hr-tooltip b{font-size:13px;}
+  .hr-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--ink-faint);}
+  .hr-legend span{display:inline-flex;align-items:center;gap:5px;}
+  .hr-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+
+  /* ---------- 睡眠 ---------- */
+  .sleep-datetabs{display:flex;gap:8px;margin-bottom:14px;}
+  .sleep-datetabs button{
+    background:var(--surface);border:1px solid var(--line);color:var(--ink-soft);
+    border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .sleep-datetabs button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .sleep-bar{display:flex;width:100%;height:34px;border-radius:8px;overflow:hidden;margin-bottom:10px;}
+  .sleep-bar .seg{height:100%;}
+  .sleep-empty{
+    background:var(--surface-2);border-radius:10px;padding:34px 20px;text-align:center;
+    color:var(--ink-faint);font-size:13px;line-height:2;
+  }
+  .sleep-empty b{color:var(--ink-soft);display:block;font-size:14px;margin-bottom:4px;}
+  .sleep-summary{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-soft);}
+  .sleep-summary span{display:inline-flex;align-items:center;gap:6px;}
+  .sleep-summary .dot{width:9px;height:9px;border-radius:3px;display:inline-block;}
+
   footer{text-align:center;padding:30px 0;font-size:11px;color:var(--ink-faint);}
 </style>
 </head>
@@ -239,6 +287,50 @@
   document.getElementById("li-btn").addEventListener("click", tryLogin);
   document.getElementById("li-pass").addEventListener("keydown", (e) => { if (e.key === "Enter") tryLogin(); });
 
+  // 心率原始数据：09-13 全天到次日 00:20，采样间隔基本对应下面披露的
+  // "默认 20-45 分钟一次"，19:10-20:25 那一段是健身时段，间隔明显变密，
+  // 对应"运动模式下实时记录"——同一晚稍后 23:30-23:47 那段间隔其实也在
+  // 20 分钟以内，跟平时的默认采样节奏没有本质区别，不需要靠"进入了什么
+  // 特殊模式"来解释，玩家自己判断这段峰值说明了什么。v:null 的最后一个
+  // 点专门用来渲染成断线+空心标记，不能连成一条线，那样会让人误以为
+  // "读数骤降到 0"，而实际含义只是"没有再收到下一次同步"。
+  const HR_DATA = [
+    { t: "00:00", v: 65 }, { t: "00:45", v: 63 }, { t: "01:30", v: 62 }, { t: "02:15", v: 61 },
+    { t: "03:00", v: 62 }, { t: "03:45", v: 63 }, { t: "04:30", v: 64 }, { t: "05:15", v: 65 },
+    { t: "06:00", v: 68 }, { t: "06:40", v: 74 }, { t: "07:15", v: 80 }, { t: "08:00", v: 83 },
+    { t: "08:45", v: 78 }, { t: "09:30", v: 75 }, { t: "10:15", v: 79 }, { t: "11:00", v: 82 },
+    { t: "11:45", v: 85 }, { t: "12:30", v: 88 }, { t: "13:15", v: 80 }, { t: "14:00", v: 76 },
+    { t: "14:45", v: 74 }, { t: "15:30", v: 77 }, { t: "16:15", v: 81 }, { t: "17:00", v: 79 },
+    { t: "17:45", v: 76 }, { t: "18:30", v: 80 },
+    { t: "19:10", v: 88 }, { t: "19:25", v: 104 }, { t: "19:40", v: 117 }, { t: "19:55", v: 112 },
+    { t: "20:10", v: 96 }, { t: "20:25", v: 84 },
+    { t: "20:45", v: 75 }, { t: "21:20", v: 71 }, { t: "22:10", v: 68 }, { t: "22:55", v: 66 },
+    { t: "23:30", v: 82 }, { t: "23:47", v: 127 }, { t: "00:20", v: null },
+  ];
+
+  const REMINDERS = [
+    { time: "07:00", label: "起床", repeat: "工作日" },
+    { time: "09:30", label: "起床", repeat: "周末" },
+    { time: "19:30", label: "健身时间", repeat: "每周三 / 周六" },
+    { time: "03-04", label: "林安生日", repeat: "每年" },
+    { time: "06-22", label: null, repeat: "每年" },
+  ];
+
+  const SLEEP_STAGES = {
+    color: { deep: "#4f4fe0", light: "#8f8fff", rem: "#31c9c9", awake: "#e7e9f3" },
+    name: { deep: "深睡", light: "浅睡", rem: "REM", awake: "清醒" },
+    // 一晚典型的睡眠结构：入睡先浅睡，深睡集中在前半夜，REM 随夜间推移
+    // 逐渐变多，中间夹杂短暂清醒——分钟数只是用来算色块宽度比例。
+    normal: [
+      { stage: "light", min: 22 }, { stage: "deep", min: 58 }, { stage: "light", min: 20 },
+      { stage: "rem", min: 24 }, { stage: "light", min: 16 }, { stage: "deep", min: 42 },
+      { stage: "awake", min: 6 }, { stage: "light", min: 18 }, { stage: "rem", min: 32 },
+      { stage: "light", min: 24 }, { stage: "rem", min: 28 }, { stage: "awake", min: 10 },
+    ],
+  };
+
+  let activeTab = "hr";
+
   function renderDash() {
     const dash = document.getElementById("dash");
     dash.hidden = false;
@@ -250,18 +342,204 @@
           <div class="devid">username：${USERNAME}</div>
         </div>
       </div>
-      <div class="synclog">
-        <div class="row"><span>09-13 22:10</span><span>心率同步成功 · 静息</span></div>
-        <div class="row"><span>09-13 22:55</span><span>心率同步成功 · 静息</span></div>
-        <div class="row hot"><span>09-13 23:47</span><span>心率同步成功 · 状态：活动中</span></div>
-        <div class="row hot"><span>09-14 00:20</span><span>尝试读取心率，未找到设备</span></div>
-        <div class="row"><span>09-14 08:30</span><span>设备离线（管理员标记）</span></div>
+      <div class="dtabs">
+        <button data-tab="reminder">闹钟 / 提醒</button>
+        <button data-tab="hr">心率</button>
+        <button data-tab="sleep">睡眠</button>
       </div>
-      <div class="disclaimer">数据来自设备本地缓存与云端同步记录，同步间隔约 5-40 分钟不等，中断可能由设备关机、断连或佩戴者主动关闭引起。</div>
+      <div id="tab-pane"></div>
+    `;
+    dash.querySelectorAll(".dtabs button").forEach((btn) => {
+      btn.addEventListener("click", () => {
+        activeTab = btn.dataset.tab;
+        renderTabPane();
+      });
+    });
+    renderTabPane();
+  }
 
-      <div style="margin-top:18px;font-size:11px;color:var(--ink-faint);font-weight:600;letter-spacing:.02em;">个人设置 · 提醒事项</div>
-      <div class="synclog" style="margin-top:8px;">
-        <div class="row"><span>循环提醒</span><span>每年 06-22（未命名）</span></div>
+  function renderTabPane() {
+    const dash = document.getElementById("dash");
+    dash.querySelectorAll(".dtabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === activeTab));
+    const pane = dash.querySelector("#tab-pane");
+    if (activeTab === "reminder") renderReminderTab(pane);
+    else if (activeTab === "hr") renderHrTab(pane);
+    else renderSleepTab(pane);
+  }
+
+  function renderReminderTab(pane) {
+    pane.innerHTML = `
+      <div class="synclog">
+        ${REMINDERS.map((r) => `
+          <div class="reminder-row">
+            <span class="rtime mono">${r.time}</span>
+            <span class="rlabel${r.label ? "" : " unnamed"}">${r.label || "（未命名）"}</span>
+            <span class="rrepeat">${r.repeat}</span>
+          </div>
+        `).join("")}
+      </div>
+      <div class="disclaimer">提醒事项与设备本地时钟同步，删除或修改闹钟不会同步到云端历史记录。</div>
+    `;
+  }
+
+  function timeToMin(t) {
+    const [h, m] = t.split(":").map(Number);
+    return h * 60 + m;
+  }
+
+  function renderHrTab(pane) {
+    let prevRaw = -1, offset = 0;
+    const pts = HR_DATA.map((d) => {
+      const raw = timeToMin(d.t);
+      if (raw < prevRaw) offset += 1440;
+      prevRaw = raw;
+      return { ...d, min: raw + offset };
+    });
+
+    const W = 760, H = 240, padL = 34, padR = 14, padT = 14, padB = 26;
+    const chartW = W - padL - padR, chartH = H - padT - padB;
+    const minX = 0, maxX = pts[pts.length - 1].min;
+    const minY = 40, maxY = 140;
+    const xOf = (min) => padL + (min - minX) / (maxX - minX) * chartW;
+    const yOf = (v) => padT + (1 - (v - minY) / (maxY - minY)) * chartH;
+
+    // 65-85 的正常参考区间，画成一条浅色带，方便玩家自己对比案发夜的
+    // 波峰有多离谱——不写"这就是异常"，只画出基准线。
+    const bandTop = yOf(85), bandBottom = yOf(65);
+
+    // v 为 null 的点不连线，用一个空心圆+断线表示"没有再收到读数"，
+    // 而不是"心率归零"。
+    let segments = [];
+    let current = [];
+    pts.forEach((p) => {
+      if (p.v == null) {
+        if (current.length) segments.push(current);
+        current = [];
+      } else {
+        current.push(p);
+      }
+    });
+    if (current.length) segments.push(current);
+
+    const pathsHtml = segments.map((seg) =>
+      `<polyline points="${seg.map((p) => `${xOf(p.min)},${yOf(p.v)}`).join(" ")}" fill="none" stroke="url(#hrGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />`
+    ).join("");
+
+    const dotsHtml = pts.map((p) => p.v != null
+      ? `<circle cx="${xOf(p.min)}" cy="${yOf(p.v)}" r="2.6" fill="#fff" stroke="#6d6dff" stroke-width="1.6" />`
+      : `<g transform="translate(${xOf(p.min)},${yOf(85)})"><circle r="6" fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="2.5 2.5" /></g>`
+    ).join("");
+
+    const hourTicks = [0, 360, 720, 1080, 1440].filter((m) => m <= maxX);
+    const ticksHtml = hourTicks.map((m) => `
+      <line x1="${xOf(m)}" y1="${padT}" x2="${xOf(m)}" y2="${H - padB}" stroke="var(--line)" stroke-width="1" />
+      <text x="${xOf(m)}" y="${H - 8}" font-size="9.5" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${String(Math.floor((m % 1440) / 60)).padStart(2, "0")}:00</text>
+    `).join("");
+
+    pane.innerHTML = `
+      <div class="hr-wrap">
+        <svg class="hr-chart" viewBox="0 0 ${W} ${H}" id="hr-svg">
+          <defs>
+            <linearGradient id="hrGrad" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#6d6dff" /><stop offset="100%" stop-color="#a869ff" />
+            </linearGradient>
+          </defs>
+          <rect x="${padL}" y="${bandTop}" width="${chartW}" height="${bandBottom - bandTop}" fill="#31c9c9" opacity="0.08" />
+          <text x="${W - padR}" y="${bandTop - 4}" font-size="9" fill="var(--ink-faint)" text-anchor="end" font-family="JetBrains Mono, monospace">65-85 静息参考区间</text>
+          ${ticksHtml}
+          ${pathsHtml}
+          ${dotsHtml}
+          <line id="hr-scrub" x1="0" y1="${padT}" x2="0" y2="${H - padB}" stroke="var(--ink)" stroke-width="1" opacity="0" />
+        </svg>
+        <div class="hr-tooltip" id="hr-tooltip"></div>
+        <div class="hr-legend">
+          <span><span class="dot" style="background:#31c9c9;opacity:.5;"></span>65-85 bpm 静息参考区间</span>
+          <span><span class="dot" style="border:1.6px dashed var(--warn);background:transparent;"></span>未收到读数（设备离线/未佩戴/接触不良等）</span>
+        </div>
+      </div>
+      <div class="disclaimer">默认情况下手环每 20-45 分钟同步一次心率读数，间隔并不固定；进入运动模式后会切换为实时记录。图表上的每一个点都是一次独立同步，点与点之间的空白时间段内手环并未持续采样——"未收到读数"只代表当次同步没有拿到有效数据，可能是设备离线、被摘下、接触不良或电量不足，不代表佩戴者在那一刻发生了什么。</div>
+    `;
+
+    const svg = pane.querySelector("#hr-svg");
+    const tooltip = pane.querySelector("#hr-tooltip");
+    const scrub = pane.querySelector("#hr-scrub");
+
+    function nearestPoint(clientX) {
+      const rect = svg.getBoundingClientRect();
+      const svgX = (clientX - rect.left) / rect.width * W;
+      let best = pts[0], bestDist = Infinity;
+      pts.forEach((p) => {
+        const d = Math.abs(xOf(p.min) - svgX);
+        if (d < bestDist) { bestDist = d; best = p; }
+      });
+      return best;
+    }
+
+    function showAt(clientX, clientY) {
+      const p = nearestPoint(clientX);
+      const rect = svg.getBoundingClientRect();
+      const px = xOf(p.min) / W * rect.width;
+      scrub.setAttribute("x1", xOf(p.min));
+      scrub.setAttribute("x2", xOf(p.min));
+      scrub.setAttribute("opacity", "1");
+      tooltip.style.left = px + "px";
+      tooltip.style.top = (yOf(p.v ?? 85) / H * rect.height) + "px";
+      const label = p.t === "00:20" && pts[pts.length - 1] === p ? "09-14 " + p.t : "09-13 " + p.t;
+      tooltip.innerHTML = p.v != null ? `<b>${p.v}</b> bpm<br/>${label}` : `<b>--</b> 未收到读数<br/>${label}`;
+      tooltip.classList.add("show");
+    }
+    function hide() {
+      tooltip.classList.remove("show");
+      scrub.setAttribute("opacity", "0");
+    }
+
+    let dragging = false;
+    svg.addEventListener("pointerdown", (e) => { dragging = true; showAt(e.clientX, e.clientY); });
+    svg.addEventListener("pointermove", (e) => { if (dragging) showAt(e.clientX, e.clientY); });
+    window.addEventListener("pointerup", () => { dragging = false; });
+    svg.addEventListener("mousemove", (e) => showAt(e.clientX, e.clientY));
+    svg.addEventListener("mouseleave", () => { if (!dragging) hide(); });
+  }
+
+  let sleepDate = "09-12";
+
+  function renderSleepTab(pane) {
+    pane.innerHTML = `
+      <div class="sleep-datetabs">
+        <button data-d="09-12">09-12 夜</button>
+        <button data-d="09-13">09-13 夜</button>
+      </div>
+      <div id="sleep-body"></div>
+    `;
+    pane.querySelectorAll(".sleep-datetabs button").forEach((b) => {
+      b.classList.toggle("active", b.dataset.d === sleepDate);
+      b.addEventListener("click", () => { sleepDate = b.dataset.d; renderSleepTab(pane); });
+    });
+    const body = pane.querySelector("#sleep-body");
+
+    if (sleepDate === "09-13") {
+      body.innerHTML = `
+        <div class="sleep-empty">
+          <b>未检测到有效睡眠</b>
+          佩戴时间不足，无法生成睡眠报告
+        </div>
+        <div class="disclaimer">生成睡眠报告需要至少 3 小时的连续有效佩戴数据。当晚设备同步记录中断于 09-14 00:20（见"心率"标签页），此后没有新的数据写入，不足以覆盖一个完整睡眠周期。</div>
+      `;
+      return;
+    }
+
+    const total = SLEEP_STAGES.normal.reduce((s, seg) => s + seg.min, 0);
+    const barHtml = SLEEP_STAGES.normal.map((seg) =>
+      `<div class="seg" style="width:${(seg.min / total * 100).toFixed(2)}%;background:${SLEEP_STAGES.color[seg.stage]};" title="${SLEEP_STAGES.name[seg.stage]} ${seg.min}分钟"></div>`
+    ).join("");
+    const byStage = {};
+    SLEEP_STAGES.normal.forEach((seg) => { byStage[seg.stage] = (byStage[seg.stage] || 0) + seg.min; });
+
+    body.innerHTML = `
+      <div style="font-size:11.5px;color:var(--ink-faint);margin-bottom:8px;">23:20 – 次日 07:10 · 共 ${(total / 60).toFixed(1)} 小时</div>
+      <div class="sleep-bar">${barHtml}</div>
+      <div class="sleep-summary">
+        ${Object.keys(SLEEP_STAGES.name).map((k) => `<span><span class="dot" style="background:${SLEEP_STAGES.color[k]};"></span>${SLEEP_STAGES.name[k]} ${((byStage[k] || 0) / 60).toFixed(1)}h</span>`).join("")}
       </div>
     `;
   }
