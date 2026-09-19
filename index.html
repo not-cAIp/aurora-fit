@@ -156,6 +156,19 @@
   .hr-legend span{display:inline-flex;align-items:center;gap:5px;}
   .hr-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
 
+  /* ---------- 原始同步记录（高级） ---------- */
+  .hr-rawlog-toggle{margin-top:12px;font-size:11.5px;color:var(--accent);cursor:pointer;display:inline-block;}
+  .hr-rawlog-toggle:hover{text-decoration:underline;}
+  .hr-rawlog-panel{margin-top:10px;background:#12141c;border-radius:10px;padding:14px 16px;overflow-x:auto;}
+  .hr-rawlog-panel .title{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:#6d7690;letter-spacing:.08em;margin-bottom:8px;}
+  .hr-rawlog-panel table{border-collapse:collapse;font-family:"JetBrains Mono",monospace;font-size:11.5px;white-space:nowrap;}
+  .hr-rawlog-panel td{padding:3px 14px 3px 0;color:#c7ccdb;}
+  .hr-rawlog-panel td.ev{color:#8fa1ff;}
+  .hr-rawlog-panel td.val{color:#5fd3a8;}
+  .hr-rawlog-panel td.val.fail{color:#ff8f8f;}
+  .hr-rawlog-legend{margin-top:12px;font-size:11px;color:var(--ink-faint);line-height:1.9;}
+  .hr-rawlog-legend b{color:var(--ink-soft);font-family:"JetBrains Mono",monospace;font-weight:600;}
+
   /* ---------- 睡眠 ---------- */
   .sleep-datetabs{display:flex;gap:8px;margin-bottom:14px;}
   .sleep-datetabs button{
@@ -308,6 +321,26 @@
     { t: "23:30", v: 82 }, { t: "23:47", v: 127 }, { t: "00:20", v: null },
   ];
 
+  // "心率"标签页那张图是 App 整理过的数据——每个点标的是"这次同步在
+  // 云端确认的时间"，不是"传感器测到这个数的那一刻"。原始事件日志
+  // 才是三种时间戳分开记录的地方：测量时间（heart_rate）、写入同步
+  // 队列的时间（sync_queue pending）、真正确认送达云端的时间
+  // （sync_queue delivered）——图表上显示的"23:47"其实是 delivered
+  // 那一刻，测量本身发生得更早，中间还夹着一段蓝牙断连、什么都没有
+  // 上传的空档。00:11 那条 device_motion 单独摆在那里，不加任何解释——
+  // 是谁、为什么动了设备，日志本身不会告诉玩家。
+  const DEVICE_LOG = [
+    { t: "23:46:51", event: "wrist_detected", value: "TRUE" },
+    { t: "23:47:03", event: "heart_rate", value: "127" },
+    { t: "23:47:05", event: "sync_queue", value: "pending" },
+    { t: "23:48:11", event: "bluetooth", value: "disconnected" },
+    { t: "23:58:33", event: "bluetooth", value: "reconnected" },
+    { t: "23:58:40", event: "sync_queue", value: "delivered" },
+    { t: "00:11:42", event: "device_motion", value: "detected" },
+    { t: "00:19:58", event: "wrist_detected", value: "FALSE" },
+    { t: "00:20:02", event: "heart_rate_read", value: "FAILED" },
+  ];
+
   const REMINDERS = [
     { time: "07:00", label: "起床", repeat: "工作日" },
     { time: "09:30", label: "起床", repeat: "周末" },
@@ -458,7 +491,45 @@
         </div>
       </div>
       <div class="disclaimer">默认情况下手环每 20-45 分钟同步一次心率读数，间隔并不固定；进入运动模式后会切换为实时记录。图表上的每一个点都是一次独立同步，点与点之间的空白时间段内手环并未持续采样——"未收到读数"只代表当次同步没有拿到有效数据，可能是设备离线、被摘下、接触不良或电量不足，不代表佩戴者在那一刻发生了什么。</div>
+      <div class="hr-rawlog-toggle" id="hr-rawlog-toggle">高级设置 · 查看原始同步记录 ›</div>
+      <div id="hr-rawlog-panel" hidden></div>
     `;
+
+    const rawToggle = pane.querySelector("#hr-rawlog-toggle");
+    const rawPanel = pane.querySelector("#hr-rawlog-panel");
+    rawToggle.addEventListener("click", () => {
+      const showing = !rawPanel.hidden;
+      if (showing) {
+        rawPanel.hidden = true;
+        rawToggle.textContent = "高级设置 · 查看原始同步记录 ›";
+        return;
+      }
+      rawToggle.textContent = "高级设置 · 收起原始同步记录 ‹";
+      rawPanel.hidden = false;
+      rawPanel.innerHTML = `
+        <div class="hr-rawlog-panel">
+          <div class="title">DEVICE EVENT LOG · 最近一次同步窗口</div>
+          <table>
+            ${DEVICE_LOG.map((e) => `
+              <tr>
+                <td class="mono">${e.t}</td>
+                <td class="ev">${e.event}</td>
+                <td class="val${/FAIL/.test(e.value) ? " fail" : ""}">${e.value}</td>
+              </tr>
+            `).join("")}
+          </table>
+        </div>
+        <div class="hr-rawlog-legend">
+          <b>wrist_detected</b>：佩戴检测传感器是否接触到皮肤<br/>
+          <b>heart_rate</b>：心率传感器捕获到的原始读数<br/>
+          <b>sync_queue</b>：本地记录等待上传的状态——pending 表示已捕获但还未确认送达云端，delivered 表示云端确认收到<br/>
+          <b>bluetooth</b>：手环与手机之间的蓝牙连接状态<br/>
+          <b>device_motion</b>：运动传感器检测到设备发生位移/加速度变化<br/>
+          <b>heart_rate_read</b>：主动读取心率的尝试结果<br/><br/>
+          "心率"图表上显示的时间点，对应的是 sync_queue 里 delivered 的那一刻，不是 heart_rate 本身被捕获的那一刻——两者之间可能隔着一段蓝牙断连、数据滞留在本地队列里的空档。
+        </div>
+      `;
+    });
 
     const svg = pane.querySelector("#hr-svg");
     const tooltip = pane.querySelector("#hr-tooltip");
