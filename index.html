@@ -454,7 +454,18 @@
     { t: "00:20:02", event: "heart_rate_read", value: "FAILED" },
   ];
 
+  // 今天（09-13）这几条是案发当天的真实行程，不是循环闹钟——跟已有的
+  // w43（"落地之后还要直接去彩排"）、p012（"下午上海品牌活动，19:40
+  // 原定飞杭州"）、c25（19:26 Bubble 广播取消杭州行程）这几条线索对得
+  // 上：早班机落地是坐着，彩排是高强度活动，品牌活动多为站立候场，
+  // 19:40 原定的杭州航班取消了，也就少了一段本该坐着的时间——这一整天
+  // 活动量偏高、但穿插着不短的乘车/候场/飞机上的静坐时间，不是那种
+  // 从早到晚连轴动的类型。
   const REMINDERS = [
+    { time: "08:20", label: "机场 · 抵达", repeat: "今天" },
+    { time: "09:50", label: "彩排", repeat: "今天" },
+    { time: "14:00", label: "上海品牌活动", repeat: "今天" },
+    { time: "19:40", label: "飞杭州（已取消）", repeat: "今天" },
     { time: "07:00", label: "起床", repeat: "工作日" },
     { time: "09:30", label: "起床", repeat: "周末" },
     { time: "19:30", label: "健身时间", repeat: "每周三 / 周六" },
@@ -487,10 +498,13 @@
   const SPO2_MONTH = [
     { week: "09-01", v: 97 }, { week: "09-08", v: 96 }, { week: "09-15", v: 98 }, { week: "09-22", v: 94 },
   ];
-  const ACTIVITY_TODAY = { move: 312, moveGoal: 450, exercise: 24, exerciseGoal: 30, stand: 9, standGoal: 12, steps: 6845, stepsGoal: 8000 };
+  // 今天活动量偏高——早班机落地直接彩排，下午又是一场品牌活动，跟上面
+  // REMINDERS 里那几条今日行程对应；步数和站立小时都比平时高，但站立
+  // 小时没有直接顶满 12，因为中间夹着航班和场地之间的乘车时间。
+  const ACTIVITY_TODAY = { move: 428, moveGoal: 450, exercise: 31, exerciseGoal: 30, stand: 11, standGoal: 12, steps: 11840, stepsGoal: 8000 };
   const ACTIVITY_WEEK = [
     { d: "周一", v: 420 }, { d: "周二", v: 380 }, { d: "周三", v: 512 }, { d: "周四", v: 290 },
-    { d: "周五", v: 460 }, { d: "周六", v: 340 }, { d: "周日", v: 312 },
+    { d: "周五", v: 460 }, { d: "周六", v: 340 }, { d: "周日", v: 428 },
   ];
   // 心率的"月"视图按周取点——09-08 这一周正好覆盖案发夜（09-13），
   // 这里的 127 跟"心率"标签页当日图表里的峰值是同一件事，只是换了个
@@ -626,6 +640,7 @@
       <div id="as-body"></div>
       <div class="as-bottomnav" id="as-bottomnav">
         <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></button>
+        <button data-tab="activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>活动</span></button>
         <button data-tab="hr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg><span>心率</span></button>
         <button data-tab="sleep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg><span>睡眠</span></button>
         <button data-tab="device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><span>设备</span></button>
@@ -662,6 +677,7 @@
         <div class="rings-card">
           <div class="as-subtle" style="margin:0 0 12px;">今日活动</div>
           <div class="rings-row" id="rings-row"></div>
+          <div class="disclaimer" style="margin-top:14px;">今天行程比较满：早班机落地直接彩排，下午还有一场品牌活动，中途在机场和场馆之间也有不短的乘车时间——活动量偏高，但不是那种从早到晚连轴转的类型。</div>
         </div>
         <div class="as-subtle">近 7 天</div>
         <div id="ov-list"></div>
@@ -674,10 +690,10 @@
 
   function renderOverviewList(el) {
     const items = [
+      { key: "activity", glyph: "⚡", bg: "rgba(255,92,114,.15)", fg: "#ff5c72", name: "活动量", time: "今天", value: ACTIVITY_TODAY.move, unit: "千卡", pct: ACTIVITY_TODAY.move / ACTIVITY_TODAY.moveGoal, bar: "#ff5c72", caption: `目标 ${ACTIVITY_TODAY.moveGoal} 千卡 · 行程较满`, ok: true },
       { key: "hr", glyph: "♥", bg: "var(--accent-soft)", fg: "var(--accent)", name: "心率", time: "09-13 23:47", value: "127", unit: "bpm", pct: (127 - 40) / (140 - 40), bar: "linear-gradient(90deg,#6d6dff,#a869ff)", caption: "高于静息参考区间", ok: false },
       { key: "sleep", glyph: "☾", bg: "rgba(49,201,201,.15)", fg: "#1fa3a3", name: "睡眠", time: "09-12 07:10", value: "5.9", unit: "小时", pct: 0.6, bar: "#31c9c9", caption: "低于近期平均", ok: false },
       { key: "spo2", glyph: "●", bg: "rgba(47,174,107,.15)", fg: "#2fae6b", name: "血氧饱和度", time: "今天 08:14", value: "97", unit: "%", pct: 0.94, bar: "#2fae6b", caption: "正常范围", ok: true },
-      { key: "activity", glyph: "⚡", bg: "rgba(255,92,114,.15)", fg: "#ff5c72", name: "活动量", time: "今天", value: ACTIVITY_TODAY.move, unit: "千卡", pct: ACTIVITY_TODAY.move / ACTIVITY_TODAY.moveGoal, bar: "#ff5c72", caption: `目标 ${ACTIVITY_TODAY.moveGoal} 千卡`, ok: true },
       { key: "device", glyph: "⏰", bg: "var(--surface-2)", fg: "var(--ink-faint)", name: "闹钟 / 提醒", time: "", value: `${REMINDERS.length}`, unit: "项", pct: 1, bar: "var(--ink-faint)", caption: "点击查看全部", ok: true },
     ];
     el.innerHTML = items.map((it) => `
