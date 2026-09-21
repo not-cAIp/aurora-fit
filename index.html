@@ -115,24 +115,12 @@
   .forgot-pw:hover{text-decoration:underline;}
   .forgot-pw-hint{font-size:11.5px;color:var(--ink-faint);margin-top:8px;text-align:center;line-height:1.6;}
 
-  /* ---------- 设备后台 ---------- */
-  .dash{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px;}
-  .dash-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;}
-  .dash-head .who{font-size:14.5px;font-weight:700;}
-  .dash-head .devid{font-size:11px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;}
+  /* ---------- 设备云内容通用样式（登录后 App Shell 里复用） ---------- */
   .synclog{background:var(--surface-2);border-radius:10px;padding:16px 18px;}
   .synclog .row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px dashed var(--line);font-family:"JetBrains Mono",monospace;}
   .synclog .row:last-child{border-bottom:none;}
   .synclog .row.hot{color:var(--warn);font-weight:700;}
   .disclaimer{font-size:11px;color:var(--ink-faint);margin-top:14px;line-height:1.7;}
-
-  /* ---------- 设备云 tabs ---------- */
-  .dtabs{display:flex;gap:6px;margin-bottom:18px;}
-  .dtabs button{
-    flex:1;background:var(--surface-2);border:1px solid var(--line);color:var(--ink-soft);
-    border-radius:9px;padding:9px;font-size:12.5px;font-weight:600;cursor:pointer;font-family:inherit;
-  }
-  .dtabs button.active{background:var(--ink);color:#fff;border-color:var(--ink);}
 
   /* ---------- 提醒/闹钟 ---------- */
   .reminder-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);}
@@ -188,6 +176,133 @@
   .sleep-summary .dot{width:9px;height:9px;border-radius:3px;display:inline-block;}
 
   footer{text-align:center;padding:30px 0;font-size:11px;color:var(--ink-faint);}
+
+  /* =====================================================================
+     登录后的 App Shell —— 完全独立于上面的官网营销页，不带 hero/品牌动态/
+     产品卡片，纯粹是"打开极光 App"的观感。挂在 body 最外层，position:fixed
+     盖住整个视口，z-index 高于官网 header。退出登录会把这一层整个移除，
+     露出底下原样不动的营销页。
+     ===================================================================== */
+  .appshell{
+    position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;
+    font-family:"Inter","Noto Sans SC",system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  .as-topbar{
+    position:sticky;top:0;z-index:5;background:rgba(250,251,254,.92);backdrop-filter:blur(8px);
+    border-bottom:1px solid var(--line);padding:14px 18px;display:flex;align-items:center;gap:12px;
+  }
+  .as-topbar .as-avatar{
+    width:34px;height:34px;border-radius:50%;flex:none;background:linear-gradient(135deg,var(--grad1),var(--grad3));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;
+  }
+  .as-topbar .as-title{font-weight:800;font-size:15px;flex:1;min-width:0;}
+  .as-topbar .as-icon-btn{
+    width:32px;height:32px;border-radius:50%;border:1px solid var(--line);background:var(--surface);
+    display:flex;align-items:center;justify-content:center;color:var(--ink-soft);cursor:pointer;flex:none;
+  }
+  .as-topbar .as-icon-btn:hover{background:var(--surface-2);}
+  .as-topbar .as-icon-btn svg{width:16px;height:16px;}
+  .as-topbar.as-detail .as-title{text-align:center;font-size:12.5px;font-weight:700;letter-spacing:.03em;text-transform:uppercase;color:var(--ink-soft);}
+  .as-topbar.as-detail .as-back{
+    width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    color:var(--ink);cursor:pointer;flex:none;font-size:18px;
+  }
+  .as-topbar.as-detail .as-back:hover{background:var(--surface-2);}
+
+  .as-content{max-width:600px;margin:0 auto;padding:18px 16px 100px;}
+  .as-h1{font-size:22px;font-weight:800;margin:6px 0 18px;}
+  .as-subtle{font-size:11.5px;font-weight:700;color:var(--ink-faint);letter-spacing:.03em;text-transform:uppercase;margin:22px 0 10px;}
+  .as-subtle:first-child{margin-top:0;}
+
+  /* ---- 概览卡片（心率/睡眠/血氧/活动量/设备） ---- */
+  .ov-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;
+    margin-bottom:10px;cursor:pointer;
+  }
+  .ov-card:hover{border-color:var(--accent);}
+  .ov-card .ov-head{display:flex;align-items:center;gap:9px;margin-bottom:10px;}
+  .ov-card .ov-ic{
+    width:24px;height:24px;border-radius:7px;flex:none;display:flex;align-items:center;justify-content:center;
+    font-size:13px;
+  }
+  .ov-card .ov-name{font-size:13.5px;font-weight:700;flex:1;}
+  .ov-card .ov-time{font-size:11px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;}
+  .ov-card .ov-chev{color:var(--ink-faint);font-size:13px;}
+  .ov-card .ov-value{font-size:19px;font-weight:800;margin-bottom:8px;}
+  .ov-card .ov-value .unit{font-size:12px;font-weight:600;color:var(--ink-faint);margin-left:2px;}
+  .mini-bar{position:relative;height:7px;border-radius:100px;background:var(--surface-2);overflow:visible;}
+  .mini-bar .fill{position:absolute;inset:0;border-radius:100px;}
+  .mini-bar .marker{
+    position:absolute;top:-3px;width:2px;height:13px;background:var(--ink);border-radius:2px;
+    transform:translateX(-1px);
+  }
+  .ov-card .ov-caption{font-size:11px;color:var(--ink-faint);margin-top:7px;display:flex;align-items:center;gap:5px;}
+  .ov-card .ov-caption .ok{color:#2fae6b;}
+
+  /* ---- 本周活动圆环（Apple Watch 风格 complication） ---- */
+  /* 手机宽度默认上下堆叠（圆环一排居中，图例在下面单独一列铺满宽度），
+     避免图例和圆环挤在同一行导致"活动能量"这种四字标签被挤到逐字换行；
+     只有视口够宽（.appshell 在桌面端打开时）才切回左右并排。 */
+  .rings-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:18px;}
+  .rings-row{display:flex;flex-direction:column;gap:16px;}
+  .ring-item{position:relative;width:64px;height:64px;flex:none;}
+  .ring-item svg{width:100%;height:100%;transform:rotate(-90deg);}
+  .ring-item .rv{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:700;color:var(--ink-soft);
+  }
+  .rings-legend{display:flex;flex-direction:column;gap:9px;font-size:12.5px;}
+  .rings-legend .rl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
+  .rings-legend .rl-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;flex:none;}
+  .rings-legend .rl-name{color:var(--ink-soft);white-space:nowrap;}
+  .rings-legend .rl-val{font-weight:700;font-family:"JetBrains Mono",monospace;white-space:nowrap;}
+  @media (min-width:560px){
+    .rings-row{flex-direction:row;align-items:center;gap:18px;}
+    .rings-row > div:first-child{display:flex;gap:18px;flex:none;}
+    .rings-legend{flex:1;}
+  }
+
+  /* ---- 详情页：区间视图（月/周/年通用组件） ---- */
+  .rv-segmented{display:flex;gap:4px;background:var(--surface-2);border-radius:10px;padding:3px;margin:14px 0 18px;}
+  .rv-segmented button{
+    flex:1;background:none;border:none;border-radius:8px;padding:8px 4px;font-size:12px;font-weight:600;
+    color:var(--ink-faint);cursor:pointer;font-family:inherit;
+  }
+  .rv-segmented button.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,20,40,.1);}
+  .rv-datenav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+  .rv-datenav .rv-arrow{color:var(--ink-faint);font-size:15px;cursor:default;user-select:none;}
+  .rv-datenav .rv-label{font-size:14px;font-weight:700;}
+  .rv-stat-label{font-size:10.5px;font-weight:700;color:var(--ink-faint);letter-spacing:.05em;text-transform:uppercase;}
+  .rv-stat-value{font-size:30px;font-weight:800;margin:2px 0 10px;}
+  .rv-stat-legend{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-soft);margin-bottom:14px;}
+  .rv-stat-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .rv-chartbox{background:var(--surface-2);border-radius:12px;padding:14px 10px 8px;}
+  .rv-unit{position:absolute;font-size:9.5px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;}
+
+  .rv-indepth-title{font-size:16px;font-weight:800;margin:26px 0 12px;}
+  .rv-indepth-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;}
+  .rv-indepth-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:2px;}
+  .rv-indepth-head h4{font-size:14.5px;margin:0;font-weight:700;}
+  .rv-indepth-head .qm{
+    width:18px;height:18px;border-radius:50%;background:var(--ink);color:#fff;font-size:10.5px;font-weight:700;
+    display:flex;align-items:center;justify-content:center;flex:none;
+  }
+  .rv-indepth-sub{font-size:10.5px;font-weight:700;color:var(--ink-faint);letter-spacing:.04em;text-transform:uppercase;margin-top:10px;}
+  .rv-indepth-val{font-size:16px;font-weight:800;margin:2px 0 12px;}
+
+  .as-bottomnav{
+    position:fixed;left:0;right:0;bottom:0;z-index:6;background:rgba(255,255,255,.94);backdrop-filter:blur(10px);
+    border-top:1px solid var(--line);display:flex;padding:8px 6px calc(8px + env(safe-area-inset-bottom));
+  }
+  .as-bottomnav button{
+    flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;
+    padding:5px 2px;color:var(--ink-faint);font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;
+  }
+  .as-bottomnav button svg{width:20px;height:20px;}
+  .as-bottomnav button.active{color:var(--accent);}
+  .as-detail-body{display:none;}
+  .as-detail-body.active{display:block;}
 </style>
 </head>
 <body>
@@ -257,7 +372,6 @@
       <div id="forgot-pw-msg"></div>
     </div>
 
-    <div class="dash" id="dash" hidden></div>
   </section>
 </main>
 
@@ -291,8 +405,7 @@
     const p = norm(document.getElementById("li-pass").value);
     const msg = document.getElementById("li-msg");
     if (u === USERNAME && p === PASSWORD) {
-      document.getElementById("login-box").hidden = true;
-      renderDash();
+      mountAppShell();
       return;
     }
     msg.innerHTML = `<div class="login-err">账号或密码不正确。</div>`;
@@ -362,42 +475,345 @@
     ],
   };
 
-  let activeTab = "hr";
+  // =====================================================================
+  // 登录后的 App Shell —— 完全独立于官网营销页。renderHrTab()/renderSleepTab()/
+  // renderReminderTab() 三个函数（下面紧接着定义，内容未改动）原样复用，
+  // 只是现在被塞进新的详情页容器里，而不是旧的 .dash 标签页。
+  // =====================================================================
 
-  function renderDash() {
-    const dash = document.getElementById("dash");
-    dash.hidden = false;
-    dash.innerHTML = `
-      <div class="dash-head">
-        <div>
-          <div class="who">设备持有人：周晏星</div>
-          <div class="devid">设备编号 AF3-771092 · 极光手环三代</div>
-          <div class="devid">username：${USERNAME}</div>
-        </div>
-      </div>
-      <div class="dtabs">
-        <button data-tab="reminder">闹钟 / 提醒</button>
-        <button data-tab="hr">心率</button>
-        <button data-tab="sleep">睡眠</button>
-      </div>
-      <div id="tab-pane"></div>
-    `;
-    dash.querySelectorAll(".dtabs button").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        activeTab = btn.dataset.tab;
-        renderTabPane();
-      });
-    });
-    renderTabPane();
+  // ---- 新增的三类氛围数据（血氧/活动量/步数），跟案情无关，纯粹让
+  // 登录后的界面看起来是一个真正在用的健康 App，而不是只有心率+睡眠
+  // 两个功能的极简后台。数值全部虚构，不对应任何真实产品。
+  const SPO2_MONTH = [
+    { week: "09-01", v: 97 }, { week: "09-08", v: 96 }, { week: "09-15", v: 98 }, { week: "09-22", v: 94 },
+  ];
+  const ACTIVITY_TODAY = { move: 312, moveGoal: 450, exercise: 24, exerciseGoal: 30, stand: 9, standGoal: 12, steps: 6845, stepsGoal: 8000 };
+  const ACTIVITY_WEEK = [
+    { d: "周一", v: 420 }, { d: "周二", v: 380 }, { d: "周三", v: 512 }, { d: "周四", v: 290 },
+    { d: "周五", v: 460 }, { d: "周六", v: 340 }, { d: "周日", v: 312 },
+  ];
+  // 心率的"月"视图按周取点——09-08 这一周正好覆盖案发夜（09-13），
+  // 这里的 127 跟"心率"标签页当日图表里的峰值是同一件事，只是换了个
+  // 更粗的时间粒度看，不是新增的独立证据。
+  const HR_MONTH = [
+    { week: "09-01", v: 72 }, { week: "09-08", v: 127 }, { week: "09-15", v: 73 }, { week: "09-22", v: 71 },
+  ];
+  // 睡眠"月"视图：09-08 这一周的周平均时长被案发夜那次"未检测到有效
+  // 睡眠"拉低了，同样只是已知事实的另一种呈现方式。
+  const SLEEP_MONTH = [
+    { week: "09-01", v: 7.2 }, { week: "09-08", v: 5.8 }, { week: "09-15", v: 7.6 }, { week: "09-22", v: 7.4 },
+  ];
+
+  const ICON_CLOSE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`;
+
+  // ---- 通用图表组件：散点图（带最佳区间色带）和柱状图，月视图/血氧/
+  // 活动量/区间变化全部复用这两个函数，只换数据和配色。
+  function svgScatter(points, { minY, maxY, optMin, optMax, w = 340, h = 170 }) {
+    const padL = 26, padR = 10, padT = 10, padB = 22;
+    const chartW = w - padL - padR, chartH = h - padT - padB;
+    const xOf = (i) => points.length > 1 ? padL + (i / (points.length - 1)) * chartW : padL + chartW / 2;
+    const yOf = (v) => padT + (1 - (v - minY) / (maxY - minY)) * chartH;
+    const bandTop = yOf(optMax), bandBottom = yOf(optMin);
+    const dots = points.map((p, i) => {
+      const out = p.v < optMin || p.v > optMax;
+      const cy = yOf(Math.min(Math.max(p.v, minY), maxY));
+      return `<circle cx="${xOf(i)}" cy="${cy}" r="4.5" fill="${out ? "#7c6fee" : "#2fae6b"}" stroke="#fff" stroke-width="1.5" />`;
+    }).join("");
+    const ticks = points.map((p, i) => `<text x="${xOf(i)}" y="${h - 6}" font-size="9" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${p.week || p.d}</text>`).join("");
+    return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block;">
+      <rect x="${padL}" y="${bandTop}" width="${chartW}" height="${Math.max(bandBottom - bandTop, 1)}" fill="#2fae6b" opacity="0.12" rx="3" />
+      ${ticks}${dots}
+    </svg>`;
+  }
+  function svgBars(points, { max, w = 340, h = 140, color = "#6d6dff" }) {
+    const padL = 10, padR = 10, padT = 10, padB = 20;
+    const chartW = w - padL - padR, chartH = h - padT - padB;
+    const bw = (chartW / points.length) * 0.48;
+    const bars = points.map((p, i) => {
+      const cx = padL + ((i + 0.5) / points.length) * chartW;
+      const bh = Math.max((p.v / max) * chartH, 2);
+      return `<rect x="${cx - bw / 2}" y="${padT + chartH - bh}" width="${bw}" height="${bh}" rx="3" fill="${color}" />`;
+    }).join("");
+    const ticks = points.map((p, i) => {
+      const cx = padL + ((i + 0.5) / points.length) * chartW;
+      return `<text x="${cx}" y="${h - 4}" font-size="9" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${p.week || p.d}</text>`;
+    }).join("");
+    return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block;">${bars}${ticks}</svg>`;
+  }
+  function ringSvg(value, goal, color, size = 64, strokeW = 7) {
+    const r = size / 2 - strokeW / 2;
+    const c = 2 * Math.PI * r;
+    const dash = c * Math.min(value / goal, 1);
+    return `<svg viewBox="0 0 ${size} ${size}">
+      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="${strokeW}" />
+      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round" stroke-dasharray="${dash} ${c}" />
+    </svg>`;
   }
 
-  function renderTabPane() {
-    const dash = document.getElementById("dash");
-    dash.querySelectorAll(".dtabs button").forEach((b) => b.classList.toggle("active", b.dataset.tab === activeTab));
-    const pane = dash.querySelector("#tab-pane");
-    if (activeTab === "reminder") renderReminderTab(pane);
-    else if (activeTab === "hr") renderHrTab(pane);
-    else renderSleepTab(pane);
+  function renderActivityRings(el) {
+    const a = ACTIVITY_TODAY;
+    const rings = [
+      { label: "活动能量", v: a.move, goal: a.moveGoal, color: "#ff375f", unit: "千卡" },
+      { label: "运动时间", v: a.exercise, goal: a.exerciseGoal, color: "#92e82a", unit: "分钟" },
+      { label: "站立小时", v: a.stand, goal: a.standGoal, color: "#00c2d4", unit: "小时" },
+    ];
+    el.innerHTML = `
+      <div style="display:flex;gap:12px;">
+        ${rings.map((r) => `<div class="ring-item">${ringSvg(r.v, r.goal, r.color)}<div class="rv">${Math.round((r.v / r.goal) * 100)}%</div></div>`).join("")}
+      </div>
+      <div class="rings-legend">
+        ${rings.map((r) => `<div class="rl-row"><span><span class="rl-dot" style="background:${r.color};"></span><span class="rl-name">${r.label}</span></span><span class="rl-val mono">${r.v}/${r.goal} ${r.unit}</span></div>`).join("")}
+      </div>
+    `;
+  }
+
+  // ---- 月/周通用区间视图：血氧详情页、心率"月"子标签都用这个，只是
+  // 传进来的数据集和最佳区间不一样。
+  function renderMonthRangeView(pane, { unit, data, minY, maxY, optMin, optMax, pctLabel = "最佳范围测量占比" }) {
+    const inRange = data.filter((p) => p.v >= optMin && p.v <= optMax).length;
+    const pct = Math.round((inRange / data.length) * 100);
+    const mid = (optMin + optMax) / 2;
+    const devMax = Math.max(...data.map((p) => Math.abs(p.v - mid)), 1) * 1.15;
+    pane.innerHTML = `
+      <div class="rv-datenav"><span class="rv-arrow">‹</span><span class="rv-label">2026年9月</span><span class="rv-arrow">›</span></div>
+      <div class="rv-stat-label">${pctLabel}</div>
+      <div class="rv-stat-value">${pct}%</div>
+      <div class="rv-stat-legend"><span class="dot" style="background:#2fae6b;"></span>达标测量 · 单位 ${unit}</div>
+      <div class="rv-chartbox">${svgScatter(data, { minY, maxY, optMin, optMax })}</div>
+      <div class="rv-indepth-title">深度结果</div>
+      <div class="rv-indepth-card">
+        <div class="rv-indepth-head"><h4>区间变化</h4><div class="qm">?</div></div>
+        <div class="rv-indepth-sub">超出最佳范围</div>
+        <div class="rv-indepth-val">${data.length - inRange} / ${data.length} 周</div>
+        ${svgBars(data.map((p) => ({ ...p, v: Math.abs(p.v - mid) })), { max: devMax, color: "#7c6fee" })}
+      </div>
+    `;
+  }
+
+  // ---- 顶层导航状态：底部导航只管首页/心率/睡眠/设备四个目的地，
+  // 血氧和活动量只能从首页概览卡片点进去，不占底部导航位——跟参考图
+  // 里"All Health Data"列表比标签页更长是同一个思路。
+  let asActiveTab = "home";
+  let hrRangeMode = "day";
+  let sleepRangeMode = "day";
+
+  function mountAppShell() {
+    document.getElementById("login-box").hidden = true;
+    let shell = document.getElementById("appshell");
+    if (!shell) {
+      shell = document.createElement("div");
+      shell.className = "appshell";
+      shell.id = "appshell";
+      document.body.appendChild(shell);
+    }
+    shell.hidden = false;
+    asActiveTab = "home";
+    renderAppShell();
+    window.scrollTo(0, 0);
+  }
+
+  function exitAppShell() {
+    const shell = document.getElementById("appshell");
+    if (shell) shell.hidden = true;
+    document.getElementById("login-box").hidden = false;
+    document.getElementById("li-user").value = "";
+    document.getElementById("li-pass").value = "";
+  }
+
+  function renderAppShell() {
+    const shell = document.getElementById("appshell");
+    shell.innerHTML = `
+      <div id="as-body"></div>
+      <div class="as-bottomnav" id="as-bottomnav">
+        <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></button>
+        <button data-tab="hr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg><span>心率</span></button>
+        <button data-tab="sleep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg><span>睡眠</span></button>
+        <button data-tab="device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><span>设备</span></button>
+      </div>
+    `;
+    shell.querySelectorAll("#as-bottomnav button").forEach((b) => {
+      b.addEventListener("click", () => { asActiveTab = b.dataset.tab; renderAsBody(); });
+    });
+    renderAsBody();
+  }
+
+  function renderAsBody() {
+    document.querySelectorAll("#as-bottomnav button").forEach((b) => b.classList.toggle("active", b.dataset.tab === asActiveTab));
+    const body = document.getElementById("as-body");
+    if (asActiveTab === "home") renderAsHome(body);
+    else if (asActiveTab === "hr") renderAsHrDetail(body);
+    else if (asActiveTab === "sleep") renderAsSleepDetail(body);
+    else if (asActiveTab === "spo2") renderAsSpo2Detail(body);
+    else if (asActiveTab === "activity") renderAsActivityDetail(body);
+    else renderAsDeviceTab(body);
+    window.scrollTo(0, 0);
+  }
+
+  function goHome() { asActiveTab = "home"; renderAsBody(); }
+
+  function renderAsHome(body) {
+    body.innerHTML = `
+      <div class="as-topbar">
+        <div class="as-avatar">周</div>
+        <div class="as-title">全部健康数据</div>
+        <div class="as-icon-btn" id="as-exit" title="退出登录">${ICON_CLOSE}</div>
+      </div>
+      <div class="as-content">
+        <div class="rings-card">
+          <div class="as-subtle" style="margin:0 0 12px;">今日活动</div>
+          <div class="rings-row" id="rings-row"></div>
+        </div>
+        <div class="as-subtle">近 7 天</div>
+        <div id="ov-list"></div>
+      </div>
+    `;
+    document.getElementById("as-exit").addEventListener("click", exitAppShell);
+    renderActivityRings(document.getElementById("rings-row"));
+    renderOverviewList(document.getElementById("ov-list"));
+  }
+
+  function renderOverviewList(el) {
+    const items = [
+      { key: "hr", glyph: "♥", bg: "var(--accent-soft)", fg: "var(--accent)", name: "心率", time: "09-13 23:47", value: "127", unit: "bpm", pct: (127 - 40) / (140 - 40), bar: "linear-gradient(90deg,#6d6dff,#a869ff)", caption: "高于静息参考区间", ok: false },
+      { key: "sleep", glyph: "☾", bg: "rgba(49,201,201,.15)", fg: "#1fa3a3", name: "睡眠", time: "09-12 07:10", value: "5.9", unit: "小时", pct: 0.6, bar: "#31c9c9", caption: "低于近期平均", ok: false },
+      { key: "spo2", glyph: "●", bg: "rgba(47,174,107,.15)", fg: "#2fae6b", name: "血氧饱和度", time: "今天 08:14", value: "97", unit: "%", pct: 0.94, bar: "#2fae6b", caption: "正常范围", ok: true },
+      { key: "activity", glyph: "⚡", bg: "rgba(255,92,114,.15)", fg: "#ff5c72", name: "活动量", time: "今天", value: ACTIVITY_TODAY.move, unit: "千卡", pct: ACTIVITY_TODAY.move / ACTIVITY_TODAY.moveGoal, bar: "#ff5c72", caption: `目标 ${ACTIVITY_TODAY.moveGoal} 千卡`, ok: true },
+      { key: "device", glyph: "⏰", bg: "var(--surface-2)", fg: "var(--ink-faint)", name: "闹钟 / 提醒", time: "", value: `${REMINDERS.length}`, unit: "项", pct: 1, bar: "var(--ink-faint)", caption: "点击查看全部", ok: true },
+    ];
+    el.innerHTML = items.map((it) => `
+      <div class="ov-card" data-key="${it.key}">
+        <div class="ov-head">
+          <div class="ov-ic" style="background:${it.bg};color:${it.fg};">${it.glyph}</div>
+          <div class="ov-name">${it.name}</div>
+          <div class="ov-time mono">${it.time}</div>
+          <div class="ov-chev">›</div>
+        </div>
+        <div class="ov-value">${it.value}<span class="unit">${it.unit}</span></div>
+        <div class="mini-bar"><div class="fill" style="width:${Math.min(it.pct, 1) * 100}%;background:${it.bar};"></div><div class="marker" style="left:${Math.min(it.pct, 1) * 100}%;"></div></div>
+        <div class="ov-caption"><span class="${it.ok ? "ok" : ""}">${it.ok ? "✓ " : ""}${it.caption}</span></div>
+      </div>
+    `).join("");
+    el.querySelectorAll(".ov-card").forEach((c) => {
+      c.addEventListener("click", () => { asActiveTab = c.dataset.key; renderAsBody(); });
+    });
+  }
+
+  function renderAsHrDetail(body) {
+    body.innerHTML = `
+      <div class="as-topbar as-detail">
+        <div class="as-back" id="hr-back">‹</div>
+        <div class="as-title">心率</div>
+        <div style="width:32px;"></div>
+      </div>
+      <div class="as-content">
+        <div class="rv-segmented" id="hr-segmented">
+          <button data-m="day" class="active">当日</button>
+          <button data-m="month">月</button>
+        </div>
+        <div id="hr-detail-body"></div>
+      </div>
+    `;
+    document.getElementById("hr-back").addEventListener("click", goHome);
+    document.querySelectorAll("#hr-segmented button").forEach((b) => {
+      b.addEventListener("click", () => { hrRangeMode = b.dataset.m; renderHrDetailBody(); });
+    });
+    renderHrDetailBody();
+    function renderHrDetailBody() {
+      document.querySelectorAll("#hr-segmented button").forEach((b) => b.classList.toggle("active", b.dataset.m === hrRangeMode));
+      const pane = document.getElementById("hr-detail-body");
+      if (hrRangeMode === "day") renderHrTab(pane);
+      else renderMonthRangeView(pane, { unit: "bpm", data: HR_MONTH, minY: 40, maxY: 140, optMin: 65, optMax: 85 });
+    }
+  }
+
+  function renderAsSleepDetail(body) {
+    body.innerHTML = `
+      <div class="as-topbar as-detail">
+        <div class="as-back" id="sleep-back">‹</div>
+        <div class="as-title">睡眠</div>
+        <div style="width:32px;"></div>
+      </div>
+      <div class="as-content">
+        <div class="rv-segmented" id="sleep-segmented">
+          <button data-m="day" class="active">按晚</button>
+          <button data-m="month">月</button>
+        </div>
+        <div id="sleep-detail-body"></div>
+      </div>
+    `;
+    document.getElementById("sleep-back").addEventListener("click", goHome);
+    document.querySelectorAll("#sleep-segmented button").forEach((b) => {
+      b.addEventListener("click", () => { sleepRangeMode = b.dataset.m; renderSleepDetailBody(); });
+    });
+    renderSleepDetailBody();
+    function renderSleepDetailBody() {
+      document.querySelectorAll("#sleep-segmented button").forEach((b) => b.classList.toggle("active", b.dataset.m === sleepRangeMode));
+      const pane = document.getElementById("sleep-detail-body");
+      if (sleepRangeMode === "day") { renderSleepTab(pane); return; }
+      pane.innerHTML = `
+        <div class="rv-datenav"><span class="rv-arrow">‹</span><span class="rv-label">2026年9月</span><span class="rv-arrow">›</span></div>
+        <div class="rv-stat-label">周平均睡眠时长</div>
+        <div class="rv-stat-value">${(SLEEP_MONTH.reduce((s, p) => s + p.v, 0) / SLEEP_MONTH.length).toFixed(1)}<span style="font-size:16px;">h</span></div>
+        <div class="rv-chartbox">${svgBars(SLEEP_MONTH, { max: 9, color: "#8f8fff" })}</div>
+        <div class="disclaimer">09-08 这一周的时长明显偏低——09-13 那晚设备同步中断于 00:20，没能生成完整的睡眠报告（详见"按晚"标签页），拉低了当周平均值。</div>
+      `;
+    }
+  }
+
+  function renderAsSpo2Detail(body) {
+    body.innerHTML = `
+      <div class="as-topbar as-detail">
+        <div class="as-back" id="spo2-back">‹</div>
+        <div class="as-title">血氧饱和度</div>
+        <div style="width:32px;"></div>
+      </div>
+      <div class="as-content" id="spo2-body"></div>
+    `;
+    document.getElementById("spo2-back").addEventListener("click", goHome);
+    renderMonthRangeView(document.getElementById("spo2-body"), { unit: "%", data: SPO2_MONTH, minY: 88, maxY: 100, optMin: 95, optMax: 100 });
+  }
+
+  function renderAsActivityDetail(body) {
+    body.innerHTML = `
+      <div class="as-topbar as-detail">
+        <div class="as-back" id="act-back">‹</div>
+        <div class="as-title">活动量</div>
+        <div style="width:32px;"></div>
+      </div>
+      <div class="as-content">
+        <div class="rings-card"><div class="rings-row" id="act-rings"></div></div>
+        <div class="as-subtle">本周消耗（千卡）</div>
+        <div class="rv-chartbox">${svgBars(ACTIVITY_WEEK, { max: 600, color: "#ff5c72" })}</div>
+        <div class="as-subtle">今日步数</div>
+        <div class="rv-stat-value">${ACTIVITY_TODAY.steps.toLocaleString()}<span style="font-size:14px;"> 步</span></div>
+        <div class="mini-bar" style="margin-bottom:8px;"><div class="fill" style="width:${Math.min(ACTIVITY_TODAY.steps / ACTIVITY_TODAY.stepsGoal, 1) * 100}%;background:#2fae6b;"></div></div>
+        <div class="disclaimer">目标 ${ACTIVITY_TODAY.stepsGoal.toLocaleString()} 步</div>
+      </div>
+    `;
+    document.getElementById("act-back").addEventListener("click", goHome);
+    renderActivityRings(document.getElementById("act-rings"));
+  }
+
+  function renderAsDeviceTab(body) {
+    body.innerHTML = `
+      <div class="as-topbar">
+        <div class="as-avatar">周</div>
+        <div class="as-title">设备</div>
+        <div class="as-icon-btn" id="as-exit2" title="退出登录">${ICON_CLOSE}</div>
+      </div>
+      <div class="as-content">
+        <div class="as-subtle" style="margin-top:0;">设备信息</div>
+        <div class="ov-card" style="cursor:default;">
+          <div class="ov-name" style="margin-bottom:4px;">极光手环三代</div>
+          <div class="ov-time mono">设备编号 AF3-771092</div>
+          <div class="ov-time mono">username：${USERNAME}</div>
+        </div>
+        <div class="as-subtle">闹钟 / 提醒</div>
+        <div id="device-reminders"></div>
+      </div>
+    `;
+    document.getElementById("as-exit2").addEventListener("click", exitAppShell);
+    renderReminderTab(document.getElementById("device-reminders"));
   }
 
   function renderReminderTab(pane) {
