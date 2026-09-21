@@ -12,7 +12,7 @@
     --line:#e7e9f3;
     --grad1:#6d6dff; --grad2:#31c9c9; --grad3:#a869ff;
     --accent:#5b5bf5; --accent-soft:#eeeeff;
-    --warn:#d9576b;
+    --warn:#d9576b; --ok:#2fae6b; --caution:#e08a3c; --muted:#b5bac9;
   }
   *{box-sizing:border-box;}
   body{
@@ -43,12 +43,8 @@
 
   main{max-width:920px;margin:0 auto;padding:0 20px 80px;}
 
-  .hero{
-    padding:70px 0 50px;text-align:center;
-  }
-  .hero .eyebrow{
-    font-size:11.5px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:14px;
-  }
+  .hero{padding:70px 0 50px;text-align:center;}
+  .hero .eyebrow{font-size:11.5px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:14px;}
   .hero h1{
     font-size:clamp(26px,6vw,38px);line-height:1.25;margin:0 0 16px;font-weight:800;
     background:linear-gradient(120deg,var(--grad1),var(--grad3));
@@ -65,14 +61,10 @@
     padding:12px 22px;font-size:13.5px;font-weight:600;cursor:pointer;
   }
 
-  .hero-photo{
-    border-radius:24px;margin:0 0 18px;overflow:hidden;
-  }
+  .hero-photo{border-radius:24px;margin:0 0 18px;overflow:hidden;}
   .hero-photo img{display:block;width:100%;height:auto;}
 
-  .photo-caption{
-    text-align:center;font-size:12px;color:var(--ink-faint);margin:0 0 52px;
-  }
+  .photo-caption{text-align:center;font-size:12px;color:var(--ink-faint);margin:0 0 52px;}
   .photo-caption b{color:var(--ink-soft);font-weight:600;}
 
   .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:56px;}
@@ -115,86 +107,10 @@
   .forgot-pw:hover{text-decoration:underline;}
   .forgot-pw-hint{font-size:11.5px;color:var(--ink-faint);margin-top:8px;text-align:center;line-height:1.6;}
 
-  /* ---------- 设备云内容通用样式（登录后 App Shell 里复用） ---------- */
-  .synclog{background:var(--surface-2);border-radius:10px;padding:16px 18px;}
-  .synclog .row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px dashed var(--line);font-family:"JetBrains Mono",monospace;}
-  .synclog .row:last-child{border-bottom:none;}
-  .synclog .row.hot{color:var(--warn);font-weight:700;}
-  .disclaimer{font-size:11px;color:var(--ink-faint);margin-top:14px;line-height:1.7;}
-
-  /* ---------- 提醒/闹钟 ---------- */
-  .reminder-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px dashed var(--line);}
-  .reminder-row:last-child{border-bottom:none;}
-  .reminder-row .rtime{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:700;color:var(--ink);min-width:64px;}
-  .reminder-row .rlabel{font-size:12.5px;color:var(--ink-soft);flex:1;margin-left:12px;}
-  .reminder-row .rlabel.unnamed{color:var(--ink-faint);font-style:italic;}
-  .reminder-row .rrepeat{font-size:10.5px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;white-space:nowrap;}
-
-  .new-alarm-btn{
-    display:flex;align-items:center;justify-content:center;gap:7px;margin-top:12px;padding:11px 14px;
-    border:1.5px dashed var(--line);border-radius:10px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;
-  }
-  .new-alarm-btn:hover{background:var(--accent-soft);border-color:var(--accent);}
-  .new-alarm-btn .plus{font-size:15px;font-weight:700;}
-  .expired-row{cursor:pointer;gap:10px;}
-  .expired-row .rlabel{margin-left:0;}
-  .expired-check{
-    width:17px;height:17px;border-radius:50%;border:1.6px solid var(--line);flex:none;
-    display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;
-  }
-  .expired-row.selected .expired-check{background:var(--accent);border-color:var(--accent);}
-  .expired-row.selected .expired-check::after{content:"✓";}
-
-  /* ---------- 心率图表 ---------- */
-  .hr-wrap{background:var(--surface-2);border-radius:10px;padding:18px 16px 10px;position:relative;}
-  .hr-chart{width:100%;height:auto;display:block;touch-action:none;cursor:crosshair;}
-  .hr-tooltip{
-    position:absolute;pointer-events:none;background:var(--ink);color:#fff;border-radius:8px;
-    padding:6px 10px;font-size:11.5px;font-family:"JetBrains Mono",monospace;white-space:nowrap;
-    transform:translate(-50%,-120%);opacity:0;transition:opacity .1s;z-index:5;
-  }
-  .hr-tooltip.show{opacity:1;}
-  .hr-tooltip b{font-size:13px;}
-  .hr-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--ink-faint);}
-  .hr-legend span{display:inline-flex;align-items:center;gap:5px;}
-  .hr-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
-
-  /* ---------- 原始同步记录（高级） ---------- */
-  .hr-rawlog-toggle{margin-top:12px;font-size:11.5px;color:var(--accent);cursor:pointer;display:inline-block;}
-  .hr-rawlog-toggle:hover{text-decoration:underline;}
-  .hr-rawlog-panel{margin-top:10px;background:#12141c;border-radius:10px;padding:14px 16px;overflow-x:auto;}
-  .hr-rawlog-panel .title{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:#6d7690;letter-spacing:.08em;margin-bottom:8px;}
-  .hr-rawlog-panel table{border-collapse:collapse;font-family:"JetBrains Mono",monospace;font-size:11.5px;white-space:nowrap;}
-  .hr-rawlog-panel td{padding:3px 14px 3px 0;color:#c7ccdb;}
-  .hr-rawlog-panel td.ev{color:#8fa1ff;}
-  .hr-rawlog-panel td.val{color:#5fd3a8;}
-  .hr-rawlog-panel td.val.fail{color:#ff8f8f;}
-
-  /* ---------- 睡眠 ---------- */
-  .sleep-datetabs{display:flex;gap:8px;margin-bottom:14px;}
-  .sleep-datetabs button{
-    background:var(--surface);border:1px solid var(--line);color:var(--ink-soft);
-    border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;
-  }
-  .sleep-datetabs button.active{background:var(--accent);color:#fff;border-color:var(--accent);}
-  .sleep-bar{display:flex;width:100%;height:34px;border-radius:8px;overflow:hidden;margin-bottom:10px;}
-  .sleep-bar .seg{height:100%;}
-  .sleep-empty{
-    background:var(--surface-2);border-radius:10px;padding:34px 20px;text-align:center;
-    color:var(--ink-faint);font-size:13px;line-height:2;
-  }
-  .sleep-empty b{color:var(--ink-soft);display:block;font-size:14px;margin-bottom:4px;}
-  .sleep-summary{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-soft);}
-  .sleep-summary span{display:inline-flex;align-items:center;gap:6px;}
-  .sleep-summary .dot{width:9px;height:9px;border-radius:3px;display:inline-block;}
-
   footer{text-align:center;padding:30px 0;font-size:11px;color:var(--ink-faint);}
 
   /* =====================================================================
-     登录后的 App Shell —— 完全独立于上面的官网营销页，不带 hero/品牌动态/
-     产品卡片，纯粹是"打开极光 App"的观感。挂在 body 最外层，position:fixed
-     盖住整个视口，z-index 高于官网 header。退出登录会把这一层整个移除，
-     露出底下原样不动的营销页。
+     登录后的 App Shell
      ===================================================================== */
   .appshell{
     position:fixed;inset:0;z-index:100;background:var(--bg);overflow-y:auto;
@@ -222,13 +138,16 @@
     color:var(--ink);cursor:pointer;flex:none;font-size:18px;
   }
   .as-topbar.as-detail .as-back:hover{background:var(--surface-2);}
+  .as-topbar.as-detail .as-action{font-size:20px;color:var(--accent);cursor:pointer;width:32px;text-align:right;flex:none;}
 
   .as-content{max-width:600px;margin:0 auto;padding:18px 16px 100px;}
   .as-h1{font-size:22px;font-weight:800;margin:6px 0 18px;}
   .as-subtle{font-size:11.5px;font-weight:700;color:var(--ink-faint);letter-spacing:.03em;text-transform:uppercase;margin:22px 0 10px;}
   .as-subtle:first-child{margin-top:0;}
+  .as-greeting{font-size:20px;font-weight:800;margin:2px 0 2px;}
+  .as-datestr{font-size:12.5px;color:var(--ink-faint);margin-bottom:16px;}
 
-  /* ---- 概览卡片（心率/睡眠/血氧/活动量/设备） ---- */
+  /* ---- 概览/列表卡片 ---- */
   .ov-card{
     background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;
     margin-bottom:10px;cursor:pointer;
@@ -246,25 +165,32 @@
   .ov-card .ov-value .unit{font-size:12px;font-weight:600;color:var(--ink-faint);margin-left:2px;}
   .mini-bar{position:relative;height:7px;border-radius:100px;background:var(--surface-2);overflow:visible;}
   .mini-bar .fill{position:absolute;inset:0;border-radius:100px;}
-  .mini-bar .marker{
-    position:absolute;top:-3px;width:2px;height:13px;background:var(--ink);border-radius:2px;
-    transform:translateX(-1px);
-  }
+  .mini-bar .marker{position:absolute;top:-3px;width:2px;height:13px;background:var(--ink);border-radius:2px;transform:translateX(-1px);}
   .ov-card .ov-caption{font-size:11px;color:var(--ink-faint);margin-top:7px;display:flex;align-items:center;gap:5px;}
-  .ov-card .ov-caption .ok{color:#2fae6b;}
+  .ov-card .ov-caption .ok{color:var(--ok);}
 
-  /* ---- 本周活动圆环（Apple Watch 风格 complication） ---- */
-  /* 手机宽度默认上下堆叠（圆环一排居中，图例在下面单独一列铺满宽度），
-     避免图例和圆环挤在同一行导致"活动能量"这种四字标签被挤到逐字换行；
-     只有视口够宽（.appshell 在桌面端打开时）才切回左右并排。 */
+  /* ---- 设备状态卡 ---- */
+  .device-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:18px;}
+  .device-card .dc-head{display:flex;align-items:center;gap:12px;margin-bottom:12px;}
+  .device-card .dc-icon{
+    width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;flex:none;
+  }
+  .device-card .dc-icon svg{width:22px;height:22px;}
+  .device-card .dc-name{font-size:14px;font-weight:700;}
+  .device-card .dc-status{font-size:11.5px;color:var(--ok);display:flex;align-items:center;gap:5px;margin-top:2px;}
+  .device-card .dc-status .dot{width:6px;height:6px;border-radius:50%;background:var(--ok);display:inline-block;}
+  .device-card .dc-battery{margin-left:auto;font-size:13px;font-weight:700;font-family:"JetBrains Mono",monospace;color:var(--ink-soft);white-space:nowrap;}
+  .dc-rows{border-top:1px solid var(--line);padding-top:10px;}
+  .dc-rows .row{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-soft);padding:5px 0;}
+  .dc-rows .row b{color:var(--ink);font-weight:600;font-family:"JetBrains Mono",monospace;}
+
+  /* ---- 圆环 ---- */
   .rings-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;margin-bottom:18px;}
   .rings-row{display:flex;flex-direction:column;gap:16px;}
   .ring-item{position:relative;width:64px;height:64px;flex:none;}
   .ring-item svg{width:100%;height:100%;transform:rotate(-90deg);}
-  .ring-item .rv{
-    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
-    font-size:10px;font-weight:700;color:var(--ink-soft);
-  }
+  .ring-item .rv{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:var(--ink-soft);}
   .rings-legend{display:flex;flex-direction:column;gap:9px;font-size:12.5px;}
   .rings-legend .rl-row{display:flex;align-items:center;justify-content:space-between;gap:10px;}
   .rings-legend .rl-dot{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:6px;flex:none;}
@@ -276,7 +202,7 @@
     .rings-legend{flex:1;}
   }
 
-  /* ---- 详情页：区间视图（月/周/年通用组件） ---- */
+  /* ---- 区间视图（月/周/年通用组件） ---- */
   .rv-segmented{display:flex;gap:4px;background:var(--surface-2);border-radius:10px;padding:3px;margin:14px 0 18px;}
   .rv-segmented button{
     flex:1;background:none;border:none;border-radius:8px;padding:8px 4px;font-size:12px;font-weight:600;
@@ -285,13 +211,11 @@
   .rv-segmented button.active{background:var(--surface);color:var(--ink);box-shadow:0 1px 3px rgba(20,20,40,.1);}
   .rv-datenav{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
   .rv-datenav .rv-arrow{color:var(--ink-faint);font-size:15px;cursor:default;user-select:none;}
-  .rv-datenav .rv-label{font-size:14px;font-weight:700;}
   .rv-stat-label{font-size:10.5px;font-weight:700;color:var(--ink-faint);letter-spacing:.05em;text-transform:uppercase;}
   .rv-stat-value{font-size:30px;font-weight:800;margin:2px 0 10px;}
   .rv-stat-legend{display:flex;align-items:center;gap:6px;font-size:11.5px;color:var(--ink-soft);margin-bottom:14px;}
   .rv-stat-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
   .rv-chartbox{background:var(--surface-2);border-radius:12px;padding:14px 10px 8px;}
-  .rv-unit{position:absolute;font-size:9.5px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;}
 
   .rv-indepth-title{font-size:16px;font-weight:800;margin:26px 0 12px;}
   .rv-indepth-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:18px 16px;}
@@ -311,11 +235,229 @@
   .as-bottomnav button{
     flex:1;background:none;border:none;display:flex;flex-direction:column;align-items:center;gap:3px;
     padding:5px 2px;color:var(--ink-faint);font-size:10px;font-weight:600;cursor:pointer;font-family:inherit;
+    min-width:0;
   }
   .as-bottomnav button svg{width:20px;height:20px;}
   .as-bottomnav button.active{color:var(--accent);}
-  .as-detail-body{display:none;}
-  .as-detail-body.active{display:block;}
+
+  /* ---- 通用清单容器（沿用旧版 .synclog 风格） ---- */
+  .synclog{background:var(--surface-2);border-radius:10px;padding:16px 18px;}
+  .synclog .row{display:flex;justify-content:space-between;padding:8px 0;font-size:13px;border-bottom:1px dashed var(--line);font-family:"JetBrains Mono",monospace;}
+  .synclog .row:last-child{border-bottom:none;}
+  .disclaimer{font-size:11px;color:var(--ink-faint);margin-top:14px;line-height:1.7;}
+
+  .empty-state{
+    background:var(--surface-2);border-radius:10px;padding:34px 20px;text-align:center;
+    color:var(--ink-faint);font-size:13px;line-height:2;
+  }
+  .empty-state b{color:var(--ink-soft);display:block;font-size:14px;margin-bottom:4px;}
+
+  /* ---- 菜单列表（设备/我的 页面通用） ---- */
+  .menu-card{background:var(--surface);border:1px solid var(--line);border-radius:14px;overflow:hidden;margin-bottom:18px;}
+  .menu-row{
+    display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);cursor:pointer;
+  }
+  .menu-row:last-child{border-bottom:none;}
+  .menu-row:hover{background:var(--surface-2);}
+  .menu-row .mr-ic{width:20px;color:var(--ink-faint);flex:none;display:flex;align-items:center;justify-content:center;}
+  .menu-row .mr-ic svg{width:18px;height:18px;}
+  .menu-row .mr-label{flex:1;font-size:13.5px;color:var(--ink);}
+  .menu-row .mr-value{font-size:12px;color:var(--ink-faint);}
+  .menu-row .mr-chev{color:var(--ink-faint);font-size:13px;}
+
+  /* ---- Toggle 开关 ---- */
+  .toggle{
+    position:relative;width:42px;height:24px;border-radius:100px;background:var(--line);flex:none;
+    cursor:pointer;transition:background .15s;
+  }
+  .toggle.on{background:var(--accent);}
+  .toggle .knob{
+    position:absolute;top:2px;left:2px;width:20px;height:20px;border-radius:50%;background:#fff;
+    box-shadow:0 1px 3px rgba(20,20,40,.25);transition:transform .15s;
+  }
+  .toggle.on .knob{transform:translateX(18px);}
+  .toggle-row{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-bottom:1px solid var(--line);}
+  .toggle-row:last-child{border-bottom:none;}
+  .toggle-row .tr-label{font-size:13.5px;color:var(--ink);}
+  .toggle-row .tr-sub{font-size:11px;color:var(--ink-faint);margin-top:2px;}
+
+  /* ---- 数值调节器 ---- */
+  .stepper-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;border-bottom:1px solid var(--line);}
+  .stepper-row:last-child{border-bottom:none;}
+  .stepper-row .sr-label{font-size:13.5px;color:var(--ink);}
+  .stepper{display:flex;align-items:center;gap:10px;}
+  .stepper button{
+    width:26px;height:26px;border-radius:50%;border:1px solid var(--line);background:var(--surface);
+    color:var(--ink);font-size:15px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;
+    font-family:inherit;line-height:1;
+  }
+  .stepper button:hover{background:var(--surface-2);}
+  .stepper .sr-val{min-width:64px;text-align:center;font-size:14px;font-weight:700;font-family:"JetBrains Mono",monospace;}
+
+  .save-btn{
+    width:100%;background:var(--accent);color:#fff;border:none;border-radius:10px;padding:13px;
+    font-size:14px;font-weight:700;cursor:pointer;margin-top:18px;
+  }
+  .save-btn:hover{opacity:.9;}
+  .save-toast{
+    position:fixed;left:50%;bottom:90px;transform:translateX(-50%);background:var(--ink);color:#fff;
+    padding:10px 18px;border-radius:100px;font-size:12.5px;font-weight:600;z-index:200;opacity:0;
+    pointer-events:none;transition:opacity .2s;
+  }
+  .save-toast.show{opacity:1;}
+
+  /* ---- 运动开始卡片 ---- */
+  .workout-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:8px;}
+  .workout-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 14px;cursor:pointer;
+    display:flex;flex-direction:column;gap:8px;
+  }
+  .workout-card:hover{border-color:var(--accent);}
+  .workout-card .wc-ic{
+    width:34px;height:34px;border-radius:10px;background:var(--accent-soft);color:var(--accent);
+    display:flex;align-items:center;justify-content:center;
+  }
+  .workout-card .wc-ic svg{width:18px;height:18px;}
+  .workout-card .wc-name{font-size:13px;font-weight:700;}
+
+  .prep-row{display:flex;justify-content:space-between;align-items:center;padding:14px 0;border-bottom:1px dashed var(--line);}
+  .prep-row:last-child{border-bottom:none;}
+  .prep-row .pr-label{font-size:12.5px;color:var(--ink-faint);}
+  .prep-row .pr-val{font-size:13.5px;font-weight:600;color:var(--ink);}
+  .start-btn{
+    width:100%;background:linear-gradient(120deg,var(--grad1),var(--grad3));color:#fff;border:none;border-radius:100px;
+    padding:16px;font-size:15px;font-weight:800;cursor:pointer;margin-top:22px;
+  }
+
+  .workout-hist-row{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--line);}
+  .workout-hist-row:last-child{border-bottom:none;}
+  .workout-hist-row .wh-ic{
+    width:36px;height:36px;border-radius:10px;background:var(--surface-2);color:var(--ink-soft);flex:none;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .workout-hist-row .wh-ic svg{width:17px;height:17px;}
+  .workout-hist-row .wh-main{flex:1;min-width:0;}
+  .workout-hist-row .wh-type{font-size:13px;font-weight:700;}
+  .workout-hist-row .wh-meta{font-size:11px;color:var(--ink-faint);margin-top:1px;}
+  .workout-hist-row .wh-date{font-size:11px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;white-space:nowrap;}
+
+  /* ---- 闹钟 / 日程提醒 ---- */
+  .alarm-row{display:flex;align-items:center;gap:12px;padding:13px 16px;border-bottom:1px solid var(--line);}
+  .alarm-row:last-child{border-bottom:none;}
+  .alarm-row .ar-time{font-family:"JetBrains Mono",monospace;font-size:19px;font-weight:700;color:var(--ink);min-width:64px;}
+  .alarm-row.expired .ar-time{color:var(--muted);}
+  .alarm-row .ar-main{flex:1;min-width:0;}
+  .alarm-row .ar-label{font-size:12.5px;color:var(--ink-soft);}
+  .alarm-row .ar-label.unnamed{color:var(--ink-faint);font-style:italic;}
+  .alarm-row .ar-repeat{font-size:11px;color:var(--ink-faint);margin-top:1px;}
+  .alarm-row .ar-tag{
+    font-size:10px;color:var(--ink-faint);background:var(--surface-2);border-radius:5px;padding:2px 7px;
+    margin-left:8px;white-space:nowrap;
+  }
+
+  .add-row-btn{
+    display:flex;align-items:center;justify-content:center;gap:7px;padding:13px 14px;
+    border:1.5px dashed var(--line);border-radius:12px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;
+    margin-top:12px;
+  }
+  .add-row-btn:hover{background:var(--accent-soft);border-color:var(--accent);}
+  .add-row-btn .plus{font-size:15px;font-weight:700;}
+
+  /* ---- Bottom sheet ---- */
+  .sheet-scrim{position:fixed;inset:0;background:rgba(10,12,25,.4);z-index:150;opacity:0;pointer-events:none;transition:opacity .18s;}
+  .sheet-scrim.open{opacity:1;pointer-events:auto;}
+  .bottom-sheet{
+    position:fixed;left:0;right:0;bottom:0;z-index:151;background:var(--surface);border-radius:20px 20px 0 0;
+    padding:10px 18px calc(20px + env(safe-area-inset-bottom));max-width:600px;margin:0 auto;
+    transform:translateY(100%);transition:transform .2s ease;max-height:86vh;overflow-y:auto;
+  }
+  .bottom-sheet.open{transform:translateY(0);}
+  .sheet-handle{width:36px;height:4px;border-radius:2px;background:var(--line);margin:4px auto 14px;}
+  .sheet-title{font-size:15px;font-weight:800;text-align:center;margin-bottom:16px;}
+  .sheet-field{margin-bottom:14px;}
+  .sheet-field label{display:block;font-size:11px;color:var(--ink-faint);font-weight:600;margin-bottom:6px;letter-spacing:.02em;}
+  .sheet-field input, .sheet-field select{
+    width:100%;border:1px solid var(--line);border-radius:9px;padding:10px 12px;font-size:14px;color:var(--ink);
+    background:var(--surface-2);font-family:inherit;box-sizing:border-box;
+  }
+  .sheet-field input[type="time"], .sheet-field input[type="date"]{font-family:"JetBrains Mono",monospace;font-size:20px;text-align:center;padding:14px;}
+  .sheet-actions{display:flex;gap:10px;margin-top:6px;}
+  .sheet-actions button{flex:1;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
+  .sheet-actions .btn-cancel{background:var(--surface-2);color:var(--ink-soft);}
+  .sheet-actions .btn-save{background:var(--accent);color:#fff;}
+
+  /* ---- 心率图表 ---- */
+  .hr-wrap{background:var(--surface-2);border-radius:10px;padding:18px 16px 10px;position:relative;}
+  .hr-chart{width:100%;height:auto;display:block;touch-action:none;cursor:crosshair;}
+  .hr-tooltip{
+    position:absolute;pointer-events:none;background:var(--ink);color:#fff;border-radius:8px;
+    padding:6px 10px;font-size:11.5px;font-family:"JetBrains Mono",monospace;white-space:nowrap;
+    transform:translate(-50%,-120%);opacity:0;transition:opacity .1s;z-index:5;
+  }
+  .hr-tooltip.show{opacity:1;}
+  .hr-tooltip b{font-size:13px;}
+  .hr-legend{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--ink-faint);}
+  .hr-legend span{display:inline-flex;align-items:center;gap:5px;}
+  .hr-legend .dot{width:8px;height:8px;border-radius:50%;display:inline-block;}
+  .hr-detail-card{
+    background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin-top:12px;
+  }
+  .hr-detail-card .hd-val{font-size:22px;font-weight:800;}
+  .hr-detail-card .hd-sub{font-size:12px;color:var(--ink-soft);margin-top:2px;}
+  .hr-detail-card .hd-reasons{font-size:12px;color:var(--ink-soft);line-height:1.9;margin-top:10px;}
+  .hr-detail-card .hd-concepts{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px;}
+  .hr-detail-card .hd-concepts .row{display:flex;justify-content:space-between;font-size:11.5px;padding:4px 0;color:var(--ink-soft);}
+  .hr-detail-card .hd-concepts .row b{color:var(--ink);font-weight:600;font-family:"JetBrains Mono",monospace;}
+
+  /* ---- 原始同步记录（高级） ---- */
+  .hr-rawlog-toggle{margin-top:12px;font-size:11.5px;color:var(--accent);cursor:pointer;display:inline-block;}
+  .hr-rawlog-toggle:hover{text-decoration:underline;}
+  .hr-rawlog-panel{margin-top:10px;background:#12141c;border-radius:10px;padding:14px 16px;overflow-x:auto;}
+  .hr-rawlog-panel .title{font-family:"JetBrains Mono",monospace;font-size:10.5px;color:#6d7690;letter-spacing:.08em;margin-bottom:8px;}
+  .hr-rawlog-panel table{border-collapse:collapse;font-family:"JetBrains Mono",monospace;font-size:11.5px;white-space:nowrap;}
+  .hr-rawlog-panel td{padding:3px 14px 3px 0;color:#c7ccdb;}
+  .hr-rawlog-panel td.ev{color:#8fa1ff;}
+  .hr-rawlog-panel td.val{color:#5fd3a8;}
+  .hr-rawlog-panel td.val.fail{color:#ff8f8f;}
+
+  /* ---- 睡眠 ---- */
+  .sleep-bar{display:flex;width:100%;height:34px;border-radius:8px;overflow:hidden;margin-bottom:10px;}
+  .sleep-bar .seg{height:100%;}
+  .sleep-summary{display:flex;gap:14px;flex-wrap:wrap;margin-top:12px;font-size:12px;color:var(--ink-soft);}
+  .sleep-summary span{display:inline-flex;align-items:center;gap:6px;}
+  .sleep-summary .dot{width:9px;height:9px;border-radius:3px;display:inline-block;}
+  .sleep-hist-row{display:flex;align-items:center;justify-content:space-between;padding:13px 0;border-bottom:1px solid var(--line);cursor:pointer;}
+  .sleep-hist-row:last-child{border-bottom:none;}
+  .sleep-hist-row:hover{color:var(--accent);}
+  .sleep-hist-row .sh-date{font-size:13px;font-weight:600;}
+  .sleep-hist-row .sh-val{font-size:13.5px;font-weight:700;font-family:"JetBrains Mono",monospace;}
+  .sleep-hist-row .sh-val.muted{color:var(--ink-faint);font-weight:600;font-size:12px;font-family:inherit;}
+
+  /* ---- 通知列表 ---- */
+  .notif-row{padding:12px 0;border-bottom:1px solid var(--line);}
+  .notif-row:last-child{border-bottom:none;}
+  .notif-row .nr-time{font-size:10.5px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;}
+  .notif-row .nr-text{font-size:13px;color:var(--ink);margin-top:2px;}
+
+  /* ---- 我的 ---- */
+  .profile-head{display:flex;align-items:center;gap:14px;margin-bottom:22px;}
+  .profile-head .ph-avatar{
+    width:56px;height:56px;border-radius:50%;background:linear-gradient(135deg,var(--grad1),var(--grad3));
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:20px;flex:none;
+  }
+  .profile-head .ph-name{font-size:17px;font-weight:800;}
+  .profile-head .ph-account{font-size:12px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;margin-top:2px;}
+
+  .report-stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:16px 0 8px;}
+  .report-stat{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:14px;}
+  .report-stat .rs-label{font-size:10.5px;color:var(--ink-faint);font-weight:700;letter-spacing:.03em;text-transform:uppercase;}
+  .report-stat .rs-val{font-size:20px;font-weight:800;margin-top:4px;}
+
+  .find-band-btn{
+    width:100%;background:var(--surface);border:1.5px solid var(--accent);color:var(--accent);border-radius:14px;
+    padding:16px;font-size:14px;font-weight:700;cursor:pointer;
+  }
+  .find-band-status{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:14px;min-height:20px;}
 </style>
 </head>
 <body>
@@ -391,747 +533,1395 @@
 <footer>极光运动 AURORA © 本页面内容均为虚构</footer>
 
 <script>
-  const USERNAME = "zhouyx0721";
-  const PASSWORD = "aurora2019";
-  // 有些输入法手动打字时会把字母数字打成全角（ｚｈｏｕｙｘ０７２１），
-  // 肉眼几乎看不出来，但和半角字符串直接比较会判定不相等——粘贴进来的
-  // 内容不受输入法影响所以能通过，手打却总是提示"不正确"。这里统一转
-  // 回半角再比较，两种输入方式结果一致。
-  const toHalfWidth = (s) => s.replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)).replace(/　/g, " ");
-  const norm = (s) => toHalfWidth(s).trim().toLowerCase();
+/* =====================================================================
+   一、登录（不改）
+   ===================================================================== */
+const USERNAME = "zhouyx0721";
+const PASSWORD = "aurora2019";
+const toHalfWidth = (s) => s.replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xFEE0)).replace(/　/g, " ");
+const norm = (s) => toHalfWidth(s).trim().toLowerCase();
 
-  document.getElementById("nav-product").addEventListener("click", () => document.getElementById("sec-product").scrollIntoView({ behavior: "smooth" }));
-  document.getElementById("nav-news").addEventListener("click", () => document.getElementById("sec-news").scrollIntoView({ behavior: "smooth" }));
-  document.getElementById("nav-portal").addEventListener("click", () => document.getElementById("sec-portal").scrollIntoView({ behavior: "smooth" }));
-  document.getElementById("nav-login-btn").addEventListener("click", () => document.getElementById("sec-portal").scrollIntoView({ behavior: "smooth" }));
-  document.getElementById("hero-portal-btn").addEventListener("click", () => document.getElementById("sec-portal").scrollIntoView({ behavior: "smooth" }));
-  document.getElementById("hero-news-btn").addEventListener("click", () => document.getElementById("sec-news").scrollIntoView({ behavior: "smooth" }));
+document.getElementById("nav-product").addEventListener("click", () => document.getElementById("sec-product").scrollIntoView({ behavior: "smooth" }));
+document.getElementById("nav-news").addEventListener("click", () => document.getElementById("sec-news").scrollIntoView({ behavior: "smooth" }));
+document.getElementById("nav-portal").addEventListener("click", () => document.getElementById("sec-portal").scrollIntoView({ behavior: "smooth" }));
+document.getElementById("nav-login-btn").addEventListener("click", () => document.getElementById("sec-portal").scrollIntoView({ behavior: "smooth" }));
+document.getElementById("hero-portal-btn").addEventListener("click", () => document.getElementById("sec-portal").scrollIntoView({ behavior: "smooth" }));
+document.getElementById("hero-news-btn").addEventListener("click", () => document.getElementById("sec-news").scrollIntoView({ behavior: "smooth" }));
 
-  // 不是真的重置密码，只是给一个格式提示——具体注册年份得靠别处才能
-  // 拼出来，这里不会直接把完整密码摆出来。
-  document.getElementById("forgot-pw-link").addEventListener("click", () => {
-    document.getElementById("forgot-pw-msg").innerHTML = `<div class="forgot-pw-hint">密码已重置成：aurora + 注册账号年份</div>`;
+document.getElementById("forgot-pw-link").addEventListener("click", () => {
+  document.getElementById("forgot-pw-msg").innerHTML = `<div class="forgot-pw-hint">密码已重置成：aurora + 注册账号年份</div>`;
+});
+
+function tryLogin() {
+  const u = norm(document.getElementById("li-user").value);
+  const p = norm(document.getElementById("li-pass").value);
+  const msg = document.getElementById("li-msg");
+  if (u === USERNAME && p === PASSWORD) {
+    mountAppShell();
+    return;
+  }
+  msg.innerHTML = `<div class="login-err">账号或密码不正确。</div>`;
+}
+document.getElementById("li-btn").addEventListener("click", tryLogin);
+document.getElementById("li-pass").addEventListener("keydown", (e) => { if (e.key === "Enter") tryLogin(); });
+
+/* =====================================================================
+   二、时间 canon —— 全站统一
+   游戏正式开始时间是 2026-09-14；玩家登录 AURORA 时，"今天"就是这一天。
+   09-13 是案发当天（周晏星生前最后一个完整白天 + 案发当晚），只能是
+   "昨天"/历史记录，不能是"今天"。09-14 白天绝对不产生任何新的正常用户
+   活动数据——设备还在正常运行、还在尝试记录，只是再也没有收到有效数据，
+   这是"停止产生数据"，不是"系统判定死亡"。
+   ===================================================================== */
+const TODAY = "09-14";
+const YESTERDAY = "09-13";
+
+/* =====================================================================
+   三、本地偏好设置（玩家可编辑的目标/闹钟/提醒），只存 localStorage，
+   不影响案发当晚已经发生的历史数据本身。
+   ===================================================================== */
+const PREFS_KEY = "aurora-prefs-v2";
+const DEFAULT_PREFS = {
+  goals: { steps: 8000, exerciseMin: 45, kcal: 350, standHr: 12, autoAdjust: false, weeklyReport: true },
+  sleepGoals: { hours: 8, bedtime: "00:30", waketime: "08:30", reminder: true },
+  sedentary: { on: true, start: "09:00", end: "22:00", interval: 60, dndStart: "12:00", dndEnd: "14:00" },
+  water: { on: false, interval: 2, start: "08:00", end: "22:00" },
+  healthMonitor: { hrAllDay: true, hrFreq: 5, highHrAlert: true, highHrThreshold: 120, restingTrend: true },
+};
+function loadPrefs() {
+  let raw = {};
+  try { raw = JSON.parse(localStorage.getItem(PREFS_KEY)) || {}; } catch {}
+  return {
+    goals: { ...DEFAULT_PREFS.goals, ...raw.goals },
+    sleepGoals: { ...DEFAULT_PREFS.sleepGoals, ...raw.sleepGoals },
+    sedentary: { ...DEFAULT_PREFS.sedentary, ...raw.sedentary },
+    water: { ...DEFAULT_PREFS.water, ...raw.water },
+    healthMonitor: { ...DEFAULT_PREFS.healthMonitor, ...raw.healthMonitor },
+    customAlarms: raw.customAlarms || [],
+    customReminders: raw.customReminders || [],
+    alarmState: raw.alarmState || {},
+  };
+}
+let prefs = loadPrefs();
+function savePrefs() { try { localStorage.setItem(PREFS_KEY, JSON.stringify(prefs)); } catch {} }
+
+function showToast(text) {
+  let t = document.getElementById("save-toast");
+  if (!t) {
+    t = document.createElement("div");
+    t.id = "save-toast";
+    t.className = "save-toast";
+    document.body.appendChild(t);
+  }
+  t.textContent = text;
+  t.classList.add("show");
+  clearTimeout(showToast._timer);
+  showToast._timer = setTimeout(() => t.classList.remove("show"), 1600);
+}
+
+/* =====================================================================
+   四、心率原始数据 —— 09-13 全天，一直到次日 00:20。
+   晚间那一段密度明显变高，对应"进入运动模式后切换为实时记录"；23:20
+   之后每 5 分钟一个点，23:47（127）是最后一次成功同步的读数，23:50
+   之后再没有新的同步，直到 00:20 尝试读取失败。玩家需要自己拖动/点击
+   曲线才能看到这些数字，图表本身不会替玩家把 23:47 标红。
+   ===================================================================== */
+const HR_DATA = [
+  { t: "00:00", v: 65 }, { t: "00:45", v: 63 }, { t: "01:30", v: 62 }, { t: "02:15", v: 61 },
+  { t: "03:00", v: 62 }, { t: "03:45", v: 63 }, { t: "04:30", v: 64 }, { t: "05:15", v: 65 },
+  { t: "06:00", v: 68 }, { t: "06:40", v: 74 }, { t: "07:15", v: 80 }, { t: "08:00", v: 83 },
+  { t: "08:45", v: 78 }, { t: "09:30", v: 75 }, { t: "10:15", v: 79 }, { t: "11:00", v: 82 },
+  { t: "11:45", v: 85 }, { t: "12:30", v: 88 }, { t: "13:15", v: 80 }, { t: "14:00", v: 76 },
+  { t: "14:45", v: 74 }, { t: "15:30", v: 77 }, { t: "16:15", v: 81 }, { t: "17:00", v: 79 },
+  { t: "17:45", v: 76 }, { t: "18:30", v: 80 },
+  { t: "19:10", v: 88 }, { t: "19:25", v: 104 }, { t: "19:40", v: 117 }, { t: "19:55", v: 112 },
+  { t: "20:10", v: 96 }, { t: "20:25", v: 84 },
+  { t: "20:45", v: 75 }, { t: "21:20", v: 71 }, { t: "22:10", v: 68 }, { t: "22:55", v: 66 },
+  { t: "23:00", v: 67 }, { t: "23:20", v: 69 }, { t: "23:25", v: 71 }, { t: "23:30", v: 82 },
+  { t: "23:35", v: 84 }, { t: "23:40", v: 89 }, { t: "23:45", v: 101 }, { t: "23:47", v: 127 },
+  { t: "23:50", v: 118 }, { t: "00:20", v: null },
+];
+
+// 原始事件日志——测量时间 / 同步状态 / 蓝牙连接分开记录，这是唯一能
+// 还原"测量≠同步≠连接"这件事的地方。00:24 这条蓝牙断连是这一版新加的，
+// 让"设备最后连接"有一个跟"最后同步"（23:58）、"这次尝试测量"（00:20）
+// 都不一样的独立时间点。
+const DEVICE_LOG = [
+  { t: "23:46:51", event: "wrist_detected", value: "TRUE" },
+  { t: "23:47:03", event: "heart_rate", value: "127" },
+  { t: "23:47:05", event: "sync_queue", value: "pending" },
+  { t: "23:48:11", event: "bluetooth", value: "disconnected" },
+  { t: "23:58:33", event: "bluetooth", value: "reconnected" },
+  { t: "23:58:40", event: "sync_queue", value: "delivered" },
+  { t: "00:11:42", event: "device_motion", value: "detected" },
+  { t: "00:19:58", event: "wrist_detected", value: "FALSE" },
+  { t: "00:20:02", event: "heart_rate_read", value: "FAILED" },
+  { t: "00:24:15", event: "bluetooth", value: "disconnected" },
+];
+
+// 心率"7日"：过去 7 天每日一个代表性数值（09-13 的偏高只是日均被
+// 晚间那段拉高，不特殊标注）；09-14（今天）留空，用空心点表示"暂无"，
+// 跟当日图表里 00:20 的画法是同一套语言。
+const HR_WEEK = [
+  { d: "09-08", v: 70 }, { d: "09-09", v: 72 }, { d: "09-10", v: 69 }, { d: "09-11", v: 73 },
+  { d: "09-12", v: 71 }, { d: "09-13", v: 79 }, { d: "09-14", v: null },
+];
+// 心率"30日"：按周取点，09-08 这一周正好覆盖案发夜，127 就是同一件事
+// 换了个更粗的时间粒度看。
+const HR_MONTH = [
+  { week: "09-01", v: 72 }, { week: "09-08", v: 127 }, { week: "09-15", v: 73 }, { week: "09-22", v: 71 },
+];
+
+/* =====================================================================
+   五、活动数据 —— 按真实日期建档。目标值（8000步/45分钟/350千卡/12小时）
+   是运动手环类产品最常见的默认目标区间，不是随手编的数字。
+   09-08 到 09-12 是平常强度的日常；09-13 是案发当天，活动量明显偏高
+   （早班机→彩排→下午品牌活动），但站立小时没有顶满，因为中间夹着
+   航班/场地之间的乘车时间；09-14 是今天——人已经不在了，设备上没有
+   任何新的佩戴/活动数据写入，如实显示成全 0，不是漏填，也不特殊标色。
+   ===================================================================== */
+const ACTIVITY_BY_DATE = {
+  "09-08": { steps: 7842, move: 268, moveGoal: 350, exercise: 32, exerciseGoal: 45, stand: 8, standGoal: 12, kcal: 268 },
+  "09-09": { steps: 10126, move: 312, moveGoal: 350, exercise: 41, exerciseGoal: 45, stand: 9, standGoal: 12, kcal: 312 },
+  "09-10": { steps: 6903, move: 287, moveGoal: 350, exercise: 28, exerciseGoal: 45, stand: 8, standGoal: 12, kcal: 287 },
+  "09-11": { steps: 9411, move: 341, moveGoal: 350, exercise: 40, exerciseGoal: 45, stand: 9, standGoal: 12, kcal: 341 },
+  "09-12": { steps: 8207, move: 296, moveGoal: 350, exercise: 34, exerciseGoal: 45, stand: 8, standGoal: 12, kcal: 296 },
+  "09-13": { steps: 11840, move: 428, moveGoal: 350, exercise: 52, exerciseGoal: 45, stand: 11, standGoal: 12, kcal: 428 },
+  "09-14": { steps: 0, move: 0, moveGoal: 350, exercise: 0, exerciseGoal: 45, stand: 0, standGoal: 12, kcal: 0, noData: true },
+};
+const ACTIVITY_DATE_ORDER = Object.keys(ACTIVITY_BY_DATE);
+
+/* =====================================================================
+   六、睡眠 —— 本周历史 + 09-13 夜（跨 09-14 凌晨）无法生成报告
+   ===================================================================== */
+const SLEEP_STAGES_COLOR = { deep: "#4f4fe0", light: "#8f8fff", rem: "#31c9c9", awake: "#e7e9f3" };
+const SLEEP_STAGES_NAME = { deep: "深睡", light: "浅睡", rem: "REM", awake: "清醒" };
+// 09-12 这一晚有完整的分期数据，用来渲染细分色块；分钟数总和 391，
+// 对应"6h31"，跟下面 SLEEP_BY_DATE 里的数字对齐。
+const SLEEP_09_12_STAGES = [
+  { stage: "light", min: 29 }, { stage: "deep", min: 76 }, { stage: "light", min: 26 },
+  { stage: "rem", min: 31 }, { stage: "light", min: 21 }, { stage: "deep", min: 55 },
+  { stage: "awake", min: 8 }, { stage: "light", min: 23 }, { stage: "rem", min: 42 },
+  { stage: "light", min: 31 }, { stage: "rem", min: 36 }, { stage: "awake", min: 13 },
+];
+const SLEEP_BY_DATE = {
+  "09-08": { totalMin: 432, window: "23:41 – 次日 07:02" },
+  "09-09": { totalMin: 408, window: "00:05 – 次日 07:10" },
+  "09-10": { totalMin: 483, window: "23:12 – 次日 07:26" },
+  "09-11": { totalMin: 446, window: "23:38 – 次日 07:15" },
+  "09-12": { totalMin: 391, window: "23:20 – 次日 07:10", stages: SLEEP_09_12_STAGES },
+  "09-13": { noData: true },
+};
+const SLEEP_DATE_ORDER = ["09-08", "09-09", "09-10", "09-11", "09-12", "09-13"];
+const SLEEP_MONTH = [
+  { week: "09-01", v: 7.2 }, { week: "09-08", v: 6.9 }, { week: "09-15", v: 7.6 }, { week: "09-22", v: 7.4 },
+];
+
+/* =====================================================================
+   七、血氧（跟案情无关，纯氛围）
+   ===================================================================== */
+const SPO2_MONTH = [
+  { week: "09-01", v: 97 }, { week: "09-08", v: 96 }, { week: "09-15", v: 98 }, { week: "09-22", v: 94 },
+];
+
+/* =====================================================================
+   八、运动 —— 开始运动类型 + 历史记录（普通噪音数据，完全不涉案）
+   ===================================================================== */
+const WORKOUT_TYPES = [
+  { id: "outdoor-run", name: "户外跑步", icon: "run" },
+  { id: "indoor-run", name: "室内跑步", icon: "run" },
+  { id: "walk", name: "步行", icon: "walk" },
+  { id: "cycle", name: "骑行", icon: "cycle" },
+  { id: "free", name: "自由训练", icon: "free" },
+];
+const WORKOUT_HISTORY = [
+  { date: "09-12", type: "室内跑步", duration: "32 min", extra: "4.21 km", avgHr: "146 bpm" },
+  { date: "09-10", type: "自由训练", duration: "48 min", extra: "312 kcal" },
+  { date: "09-07", type: "户外跑步", duration: "26 min", extra: "3.80 km", avgHr: "152 bpm" },
+  { date: "09-05", type: "步行", duration: "55 min", extra: "3.10 km" },
+  { date: "09-02", type: "骑行", duration: "40 min", extra: "12.4 km" },
+  { date: "08-29", type: "室内跑步", duration: "28 min", extra: "3.65 km", avgHr: "141 bpm" },
+];
+
+/* =====================================================================
+   九、闹钟与日程提醒
+   闹钟：正常循环闹钟 + 09-13 那几个已经过期的一次性行程闹钟（活着的
+   时候自己设的，不是 09-14 新增的，所以是"已过期"状态，不是活跃状态）。
+   日程提醒：跟闹钟分开的另一个功能，06-22 只显示日期和"每年重复"，
+   不写任何含义——这就是留给玩家自己发现的地方。
+   ===================================================================== */
+const BASE_ALARMS = [
+  { id: "wake-weekday", time: "07:00", label: "起床", repeat: "工作日", defaultOn: true },
+  { id: "wake-weekend", time: "09:30", label: "起床", repeat: "周末", defaultOn: false },
+  { id: "workout-alarm", time: "19:30", label: "健身时间", repeat: "每周三 / 周六", defaultOn: true },
+  { id: "exp-airport", time: "08:20", label: "机场 · 抵达", date: "09-13", defaultOn: false, expired: true },
+  { id: "exp-rehearsal", time: "09:50", label: "彩排", date: "09-13", defaultOn: false, expired: true },
+  { id: "exp-brand", time: "14:00", label: "上海品牌活动", date: "09-13", defaultOn: false, expired: true },
+  { id: "exp-hangzhou", time: "19:40", label: "飞杭州（已取消）", date: "09-13", defaultOn: false, expired: true },
+];
+const BASE_SCHEDULE_REMINDERS = [
+  { id: "insurance-renew", date: "11-03", label: "车险续保", repeat: "每年重复" },
+  { id: "unnamed-0622", date: "06-22", label: null, repeat: "每年重复" },
+];
+
+/* =====================================================================
+   十、通知历史（普通噪音）
+   ===================================================================== */
+const NOTIFICATIONS = [
+  { time: "09-13 18:40", text: "今日活动目标已完成 82%" },
+  { time: "09-12 22:14", text: "久坐提醒" },
+  { time: "09-12 08:31", text: "昨夜睡眠 6h31m" },
+  { time: "09-11 20:12", text: "今日活动目标已完成 100%" },
+  { time: "09-10 21:05", text: "久坐提醒" },
+  { time: "09-09 07:02", text: "起床闹钟已关闭" },
+  { time: "09-08 22:47", text: "本周活动报告已生成" },
+];
+
+/* =====================================================================
+   十一、通用图表组件
+   ===================================================================== */
+function svgScatter(points, { minY, maxY, optMin, optMax, w = 340, h = 170 }) {
+  const padL = 26, padR = 10, padT = 10, padB = 22;
+  const chartW = w - padL - padR, chartH = h - padT - padB;
+  const xOf = (i) => points.length > 1 ? padL + (i / (points.length - 1)) * chartW : padL + chartW / 2;
+  const yOf = (v) => padT + (1 - (v - minY) / (maxY - minY)) * chartH;
+  const bandTop = optMin != null ? yOf(optMax) : null;
+  const bandH = optMin != null ? Math.max(yOf(optMin) - bandTop, 1) : 0;
+  const dots = points.map((p, i) => {
+    if (p.v == null) {
+      return `<circle cx="${xOf(i)}" cy="${yOf((minY + maxY) / 2)}" r="4.5" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="2 2" />`;
+    }
+    return `<circle cx="${xOf(i)}" cy="${yOf(Math.min(Math.max(p.v, minY), maxY))}" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5" />`;
+  }).join("");
+  const ticks = points.map((p, i) => `<text x="${xOf(i)}" y="${h - 6}" font-size="9" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${p.week || p.d}</text>`).join("");
+  const band = optMin != null ? `<rect x="${padL}" y="${bandTop}" width="${chartW}" height="${bandH}" fill="var(--ok)" opacity="0.12" rx="3" />` : "";
+  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block;">${band}${ticks}${dots}</svg>`;
+}
+function svgBars(points, { max, w = 340, h = 140, color = "var(--accent)" } = {}) {
+  const padL = 10, padR = 10, padT = 10, padB = 20;
+  const chartW = w - padL - padR, chartH = h - padT - padB;
+  const bw = (chartW / points.length) * 0.48;
+  const bars = points.map((p, i) => {
+    const cx = padL + ((i + 0.5) / points.length) * chartW;
+    const bh = Math.max((p.v / max) * chartH, 2);
+    return `<rect x="${cx - bw / 2}" y="${padT + chartH - bh}" width="${bw}" height="${bh}" rx="3" fill="${color}" />`;
+  }).join("");
+  const ticks = points.map((p, i) => {
+    const cx = padL + ((i + 0.5) / points.length) * chartW;
+    return `<text x="${cx}" y="${h - 4}" font-size="9" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${p.week || p.d}</text>`;
+  }).join("");
+  return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block;">${bars}${ticks}</svg>`;
+}
+function ringSvg(value, goal, color, size = 64, strokeW = 7) {
+  const r = size / 2 - strokeW / 2;
+  const c = 2 * Math.PI * r;
+  const dash = c * Math.min(goal ? value / goal : 0, 1);
+  return `<svg viewBox="0 0 ${size} ${size}">
+    <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="${strokeW}" />
+    <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round" stroke-dasharray="${dash} ${c}" />
+  </svg>`;
+}
+const ICON = {
+  close: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`,
+  band: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="4"/><circle cx="12" cy="12" r="2.4"/></svg>`,
+  run: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="15" cy="5" r="1.6"/><path d="M6 21l3-5 3 2 2-4-3-3 1-4"/><path d="M9 9l4-1 2 3 3-1"/></svg>`,
+  walk: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1.6"/><path d="M10 21l1-6-3-2 1-5 4-1 3 3 3 1"/><path d="M9 13l-3 2v4"/></svg>`,
+  cycle: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-9h4l3 9"/><path d="M10 8h3"/></svg>`,
+  free: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v18M3 12h18"/></svg>`,
+  home: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg>`,
+  workout: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg>`,
+  health: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>`,
+  device: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>`,
+  profile: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21c1.6-4 5-6 8-6s6.4 2 8 6"/></svg>`,
+  chevron: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>`,
+};
+
+function renderActivityRings(el, a) {
+  const rings = [
+    { label: "步数", v: a.steps, goal: prefs.goals.steps, color: "#ff375f", unit: "步" },
+    { label: "活动", v: a.exercise, goal: prefs.goals.exerciseMin, color: "#92e82a", unit: "min" },
+    { label: "站立", v: a.stand, goal: prefs.goals.standHr, color: "#00c2d4", unit: "h" },
+  ];
+  el.innerHTML = `
+    <div style="display:flex;gap:12px;">
+      ${rings.map((r) => `<div class="ring-item">${ringSvg(r.v, r.goal, r.color)}<div class="rv">${Math.round((r.v / r.goal) * 100)}%</div></div>`).join("")}
+    </div>
+    <div class="rings-legend">
+      ${rings.map((r) => `<div class="rl-row"><span><span class="rl-dot" style="background:${r.color};"></span><span class="rl-name">${r.label}</span></span><span class="rl-val mono">${r.v.toLocaleString()}/${r.goal.toLocaleString()} ${r.unit}</span></div>`).join("")}
+    </div>
+  `;
+}
+
+function renderMonthRangeView(pane, { unit, data, minY, maxY, optMin, optMax, pctLabel = "达标测量占比" }) {
+  const valid = data.filter((p) => p.v != null);
+  const inRange = valid.filter((p) => p.v >= optMin && p.v <= optMax).length;
+  const pct = valid.length ? Math.round((inRange / valid.length) * 100) : 0;
+  const mid = (optMin + optMax) / 2;
+  const devMax = Math.max(...valid.map((p) => Math.abs(p.v - mid)), 1) * 1.15;
+  pane.innerHTML = `
+    <div class="rv-datenav"><span class="rv-arrow">‹</span><span class="rv-label">2026年9月</span><span class="rv-arrow">›</span></div>
+    <div class="rv-stat-label">${pctLabel}</div>
+    <div class="rv-stat-value">${pct}%</div>
+    <div class="rv-stat-legend"><span class="dot" style="background:var(--ok);"></span>达标测量 · 单位 ${unit}</div>
+    <div class="rv-chartbox">${svgScatter(data, { minY, maxY, optMin, optMax })}</div>
+    <div class="rv-indepth-title">深度结果</div>
+    <div class="rv-indepth-card">
+      <div class="rv-indepth-head"><h4>区间变化</h4><div class="qm">?</div></div>
+      <div class="rv-indepth-sub">超出参考范围</div>
+      <div class="rv-indepth-val">${valid.length - inRange} / ${valid.length}</div>
+      ${svgBars(valid.map((p) => ({ ...p, v: Math.abs(p.v - mid) })), { max: devMax, color: "#7c6fee" })}
+    </div>
+  `;
+}
+
+/* =====================================================================
+   十二、路由 —— 底部导航 5 个 tab（首页/运动/健康/设备/我的），其余全部
+   是从某个 tab 点进去的详情页，每个详情页自己记得"返回"去哪。
+   ===================================================================== */
+const TABS = ["home", "workout", "health", "device", "profile"];
+let asActiveTab = "home";   // 当前 tab（底部导航高亮用）
+let asScreen = "home";      // 当前实际渲染的页面（可以是 tab 本身，也可以是某个详情页）
+let asBackTarget = "home";  // 详情页的"‹"应该回到哪个 screen
+
+function mountAppShell() {
+  document.getElementById("login-box").hidden = true;
+  let shell = document.getElementById("appshell");
+  if (!shell) {
+    shell = document.createElement("div");
+    shell.className = "appshell";
+    shell.id = "appshell";
+    document.body.appendChild(shell);
+  }
+  shell.hidden = false;
+  asActiveTab = "home"; asScreen = "home";
+  renderAppShell();
+  window.scrollTo(0, 0);
+}
+function exitAppShell() {
+  const shell = document.getElementById("appshell");
+  if (shell) shell.hidden = true;
+  document.getElementById("login-box").hidden = false;
+  document.getElementById("li-user").value = "";
+  document.getElementById("li-pass").value = "";
+}
+function renderAppShell() {
+  const shell = document.getElementById("appshell");
+  shell.innerHTML = `
+    <div id="as-body"></div>
+    <div class="as-bottomnav" id="as-bottomnav">
+      <button data-tab="home">${ICON.home}<span>首页</span></button>
+      <button data-tab="workout">${ICON.workout}<span>运动</span></button>
+      <button data-tab="health">${ICON.health}<span>健康</span></button>
+      <button data-tab="device">${ICON.device}<span>设备</span></button>
+      <button data-tab="profile">${ICON.profile}<span>我的</span></button>
+    </div>
+  `;
+  shell.querySelectorAll("#as-bottomnav button").forEach((b) => {
+    b.addEventListener("click", () => nav(b.dataset.tab, b.dataset.tab));
+  });
+  renderScreen();
+}
+// nav(screen, tabOrBackTarget)：切到某个 screen；第二个参数如果是 5 个
+// tab 之一，就把它记成当前高亮的 tab；否则当成"返回目标"记下来。
+function nav(screen, tabOrBack) {
+  asScreen = screen;
+  if (TABS.includes(tabOrBack)) { asActiveTab = tabOrBack; asBackTarget = tabOrBack; }
+  else if (tabOrBack) { asBackTarget = tabOrBack; }
+  renderScreen();
+}
+function goBack() { nav(asBackTarget, asBackTarget); }
+
+function renderScreen() {
+  document.querySelectorAll("#as-bottomnav button").forEach((b) => b.classList.toggle("active", b.dataset.tab === asActiveTab && TABS.includes(asScreen)));
+  const body = document.getElementById("as-body");
+  const renderer = SCREENS[asScreen] || SCREENS.home;
+  renderer(body);
+  window.scrollTo(0, 0);
+}
+
+// 详情页统一的顶部栏：‹ 返回 + 标题（+ 可选的右上角文字按钮）
+function detailTopbar(title, actionLabel, actionFn) {
+  return `
+    <div class="as-topbar as-detail">
+      <div class="as-back" data-back>‹</div>
+      <div class="as-title">${title}</div>
+      ${actionLabel ? `<div class="as-action" data-action>${actionLabel}</div>` : `<div style="width:32px;"></div>`}
+    </div>
+  `;
+}
+function bindDetailTopbar(body, actionFn) {
+  body.querySelector("[data-back]")?.addEventListener("click", goBack);
+  if (actionFn) body.querySelector("[data-action]")?.addEventListener("click", actionFn);
+}
+
+/* =====================================================================
+   十三、首页
+   ===================================================================== */
+function weekdayCn(dateStr) {
+  // 2026-09-14 是周一（真实日历换算）；这里直接给出跟当前 canon 对应的
+  // 星期，其余 09 月日期按同一个真实日历顺推。
+  const map = { "09-08":"星期二","09-09":"星期三","09-10":"星期四","09-11":"星期五","09-12":"星期六","09-13":"星期日","09-14":"星期一" };
+  return map[dateStr] || "";
+}
+
+const SCREENS = {};
+
+SCREENS.home = function (body) {
+  const a = ACTIVITY_BY_DATE[TODAY];
+  body.innerHTML = `
+    <div class="as-topbar">
+      <div class="as-avatar">周</div>
+      <div class="as-title">首页</div>
+      <div class="as-icon-btn" id="as-exit" title="退出登录">${ICON.close}</div>
+    </div>
+    <div class="as-content">
+      <div class="as-datestr">2026年9月14日 · ${weekdayCn(TODAY)}</div>
+      <div class="as-greeting">早上好，晏星</div>
+
+      <div class="device-card">
+        <div class="dc-head">
+          <div class="dc-icon">${ICON.band}</div>
+          <div>
+            <div class="dc-name">极光手环 三代</div>
+            <div class="dc-status"><span class="dot"></span>已连接</div>
+          </div>
+          <div class="dc-battery">63%</div>
+        </div>
+        <div class="dc-rows">
+          <div class="row"><span>测量时间</span><b>00:20</b></div>
+          <div class="row"><span>数据同步</span><b>23:58</b></div>
+          <div class="row"><span>设备连接</span><b>00:24</b></div>
+        </div>
+      </div>
+
+      <div class="as-subtle" style="margin-top:0;">今日活动</div>
+      <div class="rings-card" id="home-ring-card" style="cursor:pointer;">
+        <div class="rings-row" id="home-rings"></div>
+      </div>
+      <div class="disclaimer" style="margin-top:-8px;margin-bottom:6px;">今日暂无有效活动记录</div>
+
+      <div class="as-subtle">健康</div>
+      <div id="home-health-list"></div>
+    </div>
+  `;
+  document.getElementById("as-exit").addEventListener("click", exitAppShell);
+  document.getElementById("home-ring-card").addEventListener("click", () => nav("activityGoals", "home"));
+  renderActivityRings(document.getElementById("home-rings"), a);
+  renderHealthOverviewList(document.getElementById("home-health-list"));
+};
+
+function renderHealthOverviewList(el) {
+  const items = [
+    { key: "hr", glyph: "♥", bg: "var(--accent-soft)", fg: "var(--accent)", name: "心率", time: "今天", value: "--", unit: "", caption: "暂无近期数据" },
+    { key: "sleep", glyph: "☾", bg: "rgba(49,201,201,.15)", fg: "#1fa3a3", name: "睡眠", time: "今天", value: "--", unit: "", caption: "暂无完整睡眠记录" },
+    { key: "spo2", glyph: "●", bg: "rgba(47,174,107,.15)", fg: "var(--ok)", name: "血氧饱和度", time: "09-12", value: "97", unit: "%", caption: "" },
+    { key: "stress", glyph: "◐", bg: "rgba(224,138,60,.15)", fg: "var(--caution)", name: "压力", time: "09-12", value: "中等", unit: "", caption: "" },
+  ];
+  el.innerHTML = items.map((it) => `
+    <div class="ov-card" data-key="${it.key}">
+      <div class="ov-head">
+        <div class="ov-ic" style="background:${it.bg};color:${it.fg};">${it.glyph}</div>
+        <div class="ov-name">${it.name}</div>
+        <div class="ov-time mono">${it.time}</div>
+        <div class="ov-chev">›</div>
+      </div>
+      <div class="ov-value">${it.value}${it.unit ? `<span class="unit">${it.unit}</span>` : ""}</div>
+      ${it.caption ? `<div class="ov-caption">${it.caption}</div>` : ""}
+    </div>
+  `).join("");
+  el.querySelectorAll(".ov-card").forEach((c) => {
+    c.addEventListener("click", () => {
+      const k = c.dataset.key;
+      if (k === "hr") nav("hrDetail", "home");
+      else if (k === "sleep") nav("sleepDetail", "home");
+      else if (k === "spo2") nav("spo2Detail", "home");
+      else if (k === "stress") nav("stressDetail", "home");
+    });
+  });
+}
+
+/* =====================================================================
+   十四、活动目标（可调整、可保存）
+   ===================================================================== */
+SCREENS.activityGoals = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("每日活动目标")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="stepper-row">
+          <div class="sr-label">步数目标</div>
+          <div class="stepper">
+            <button data-adj="steps" data-d="-500">−</button>
+            <div class="sr-val mono" id="val-steps"></div>
+            <button data-adj="steps" data-d="500">＋</button>
+          </div>
+        </div>
+        <div class="stepper-row">
+          <div class="sr-label">活动时长</div>
+          <div class="stepper">
+            <button data-adj="exerciseMin" data-d="-5">−</button>
+            <div class="sr-val mono" id="val-exerciseMin"></div>
+            <button data-adj="exerciseMin" data-d="5">＋</button>
+          </div>
+        </div>
+        <div class="stepper-row">
+          <div class="sr-label">活动消耗</div>
+          <div class="stepper">
+            <button data-adj="kcal" data-d="-50">−</button>
+            <div class="sr-val mono" id="val-kcal"></div>
+            <button data-adj="kcal" data-d="50">＋</button>
+          </div>
+        </div>
+        <div class="stepper-row">
+          <div class="sr-label">站立目标</div>
+          <div class="stepper">
+            <button data-adj="standHr" data-d="-1">−</button>
+            <div class="sr-val mono" id="val-standHr"></div>
+            <button data-adj="standHr" data-d="1">＋</button>
+          </div>
+        </div>
+      </div>
+      <div class="menu-card">
+        <div class="toggle-row">
+          <div><div class="tr-label">自动调整目标</div><div class="tr-sub">根据近 7 日活动情况自动建议目标</div></div>
+          <div class="toggle" id="toggle-autoAdjust"><div class="knob"></div></div>
+        </div>
+        <div class="toggle-row">
+          <div><div class="tr-label">每周活动报告</div></div>
+          <div class="toggle" id="toggle-weeklyReport"><div class="knob"></div></div>
+        </div>
+      </div>
+      <button class="save-btn" id="save-goals">保存</button>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  const fmt = { steps: (v) => `${v.toLocaleString()} 步`, exerciseMin: (v) => `${v} min`, kcal: (v) => `${v} kcal`, standHr: (v) => `${v} h` };
+  function refresh() {
+    body.querySelector("#val-steps").textContent = fmt.steps(prefs.goals.steps);
+    body.querySelector("#val-exerciseMin").textContent = fmt.exerciseMin(prefs.goals.exerciseMin);
+    body.querySelector("#val-kcal").textContent = fmt.kcal(prefs.goals.kcal);
+    body.querySelector("#val-standHr").textContent = fmt.standHr(prefs.goals.standHr);
+    body.querySelector("#toggle-autoAdjust").classList.toggle("on", prefs.goals.autoAdjust);
+    body.querySelector("#toggle-weeklyReport").classList.toggle("on", prefs.goals.weeklyReport);
+  }
+  body.querySelectorAll("[data-adj]").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const key = btn.dataset.adj, d = parseInt(btn.dataset.d, 10);
+      const min = key === "steps" ? 1000 : key === "kcal" ? 100 : key === "standHr" ? 1 : 5;
+      prefs.goals[key] = Math.max(min, prefs.goals[key] + d);
+      refresh();
+    });
+  });
+  body.querySelector("#toggle-autoAdjust").addEventListener("click", () => { prefs.goals.autoAdjust = !prefs.goals.autoAdjust; refresh(); });
+  body.querySelector("#toggle-weeklyReport").addEventListener("click", () => { prefs.goals.weeklyReport = !prefs.goals.weeklyReport; refresh(); });
+  body.querySelector("#save-goals").addEventListener("click", () => { savePrefs(); showToast("已保存"); });
+  refresh();
+};
+
+/* =====================================================================
+   十五、健康 tab 根页
+   ===================================================================== */
+SCREENS.health = function (body) {
+  body.innerHTML = `
+    <div class="as-topbar"><div class="as-avatar">周</div><div class="as-title">健康</div><div style="width:32px;"></div></div>
+    <div class="as-content">
+      <div class="as-subtle" style="margin-top:0;">健康数据</div>
+      <div id="health-list"></div>
+    </div>
+  `;
+  renderHealthOverviewList(document.getElementById("health-list"));
+  // 健康 tab 里再补一张"活动趋势"卡片，健康数据列表本身复用首页那份。
+  const list = document.getElementById("health-list");
+  const trendCard = document.createElement("div");
+  trendCard.className = "ov-card";
+  trendCard.innerHTML = `
+    <div class="ov-head">
+      <div class="ov-ic" style="background:rgba(109,109,255,.15);color:var(--grad1);">▤</div>
+      <div class="ov-name">活动趋势</div>
+      <div class="ov-chev">›</div>
+    </div>
+    <div class="ov-caption">近 7 天步数 / 活动时长变化</div>
+  `;
+  trendCard.addEventListener("click", () => nav("trendDetail", "health"));
+  list.appendChild(trendCard);
+};
+
+/* ---- 心率详情：今日 / 昨日 / 7日 / 30日 ---- */
+let hrRangeMode = "today";
+SCREENS.hrDetail = function (body) {
+  hrRangeMode = "today"; // 每次重新进入都回到"今日"
+  body.innerHTML = `
+    ${detailTopbar("心率")}
+    <div class="as-content">
+      <div class="rv-segmented" id="hr-segmented">
+        <button data-m="today" class="active">今日</button>
+        <button data-m="yesterday">昨日</button>
+        <button data-m="week">7日</button>
+        <button data-m="month">30日</button>
+      </div>
+      <div id="hr-detail-body"></div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  body.querySelectorAll("#hr-segmented button").forEach((b) => {
+    b.addEventListener("click", () => { hrRangeMode = b.dataset.m; renderHrBody(); });
+  });
+  renderHrBody();
+  function renderHrBody() {
+    body.querySelectorAll("#hr-segmented button").forEach((b) => b.classList.toggle("active", b.dataset.m === hrRangeMode));
+    const pane = body.querySelector("#hr-detail-body");
+    if (hrRangeMode === "today") {
+      pane.innerHTML = `<div class="empty-state"><b>今日暂无心率数据</b>设备尚未记录到新的心率读数</div>`;
+    } else if (hrRangeMode === "yesterday") {
+      renderHrDayChart(pane);
+    } else if (hrRangeMode === "week") {
+      renderMonthRangeView(pane, { unit: "bpm", data: HR_WEEK, minY: 40, maxY: 140, optMin: 65, optMax: 85, pctLabel: "静息区间内占比" });
+    } else {
+      renderMonthRangeView(pane, { unit: "bpm", data: HR_MONTH, minY: 40, maxY: 140, optMin: 65, optMax: 85, pctLabel: "静息区间内占比" });
+    }
+  }
+};
+
+function timeToMin(t) { const [h, m] = t.split(":").map(Number); return h * 60 + m; }
+
+function renderHrDayChart(pane) {
+  let prevRaw = -1, offset = 0;
+  const pts = HR_DATA.map((d) => {
+    const raw = timeToMin(d.t);
+    if (raw < prevRaw) offset += 1440;
+    prevRaw = raw;
+    return { ...d, min: raw + offset };
+  });
+  const validVals = pts.filter((p) => p.v != null).map((p) => p.v);
+  const dayAvg = validVals.reduce((s, v) => s + v, 0) / validVals.length;
+
+  const W = 760, H = 240, padL = 34, padR = 14, padT = 14, padB = 26;
+  const chartW = W - padL - padR, chartH = H - padT - padB;
+  const minX = 0, maxX = pts[pts.length - 1].min;
+  const minY = 40, maxY = 140;
+  const xOf = (min) => padL + (min - minX) / (maxX - minX) * chartW;
+  const yOf = (v) => padT + (1 - (v - minY) / (maxY - minY)) * chartH;
+  const bandTop = yOf(85), bandBottom = yOf(65);
+
+  let segments = [], current = [];
+  pts.forEach((p) => {
+    if (p.v == null) { if (current.length) segments.push(current); current = []; }
+    else current.push(p);
+  });
+  if (current.length) segments.push(current);
+  const pathsHtml = segments.map((seg) =>
+    `<polyline points="${seg.map((p) => `${xOf(p.min)},${yOf(p.v)}`).join(" ")}" fill="none" stroke="url(#hrGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />`
+  ).join("");
+  const dotsHtml = pts.map((p, i) => p.v != null
+    ? `<circle data-i="${i}" cx="${xOf(p.min)}" cy="${yOf(p.v)}" r="4" fill="#fff" stroke="#6d6dff" stroke-width="1.6" />`
+    : `<g data-i="${i}" transform="translate(${xOf(p.min)},${yOf(85)})"><circle r="7" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="2.5 2.5" /></g>`
+  ).join("");
+  const hourTicks = [0, 360, 720, 1080, 1440].filter((m) => m <= maxX);
+  const ticksHtml = hourTicks.map((m) => `
+    <line x1="${xOf(m)}" y1="${padT}" x2="${xOf(m)}" y2="${H - padB}" stroke="var(--line)" stroke-width="1" />
+    <text x="${xOf(m)}" y="${H - 8}" font-size="9.5" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${String(Math.floor((m % 1440) / 60)).padStart(2, "0")}:00</text>
+  `).join("");
+
+  pane.innerHTML = `
+    <div class="hr-wrap">
+      <svg class="hr-chart" viewBox="0 0 ${W} ${H}" id="hr-svg">
+        <defs><linearGradient id="hrGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#6d6dff" /><stop offset="100%" stop-color="#a869ff" /></linearGradient></defs>
+        <rect x="${padL}" y="${bandTop}" width="${chartW}" height="${bandBottom - bandTop}" fill="#31c9c9" opacity="0.08" />
+        <text x="${padL + 4}" y="${bandTop - 4}" font-size="9" fill="var(--ink-faint)" text-anchor="start" font-family="JetBrains Mono, monospace">65-85 静息参考区间</text>
+        ${ticksHtml}${pathsHtml}${dotsHtml}
+        <line id="hr-scrub" x1="0" y1="${padT}" x2="0" y2="${H - padB}" stroke="var(--ink)" stroke-width="1" opacity="0" />
+      </svg>
+      <div class="hr-tooltip" id="hr-tooltip"></div>
+      <div class="hr-legend">
+        <span><span class="dot" style="background:#31c9c9;opacity:.5;"></span>65-85 bpm 静息参考区间</span>
+        <span><span class="dot" style="border:1.6px dashed var(--muted);background:transparent;"></span>暂无读数</span>
+      </div>
+    </div>
+    <div class="disclaimer">默认情况下手环每 20-45 分钟同步一次心率读数，间隔并不固定；进入运动模式后会切换为实时记录。点击曲线上的数据点查看详情。</div>
+    <div id="hr-detail-card"></div>
+    <div class="hr-rawlog-toggle" id="hr-rawlog-toggle">高级设置 · 查看原始同步记录 ›</div>
+    <div id="hr-rawlog-panel" hidden></div>
+  `;
+
+  const rawToggle = pane.querySelector("#hr-rawlog-toggle");
+  const rawPanel = pane.querySelector("#hr-rawlog-panel");
+  rawToggle.addEventListener("click", () => {
+    const showing = !rawPanel.hidden;
+    if (showing) { rawPanel.hidden = true; rawToggle.textContent = "高级设置 · 查看原始同步记录 ›"; return; }
+    rawToggle.textContent = "高级设置 · 收起原始同步记录 ‹";
+    rawPanel.hidden = false;
+    rawPanel.innerHTML = `
+      <div class="hr-rawlog-panel">
+        <div class="title">DEVICE EVENT LOG · 最近一次同步窗口</div>
+        <table>
+          ${DEVICE_LOG.map((e) => `<tr><td class="mono">${e.t}</td><td class="ev">${e.event}</td><td class="val${/FAIL/.test(e.value) ? " fail" : ""}">${e.value}</td></tr>`).join("")}
+        </table>
+      </div>
+    `;
   });
 
-  function tryLogin() {
-    const u = norm(document.getElementById("li-user").value);
-    const p = norm(document.getElementById("li-pass").value);
-    const msg = document.getElementById("li-msg");
-    if (u === USERNAME && p === PASSWORD) {
-      mountAppShell();
-      return;
-    }
-    msg.innerHTML = `<div class="login-err">账号或密码不正确。</div>`;
+  const svg = pane.querySelector("#hr-svg");
+  const tooltip = pane.querySelector("#hr-tooltip");
+  const scrub = pane.querySelector("#hr-scrub");
+  const detailCard = pane.querySelector("#hr-detail-card");
+
+  function nearestPoint(clientX) {
+    const rect = svg.getBoundingClientRect();
+    const svgX = (clientX - rect.left) / rect.width * W;
+    let best = pts[0], bestDist = Infinity;
+    pts.forEach((p) => { const d = Math.abs(xOf(p.min) - svgX); if (d < bestDist) { bestDist = d; best = p; } });
+    return best;
   }
-  document.getElementById("li-btn").addEventListener("click", tryLogin);
-  document.getElementById("li-pass").addEventListener("keydown", (e) => { if (e.key === "Enter") tryLogin(); });
-
-  // 心率原始数据：09-13 全天到次日 00:20，采样间隔基本对应下面披露的
-  // "默认 20-45 分钟一次"，19:10-20:25 那一段是健身时段，间隔明显变密，
-  // 对应"运动模式下实时记录"——同一晚稍后 23:30-23:47 那段间隔其实也在
-  // 20 分钟以内，跟平时的默认采样节奏没有本质区别，不需要靠"进入了什么
-  // 特殊模式"来解释，玩家自己判断这段峰值说明了什么。v:null 的最后一个
-  // 点专门用来渲染成断线+空心标记，不能连成一条线，那样会让人误以为
-  // "读数骤降到 0"，而实际含义只是"没有再收到下一次同步"。
-  const HR_DATA = [
-    { t: "00:00", v: 65 }, { t: "00:45", v: 63 }, { t: "01:30", v: 62 }, { t: "02:15", v: 61 },
-    { t: "03:00", v: 62 }, { t: "03:45", v: 63 }, { t: "04:30", v: 64 }, { t: "05:15", v: 65 },
-    { t: "06:00", v: 68 }, { t: "06:40", v: 74 }, { t: "07:15", v: 80 }, { t: "08:00", v: 83 },
-    { t: "08:45", v: 78 }, { t: "09:30", v: 75 }, { t: "10:15", v: 79 }, { t: "11:00", v: 82 },
-    { t: "11:45", v: 85 }, { t: "12:30", v: 88 }, { t: "13:15", v: 80 }, { t: "14:00", v: 76 },
-    { t: "14:45", v: 74 }, { t: "15:30", v: 77 }, { t: "16:15", v: 81 }, { t: "17:00", v: 79 },
-    { t: "17:45", v: 76 }, { t: "18:30", v: 80 },
-    { t: "19:10", v: 88 }, { t: "19:25", v: 104 }, { t: "19:40", v: 117 }, { t: "19:55", v: 112 },
-    { t: "20:10", v: 96 }, { t: "20:25", v: 84 },
-    { t: "20:45", v: 75 }, { t: "21:20", v: 71 }, { t: "22:10", v: 68 }, { t: "22:55", v: 66 },
-    { t: "23:30", v: 82 }, { t: "23:47", v: 127 }, { t: "00:20", v: null },
-  ];
-
-  // "心率"标签页那张图是 App 整理过的数据——每个点标的是"这次同步在
-  // 云端确认的时间"，不是"传感器测到这个数的那一刻"。原始事件日志
-  // 才是三种时间戳分开记录的地方：测量时间（heart_rate）、写入同步
-  // 队列的时间（sync_queue pending）、真正确认送达云端的时间
-  // （sync_queue delivered）——图表上显示的"23:47"其实是 delivered
-  // 那一刻，测量本身发生得更早，中间还夹着一段蓝牙断连、什么都没有
-  // 上传的空档。00:11 那条 device_motion 单独摆在那里，不加任何解释——
-  // 是谁、为什么动了设备，日志本身不会告诉玩家。
-  const DEVICE_LOG = [
-    { t: "23:46:51", event: "wrist_detected", value: "TRUE" },
-    { t: "23:47:03", event: "heart_rate", value: "127" },
-    { t: "23:47:05", event: "sync_queue", value: "pending" },
-    { t: "23:48:11", event: "bluetooth", value: "disconnected" },
-    { t: "23:58:33", event: "bluetooth", value: "reconnected" },
-    { t: "23:58:40", event: "sync_queue", value: "delivered" },
-    { t: "00:11:42", event: "device_motion", value: "detected" },
-    { t: "00:19:58", event: "wrist_detected", value: "FALSE" },
-    { t: "00:20:02", event: "heart_rate_read", value: "FAILED" },
-  ];
-
-  const REMINDERS = [
-    { time: "07:00", label: "起床", repeat: "工作日" },
-    { time: "09:30", label: "起床", repeat: "周末" },
-    { time: "19:30", label: "健身时间", repeat: "每周三 / 周六" },
-    { time: "03-04", label: "林安生日", repeat: "每年" },
-    { time: "06-22", label: null, repeat: "每年" },
-  ];
-
-  // 案发当天（09-13）的真实行程不再当成"今天"的循环闹钟摆在活跃列表
-  // 里——现在"今天"是 09-14，这几条已经是过去时了。跟已有的 w43
-  // （"落地之后还要直接去彩排"）、p012（"下午上海品牌活动，19:40
-  // 原定飞杭州"）、c25（19:26 Bubble 广播取消杭州行程）这几条线索对
-  // 得上，只是这一版藏在"设定新闹钟"里的"过期的闹钟"列表里，需要玩家
-  // 自己点进去翻。
-  const EXPIRED_ALARMS = [
-    { date: "09-13", time: "08:20", label: "机场 · 抵达" },
-    { date: "09-13", time: "09:50", label: "彩排" },
-    { date: "09-13", time: "14:00", label: "上海品牌活动" },
-    { date: "09-13", time: "19:40", label: "飞杭州（已取消）" },
-  ];
-
-  const SLEEP_STAGES = {
-    color: { deep: "#4f4fe0", light: "#8f8fff", rem: "#31c9c9", awake: "#e7e9f3" },
-    name: { deep: "深睡", light: "浅睡", rem: "REM", awake: "清醒" },
-    // 一晚典型的睡眠结构：入睡先浅睡，深睡集中在前半夜，REM 随夜间推移
-    // 逐渐变多，中间夹杂短暂清醒——分钟数只是用来算色块宽度比例。
-    normal: [
-      { stage: "light", min: 22 }, { stage: "deep", min: 58 }, { stage: "light", min: 20 },
-      { stage: "rem", min: 24 }, { stage: "light", min: 16 }, { stage: "deep", min: 42 },
-      { stage: "awake", min: 6 }, { stage: "light", min: 18 }, { stage: "rem", min: 32 },
-      { stage: "light", min: 24 }, { stage: "rem", min: 28 }, { stage: "awake", min: 10 },
-    ],
-  };
-
-  // =====================================================================
-  // 登录后的 App Shell —— 完全独立于官网营销页。renderHrTab()/renderSleepTab()/
-  // renderReminderTab() 三个函数（下面紧接着定义，内容未改动）原样复用，
-  // 只是现在被塞进新的详情页容器里，而不是旧的 .dash 标签页。
-  // =====================================================================
-
-  // ---- 新增的三类氛围数据（血氧/活动量/步数），跟案情无关，纯粹让
-  // 登录后的界面看起来是一个真正在用的健康 App，而不是只有心率+睡眠
-  // 两个功能的极简后台。数值全部虚构，不对应任何真实产品。
-  const SPO2_MONTH = [
-    { week: "09-01", v: 97 }, { week: "09-08", v: 96 }, { week: "09-15", v: 98 }, { week: "09-22", v: 94 },
-  ];
-  // 活动量按真实日期建档，不再是笼统的"今天/本周"——目标值（450千卡/
-  // 30分钟/12小时）是运动能量圆环这类产品常见的默认目标（30分钟运动、
-  // 12小时站立本身就是这类设备最通行的默认值，450千卡是中等强度用户的
-  // 常见个人目标区间，不是随手编的数字），7 天全部围绕这套目标算。
-  // 09-08 到 09-12 是平常强度的日常；09-13 是案发当天，跟 REMINDERS
-  // 里那几条真实行程对应（早班机→彩排→下午品牌活动），活动量明显偏高，
-  // 但站立小时没有顶满 12，因为中间夹着航班/场地之间的乘车时间；
-  // 09-14 是案发次日——人已经不在了，设备上没有任何新的佩戴/活动数据
-  // 写入，如实显示成全 0，不是漏填。
-  const ACTIVITY_BY_DATE = {
-    "09-08": { move: 268, moveGoal: 450, exercise: 18, exerciseGoal: 30, stand: 8, standGoal: 12, steps: 5210, stepsGoal: 8000 },
-    "09-09": { move: 312, moveGoal: 450, exercise: 22, exerciseGoal: 30, stand: 9, standGoal: 12, steps: 6480, stepsGoal: 8000 },
-    "09-10": { move: 287, moveGoal: 450, exercise: 20, exerciseGoal: 30, stand: 8, standGoal: 12, steps: 5890, stepsGoal: 8000 },
-    "09-11": { move: 341, moveGoal: 450, exercise: 24, exerciseGoal: 30, stand: 9, standGoal: 12, steps: 6720, stepsGoal: 8000 },
-    "09-12": { move: 296, moveGoal: 450, exercise: 21, exerciseGoal: 30, stand: 8, standGoal: 12, steps: 6100, stepsGoal: 8000 },
-    "09-13": { move: 428, moveGoal: 450, exercise: 31, exerciseGoal: 30, stand: 11, standGoal: 12, steps: 11840, stepsGoal: 8000 },
-    "09-14": { move: 0, moveGoal: 450, exercise: 0, exerciseGoal: 30, stand: 0, standGoal: 12, steps: 0, stepsGoal: 8000, noData: true },
-  };
-  const ACTIVITY_DATE_ORDER = Object.keys(ACTIVITY_BY_DATE);
-  // 心率的"月"视图按周取点——09-08 这一周正好覆盖案发夜（09-13），
-  // 这里的 127 跟"心率"标签页当日图表里的峰值是同一件事，只是换了个
-  // 更粗的时间粒度看，不是新增的独立证据。
-  const HR_MONTH = [
-    { week: "09-01", v: 72 }, { week: "09-08", v: 127 }, { week: "09-15", v: 73 }, { week: "09-22", v: 71 },
-  ];
-  // 睡眠"月"视图：09-08 这一周的周平均时长被案发夜那次"未检测到有效
-  // 睡眠"拉低了，同样只是已知事实的另一种呈现方式。
-  const SLEEP_MONTH = [
-    { week: "09-01", v: 7.2 }, { week: "09-08", v: 5.8 }, { week: "09-15", v: 7.6 }, { week: "09-22", v: 7.4 },
-  ];
-
-  const ICON_CLOSE = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>`;
-
-  // ---- 通用图表组件：散点图（带最佳区间色带）和柱状图，月视图/血氧/
-  // 活动量/区间变化全部复用这两个函数，只换数据和配色。
-  function svgScatter(points, { minY, maxY, optMin, optMax, w = 340, h = 170 }) {
-    const padL = 26, padR = 10, padT = 10, padB = 22;
-    const chartW = w - padL - padR, chartH = h - padT - padB;
-    const xOf = (i) => points.length > 1 ? padL + (i / (points.length - 1)) * chartW : padL + chartW / 2;
-    const yOf = (v) => padT + (1 - (v - minY) / (maxY - minY)) * chartH;
-    const bandTop = yOf(optMax), bandBottom = yOf(optMin);
-    const dots = points.map((p, i) => {
-      const out = p.v < optMin || p.v > optMax;
-      const cy = yOf(Math.min(Math.max(p.v, minY), maxY));
-      return `<circle cx="${xOf(i)}" cy="${cy}" r="4.5" fill="${out ? "#7c6fee" : "#2fae6b"}" stroke="#fff" stroke-width="1.5" />`;
-    }).join("");
-    const ticks = points.map((p, i) => `<text x="${xOf(i)}" y="${h - 6}" font-size="9" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${p.week || p.d}</text>`).join("");
-    return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block;">
-      <rect x="${padL}" y="${bandTop}" width="${chartW}" height="${Math.max(bandBottom - bandTop, 1)}" fill="#2fae6b" opacity="0.12" rx="3" />
-      ${ticks}${dots}
-    </svg>`;
+  function showAt(clientX) {
+    const p = nearestPoint(clientX);
+    const rect = svg.getBoundingClientRect();
+    const px = xOf(p.min) / W * rect.width;
+    scrub.setAttribute("x1", xOf(p.min)); scrub.setAttribute("x2", xOf(p.min)); scrub.setAttribute("opacity", "1");
+    tooltip.style.left = px + "px";
+    tooltip.style.top = (yOf(p.v ?? 85) / H * rect.height) + "px";
+    const label = p.t === "00:20" && pts[pts.length - 1] === p ? "09-14 " + p.t : "09-13 " + p.t;
+    tooltip.innerHTML = p.v != null ? `<b>${p.v}</b> bpm<br/>${label}` : `<b>--</b><br/>${label}`;
+    tooltip.classList.add("show");
   }
-  function svgBars(points, { max, w = 340, h = 140, color = "#6d6dff", highlightIndex = -1, highlightColor } = {}) {
-    const padL = 10, padR = 10, padT = 10, padB = 20;
-    const chartW = w - padL - padR, chartH = h - padT - padB;
-    const bw = (chartW / points.length) * 0.48;
-    const bars = points.map((p, i) => {
-      const cx = padL + ((i + 0.5) / points.length) * chartW;
-      const bh = Math.max((p.v / max) * chartH, 2);
-      const fill = i === highlightIndex ? (highlightColor || color) : color;
-      const op = highlightIndex >= 0 && i !== highlightIndex ? 0.35 : 1;
-      return `<rect x="${cx - bw / 2}" y="${padT + chartH - bh}" width="${bw}" height="${bh}" rx="3" fill="${fill}" opacity="${op}" />`;
-    }).join("");
-    const ticks = points.map((p, i) => {
-      const cx = padL + ((i + 0.5) / points.length) * chartW;
-      return `<text x="${cx}" y="${h - 4}" font-size="9" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${p.week || p.d}</text>`;
-    }).join("");
-    return `<svg viewBox="0 0 ${w} ${h}" style="width:100%;height:auto;display:block;">${bars}${ticks}</svg>`;
-  }
-  function ringSvg(value, goal, color, size = 64, strokeW = 7) {
-    const r = size / 2 - strokeW / 2;
-    const c = 2 * Math.PI * r;
-    const dash = c * Math.min(value / goal, 1);
-    return `<svg viewBox="0 0 ${size} ${size}">
-      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="var(--surface-2)" stroke-width="${strokeW}" />
-      <circle cx="${size / 2}" cy="${size / 2}" r="${r}" fill="none" stroke="${color}" stroke-width="${strokeW}" stroke-linecap="round" stroke-dasharray="${dash} ${c}" />
-    </svg>`;
-  }
-
-  function renderActivityRings(el, a) {
-    const rings = [
-      { label: "活动能量", v: a.move, goal: a.moveGoal, color: "#ff375f", unit: "千卡" },
-      { label: "运动时间", v: a.exercise, goal: a.exerciseGoal, color: "#92e82a", unit: "分钟" },
-      { label: "站立小时", v: a.stand, goal: a.standGoal, color: "#00c2d4", unit: "小时" },
-    ];
-    el.innerHTML = `
-      <div style="display:flex;gap:12px;">
-        ${rings.map((r) => `<div class="ring-item">${ringSvg(r.v, r.goal, r.color)}<div class="rv">${Math.round((r.v / r.goal) * 100)}%</div></div>`).join("")}
-      </div>
-      <div class="rings-legend">
-        ${rings.map((r) => `<div class="rl-row"><span><span class="rl-dot" style="background:${r.color};"></span><span class="rl-name">${r.label}</span></span><span class="rl-val mono">${r.v}/${r.goal} ${r.unit}</span></div>`).join("")}
-      </div>
-    `;
-  }
-
-  // ---- 月/周通用区间视图：血氧详情页、心率"月"子标签都用这个，只是
-  // 传进来的数据集和最佳区间不一样。
-  function renderMonthRangeView(pane, { unit, data, minY, maxY, optMin, optMax, pctLabel = "最佳范围测量占比" }) {
-    const inRange = data.filter((p) => p.v >= optMin && p.v <= optMax).length;
-    const pct = Math.round((inRange / data.length) * 100);
-    const mid = (optMin + optMax) / 2;
-    const devMax = Math.max(...data.map((p) => Math.abs(p.v - mid)), 1) * 1.15;
-    pane.innerHTML = `
-      <div class="rv-datenav"><span class="rv-arrow">‹</span><span class="rv-label">2026年9月</span><span class="rv-arrow">›</span></div>
-      <div class="rv-stat-label">${pctLabel}</div>
-      <div class="rv-stat-value">${pct}%</div>
-      <div class="rv-stat-legend"><span class="dot" style="background:#2fae6b;"></span>达标测量 · 单位 ${unit}</div>
-      <div class="rv-chartbox">${svgScatter(data, { minY, maxY, optMin, optMax })}</div>
-      <div class="rv-indepth-title">深度结果</div>
-      <div class="rv-indepth-card">
-        <div class="rv-indepth-head"><h4>区间变化</h4><div class="qm">?</div></div>
-        <div class="rv-indepth-sub">超出最佳范围</div>
-        <div class="rv-indepth-val">${data.length - inRange} / ${data.length} 周</div>
-        ${svgBars(data.map((p) => ({ ...p, v: Math.abs(p.v - mid) })), { max: devMax, color: "#7c6fee" })}
-      </div>
-    `;
-  }
-
-  // ---- 顶层导航状态：底部导航只管首页/心率/睡眠/设备四个目的地，
-  // 血氧和活动量只能从首页概览卡片点进去，不占底部导航位——跟参考图
-  // 里"All Health Data"列表比标签页更长是同一个思路。
-  let asActiveTab = "home";
-  let hrRangeMode = "day";
-  let sleepRangeMode = "day";
-
-  function mountAppShell() {
-    document.getElementById("login-box").hidden = true;
-    let shell = document.getElementById("appshell");
-    if (!shell) {
-      shell = document.createElement("div");
-      shell.className = "appshell";
-      shell.id = "appshell";
-      document.body.appendChild(shell);
-    }
-    shell.hidden = false;
-    asActiveTab = "home";
-    renderAppShell();
-    window.scrollTo(0, 0);
-  }
-
-  function exitAppShell() {
-    const shell = document.getElementById("appshell");
-    if (shell) shell.hidden = true;
-    document.getElementById("login-box").hidden = false;
-    document.getElementById("li-user").value = "";
-    document.getElementById("li-pass").value = "";
-  }
-
-  function renderAppShell() {
-    const shell = document.getElementById("appshell");
-    shell.innerHTML = `
-      <div id="as-body"></div>
-      <div class="as-bottomnav" id="as-bottomnav">
-        <button data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/></svg><span>首页</span></button>
-        <button data-tab="activity"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1"/></svg><span>活动</span></button>
-        <button data-tab="hr"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg><span>心率</span></button>
-        <button data-tab="sleep"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg><span>睡眠</span></button>
-        <button data-tab="device"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg><span>设备</span></button>
-      </div>
-    `;
-    shell.querySelectorAll("#as-bottomnav button").forEach((b) => {
-      b.addEventListener("click", () => { asActiveTab = b.dataset.tab; renderAsBody(); });
-    });
-    renderAsBody();
-  }
-
-  function renderAsBody() {
-    document.querySelectorAll("#as-bottomnav button").forEach((b) => b.classList.toggle("active", b.dataset.tab === asActiveTab));
-    const body = document.getElementById("as-body");
-    if (asActiveTab === "home") renderAsHome(body);
-    else if (asActiveTab === "hr") renderAsHrDetail(body);
-    else if (asActiveTab === "sleep") renderAsSleepDetail(body);
-    else if (asActiveTab === "spo2") renderAsSpo2Detail(body);
-    else if (asActiveTab === "activity") renderAsActivityDetail(body);
-    else renderAsDeviceTab(body);
-    window.scrollTo(0, 0);
-  }
-
-  function goHome() { asActiveTab = "home"; renderAsBody(); }
-
-  function renderAsHome(body) {
-    body.innerHTML = `
-      <div class="as-topbar">
-        <div class="as-avatar">周</div>
-        <div class="as-title">全部健康数据</div>
-        <div class="as-icon-btn" id="as-exit" title="退出登录">${ICON_CLOSE}</div>
-      </div>
-      <div class="as-content">
-        <div class="rings-card">
-          <div class="as-subtle" style="margin:0 0 12px;">今日活动 · 09-14</div>
-          <div class="rings-row" id="rings-row"></div>
-          <div class="disclaimer" style="margin-top:14px;">设备今天（09-14）没有记录到任何新的活动数据。</div>
+  function hide() { tooltip.classList.remove("show"); scrub.setAttribute("opacity", "0"); }
+  function pinDetail(p) {
+    const label = p.t === "00:20" && pts[pts.length - 1] === p ? "09-14" : "09-13";
+    if (p.v == null) {
+      detailCard.innerHTML = `
+        <div class="hr-detail-card">
+          <div class="hd-val">--</div>
+          <div class="hd-sub">${label} ${p.t} · 暂无有效读数</div>
+          <div class="hd-reasons">
+            当前时间段未获取到有效心率数据，可能原因：<br/>
+            · 设备离腕<br/>
+            · 佩戴接触不稳定<br/>
+            · 数据尚未同步<br/>
+            · 设备连接中断<br/>
+            · 设备电量不足
+          </div>
+          <div class="hd-concepts">
+            <div class="row"><span>测量时间 Measurement</span><b>00:20</b></div>
+            <div class="row"><span>同步时间 Sync</span><b>23:58</b></div>
+            <div class="row"><span>连接时间 Connection</span><b>00:24</b></div>
+            <div class="row"><span>最后有效读数 Last Valid</span><b>23:47 · 127 bpm</b></div>
+          </div>
         </div>
-        <div class="as-subtle">近 7 天</div>
-        <div id="ov-list"></div>
-      </div>
-    `;
-    document.getElementById("as-exit").addEventListener("click", exitAppShell);
-    renderActivityRings(document.getElementById("rings-row"), ACTIVITY_BY_DATE["09-14"]);
-    renderOverviewList(document.getElementById("ov-list"));
-  }
-
-  function renderOverviewList(el) {
-    const todayAct = ACTIVITY_BY_DATE["09-14"];
-    const items = [
-      { key: "activity", glyph: "⚡", bg: "rgba(255,92,114,.15)", fg: "#ff5c72", name: "活动量", time: "今天", value: todayAct.move, unit: "千卡", pct: todayAct.moveGoal ? todayAct.move / todayAct.moveGoal : 0, bar: "#ff5c72", caption: "暂无数据 · 点击查看历史", ok: false },
-      { key: "hr", glyph: "♥", bg: "var(--accent-soft)", fg: "var(--accent)", name: "心率", time: "09-13 23:47", value: "127", unit: "bpm", pct: (127 - 40) / (140 - 40), bar: "linear-gradient(90deg,#6d6dff,#a869ff)", caption: "高于静息参考区间", ok: false },
-      { key: "sleep", glyph: "☾", bg: "rgba(49,201,201,.15)", fg: "#1fa3a3", name: "睡眠", time: "09-12 07:10", value: "5.9", unit: "小时", pct: 0.6, bar: "#31c9c9", caption: "低于近期平均", ok: false },
-      { key: "spo2", glyph: "●", bg: "rgba(47,174,107,.15)", fg: "#2fae6b", name: "血氧饱和度", time: "今天 08:14", value: "97", unit: "%", pct: 0.94, bar: "#2fae6b", caption: "正常范围", ok: true },
-      { key: "device", glyph: "⏰", bg: "var(--surface-2)", fg: "var(--ink-faint)", name: "闹钟 / 提醒", time: "", value: `${REMINDERS.length}`, unit: "项", pct: 1, bar: "var(--ink-faint)", caption: "", ok: false },
-    ];
-    el.innerHTML = items.map((it) => `
-      <div class="ov-card" data-key="${it.key}">
-        <div class="ov-head">
-          <div class="ov-ic" style="background:${it.bg};color:${it.fg};">${it.glyph}</div>
-          <div class="ov-name">${it.name}</div>
-          <div class="ov-time mono">${it.time}</div>
-          <div class="ov-chev">›</div>
+      `;
+    } else {
+      const rel = p.v > dayAvg + 3 ? "高于当日平均" : p.v < dayAvg - 3 ? "低于当日平均" : "接近当日平均";
+      detailCard.innerHTML = `
+        <div class="hr-detail-card">
+          <div class="hd-val">${p.v} <span style="font-size:13px;font-weight:600;color:var(--ink-faint);">bpm</span></div>
+          <div class="hd-sub">${label} ${p.t} · ${rel}</div>
         </div>
-        <div class="ov-value">${it.value}<span class="unit">${it.unit}</span></div>
-        <div class="mini-bar"><div class="fill" style="width:${Math.min(it.pct, 1) * 100}%;background:${it.bar};"></div><div class="marker" style="left:${Math.min(it.pct, 1) * 100}%;"></div></div>
-        ${it.caption ? `<div class="ov-caption"><span class="${it.ok ? "ok" : ""}">${it.ok ? "✓ " : ""}${it.caption}</span></div>` : ""}
-      </div>
-    `).join("");
-    el.querySelectorAll(".ov-card").forEach((c) => {
-      c.addEventListener("click", () => { asActiveTab = c.dataset.key; renderAsBody(); });
-    });
-  }
-
-  function renderAsHrDetail(body) {
-    body.innerHTML = `
-      <div class="as-topbar as-detail">
-        <div class="as-back" id="hr-back">‹</div>
-        <div class="as-title">心率</div>
-        <div style="width:32px;"></div>
-      </div>
-      <div class="as-content">
-        <div class="rv-segmented" id="hr-segmented">
-          <button data-m="day" class="active">当日</button>
-          <button data-m="month">月</button>
-        </div>
-        <div id="hr-detail-body"></div>
-      </div>
-    `;
-    document.getElementById("hr-back").addEventListener("click", goHome);
-    document.querySelectorAll("#hr-segmented button").forEach((b) => {
-      b.addEventListener("click", () => { hrRangeMode = b.dataset.m; renderHrDetailBody(); });
-    });
-    renderHrDetailBody();
-    function renderHrDetailBody() {
-      document.querySelectorAll("#hr-segmented button").forEach((b) => b.classList.toggle("active", b.dataset.m === hrRangeMode));
-      const pane = document.getElementById("hr-detail-body");
-      if (hrRangeMode === "day") renderHrTab(pane);
-      else renderMonthRangeView(pane, { unit: "bpm", data: HR_MONTH, minY: 40, maxY: 140, optMin: 65, optMax: 85 });
-    }
-  }
-
-  function renderAsSleepDetail(body) {
-    body.innerHTML = `
-      <div class="as-topbar as-detail">
-        <div class="as-back" id="sleep-back">‹</div>
-        <div class="as-title">睡眠</div>
-        <div style="width:32px;"></div>
-      </div>
-      <div class="as-content">
-        <div class="rv-segmented" id="sleep-segmented">
-          <button data-m="day" class="active">按晚</button>
-          <button data-m="month">月</button>
-        </div>
-        <div id="sleep-detail-body"></div>
-      </div>
-    `;
-    document.getElementById("sleep-back").addEventListener("click", goHome);
-    document.querySelectorAll("#sleep-segmented button").forEach((b) => {
-      b.addEventListener("click", () => { sleepRangeMode = b.dataset.m; renderSleepDetailBody(); });
-    });
-    renderSleepDetailBody();
-    function renderSleepDetailBody() {
-      document.querySelectorAll("#sleep-segmented button").forEach((b) => b.classList.toggle("active", b.dataset.m === sleepRangeMode));
-      const pane = document.getElementById("sleep-detail-body");
-      if (sleepRangeMode === "day") { renderSleepTab(pane); return; }
-      pane.innerHTML = `
-        <div class="rv-datenav"><span class="rv-arrow">‹</span><span class="rv-label">2026年9月</span><span class="rv-arrow">›</span></div>
-        <div class="rv-stat-label">周平均睡眠时长</div>
-        <div class="rv-stat-value">${(SLEEP_MONTH.reduce((s, p) => s + p.v, 0) / SLEEP_MONTH.length).toFixed(1)}<span style="font-size:16px;">h</span></div>
-        <div class="rv-chartbox">${svgBars(SLEEP_MONTH, { max: 9, color: "#8f8fff" })}</div>
-        <div class="disclaimer">09-08 这一周的时长明显偏低——09-13 那晚设备同步中断于 00:20，没能生成完整的睡眠报告（详见"按晚"标签页），拉低了当周平均值。</div>
       `;
     }
   }
+  let dragging = false;
+  svg.addEventListener("pointerdown", (e) => { dragging = true; showAt(e.clientX); });
+  svg.addEventListener("pointermove", (e) => { if (dragging) showAt(e.clientX); });
+  window.addEventListener("pointerup", () => { dragging = false; });
+  svg.addEventListener("mousemove", (e) => showAt(e.clientX));
+  svg.addEventListener("mouseleave", () => { if (!dragging) hide(); });
+  svg.addEventListener("click", (e) => { const p = nearestPoint(e.clientX); pinDetail(p); });
+}
 
-  function renderAsSpo2Detail(body) {
-    body.innerHTML = `
-      <div class="as-topbar as-detail">
-        <div class="as-back" id="spo2-back">‹</div>
-        <div class="as-title">血氧饱和度</div>
-        <div style="width:32px;"></div>
+/* ---- 睡眠详情：本周历史列表 + 睡眠目标 ---- */
+SCREENS.sleepDetail = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("睡眠")}
+    <div class="as-content">
+      <div class="as-subtle" style="margin-top:0;">本周睡眠</div>
+      <div class="menu-card" id="sleep-hist-list"></div>
+      <div class="ov-card" id="sleep-goal-card" style="cursor:pointer;">
+        <div class="ov-head"><div class="ov-name">睡眠目标</div><div class="ov-chev">›</div></div>
+        <div class="ov-caption">目标 ${prefs.sleepGoals.hours}h · ${prefs.sleepGoals.bedtime} – ${prefs.sleepGoals.waketime}</div>
       </div>
-      <div class="as-content" id="spo2-body"></div>
-    `;
-    document.getElementById("spo2-back").addEventListener("click", goHome);
-    renderMonthRangeView(document.getElementById("spo2-body"), { unit: "%", data: SPO2_MONTH, minY: 88, maxY: 100, optMin: 95, optMax: 100 });
-  }
+      <div id="sleep-day-detail"></div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  document.getElementById("sleep-goal-card").addEventListener("click", () => nav("sleepGoals", "sleepDetail"));
+  const list = document.getElementById("sleep-hist-list");
+  list.innerHTML = SLEEP_DATE_ORDER.map((d) => {
+    const s = SLEEP_BY_DATE[d];
+    const val = s.noData ? `<span class="sh-val muted">无法生成完整报告</span>` : `<span class="sh-val">${Math.floor(s.totalMin / 60)}h${String(s.totalMin % 60).padStart(2, "0")}</span>`;
+    return `<div class="sleep-hist-row" data-d="${d}"><span class="sh-date">${d}</span>${val}</div>`;
+  }).join("");
+  list.querySelectorAll(".sleep-hist-row").forEach((row) => {
+    row.addEventListener("click", () => renderSleepDayDetail(row.dataset.d));
+  });
+  renderSleepDayDetail("09-12");
 
-  // 每次点开"活动"页都从最后一天（09-14，案发次日）开始——这天设备上
-  // 没有任何新数据，如实显示成 0，玩家需要自己点‹往前翻一天才能看到
-  // 09-13 那个行程很满的案发当天。索引默认停在数组最后一个（09-14）。
-  let activityDateIdx = ACTIVITY_DATE_ORDER.length - 1;
-
-  function renderAsActivityDetail(body) {
-    activityDateIdx = ACTIVITY_DATE_ORDER.length - 1; // 每次重新进入这一页都回到 09-14
-    body.innerHTML = `
-      <div class="as-topbar as-detail">
-        <div class="as-back" id="act-back">‹</div>
-        <div class="as-title">活动量</div>
-        <div style="width:32px;"></div>
-      </div>
-      <div class="as-content">
-        <div class="rv-datenav">
-          <span class="rv-arrow" id="act-prev" style="cursor:pointer;">‹</span>
-          <span class="rv-label" id="act-datelabel"></span>
-          <span class="rv-arrow" id="act-next" style="cursor:pointer;">›</span>
+  function renderSleepDayDetail(d) {
+    const s = SLEEP_BY_DATE[d];
+    const el = document.getElementById("sleep-day-detail");
+    if (s.noData) {
+      el.innerHTML = `
+        <div class="as-subtle">${d} 夜</div>
+        <div class="empty-state">
+          <b>无法生成完整睡眠报告</b>
+          有效佩戴数据不足，未检测到完整睡眠周期
         </div>
-        <div id="act-day-body"></div>
-        <div class="as-subtle">本周消耗（千卡）</div>
-        <div class="rv-chartbox" id="act-week-chart"></div>
-      </div>
-    `;
-    document.getElementById("act-back").addEventListener("click", goHome);
-    document.getElementById("act-prev").addEventListener("click", () => {
-      if (activityDateIdx > 0) { activityDateIdx -= 1; renderActivityDay(); }
-    });
-    document.getElementById("act-next").addEventListener("click", () => {
-      if (activityDateIdx < ACTIVITY_DATE_ORDER.length - 1) { activityDateIdx += 1; renderActivityDay(); }
-    });
-    renderActivityDay();
-
-    function renderActivityDay() {
-      const date = ACTIVITY_DATE_ORDER[activityDateIdx];
-      const a = ACTIVITY_BY_DATE[date];
-      document.getElementById("act-datelabel").textContent = "2026年" + date.replace("-", "月") + "日";
-      document.getElementById("act-prev").style.opacity = activityDateIdx === 0 ? 0.3 : 1;
-      document.getElementById("act-next").style.opacity = activityDateIdx === ACTIVITY_DATE_ORDER.length - 1 ? 0.3 : 1;
-
-      const dayBody = document.getElementById("act-day-body");
-      if (a.noData) {
-        dayBody.innerHTML = `
-          <div class="sleep-empty" style="margin-bottom:20px;">
-            <b>暂无活动数据</b>
-            设备当天没有记录到任何新的佩戴/活动数据
-          </div>
-        `;
-      } else {
-        dayBody.innerHTML = `
-          <div class="rings-card" style="margin-bottom:20px;"><div class="rings-row" id="act-rings"></div></div>
-          <div class="as-subtle">当日步数</div>
-          <div class="rv-stat-value">${a.steps.toLocaleString()}<span style="font-size:14px;"> 步</span></div>
-          <div class="mini-bar" style="margin-bottom:8px;"><div class="fill" style="width:${Math.min(a.steps / a.stepsGoal, 1) * 100}%;background:#2fae6b;"></div></div>
-          <div class="disclaimer" style="margin-bottom:20px;">目标 ${a.stepsGoal.toLocaleString()} 步</div>
-        `;
-        renderActivityRings(document.getElementById("act-rings"), a);
-      }
-
-      document.getElementById("act-week-chart").innerHTML = svgBars(
-        ACTIVITY_DATE_ORDER.map((d) => ({ d, v: Math.max(ACTIVITY_BY_DATE[d].move, 3) })),
-        { max: 500, color: "#ff5c72", highlightIndex: activityDateIdx, highlightColor: "#a869ff" }
-      );
+        <div class="disclaimer">生成睡眠报告需要至少 3 小时的连续有效佩戴数据。</div>
+      `;
+      return;
     }
-  }
-
-  function renderAsDeviceTab(body) {
-    body.innerHTML = `
-      <div class="as-topbar">
-        <div class="as-avatar">周</div>
-        <div class="as-title">设备</div>
-        <div class="as-icon-btn" id="as-exit2" title="退出登录">${ICON_CLOSE}</div>
-      </div>
-      <div class="as-content">
-        <div class="as-subtle" style="margin-top:0;">设备信息</div>
+    if (!s.stages) {
+      el.innerHTML = `
+        <div class="as-subtle">${d} 夜</div>
         <div class="ov-card" style="cursor:default;">
-          <div class="ov-name" style="margin-bottom:4px;">极光手环三代</div>
-          <div class="ov-time mono">设备编号 AF3-771092</div>
-          <div class="ov-time mono">username：${USERNAME}</div>
+          <div style="font-size:11.5px;color:var(--ink-faint);margin-bottom:8px;">${s.window}</div>
+          <div class="rv-stat-value">${Math.floor(s.totalMin / 60)}h${String(s.totalMin % 60).padStart(2, "0")}</div>
         </div>
-        <div class="as-subtle">闹钟 / 提醒</div>
-        <div id="device-reminders"></div>
-      </div>
-    `;
-    document.getElementById("as-exit2").addEventListener("click", exitAppShell);
-    renderReminderTab(document.getElementById("device-reminders"));
-  }
-
-  function renderReminderTab(pane) {
-    pane.innerHTML = `
-      <div class="synclog">
-        ${REMINDERS.map((r) => `
-          <div class="reminder-row">
-            <span class="rtime mono">${r.time}</span>
-            <span class="rlabel${r.label ? "" : " unnamed"}">${r.label || "（未命名）"}</span>
-            <span class="rrepeat">${r.repeat}</span>
-          </div>
-        `).join("")}
-      </div>
-      <div class="new-alarm-btn" id="new-alarm-btn"><span class="plus">+</span> 设定新闹钟</div>
-      <div id="expired-panel" hidden>
-        <div class="as-subtle" style="margin-top:18px;">过期的闹钟</div>
-        <div class="synclog">
-          ${EXPIRED_ALARMS.map((a, i) => `
-            <div class="reminder-row expired-row" data-i="${i}">
-              <span class="expired-check" id="exp-check-${i}"></span>
-              <span class="rtime mono">${a.date} ${a.time}</span>
-              <span class="rlabel">${a.label}</span>
-            </div>
-          `).join("")}
-        </div>
-      </div>
-      <div class="disclaimer">提醒事项与设备本地时钟同步，删除或修改闹钟不会同步到云端历史记录。</div>
-    `;
-    const btn = pane.querySelector("#new-alarm-btn");
-    const panel = pane.querySelector("#expired-panel");
-    btn.addEventListener("click", () => {
-      panel.hidden = !panel.hidden;
-      btn.innerHTML = panel.hidden ? `<span class="plus">+</span> 设定新闹钟` : `<span class="plus">−</span> 收起`;
-    });
-    pane.querySelectorAll(".expired-row").forEach((row) => {
-      row.addEventListener("click", () => row.classList.toggle("selected"));
-    });
-  }
-
-  function timeToMin(t) {
-    const [h, m] = t.split(":").map(Number);
-    return h * 60 + m;
-  }
-
-  function renderHrTab(pane) {
-    let prevRaw = -1, offset = 0;
-    const pts = HR_DATA.map((d) => {
-      const raw = timeToMin(d.t);
-      if (raw < prevRaw) offset += 1440;
-      prevRaw = raw;
-      return { ...d, min: raw + offset };
-    });
-
-    const W = 760, H = 240, padL = 34, padR = 14, padT = 14, padB = 26;
-    const chartW = W - padL - padR, chartH = H - padT - padB;
-    const minX = 0, maxX = pts[pts.length - 1].min;
-    const minY = 40, maxY = 140;
-    const xOf = (min) => padL + (min - minX) / (maxX - minX) * chartW;
-    const yOf = (v) => padT + (1 - (v - minY) / (maxY - minY)) * chartH;
-
-    // 65-85 的正常参考区间，画成一条浅色带，方便玩家自己对比案发夜的
-    // 波峰有多离谱——不写"这就是异常"，只画出基准线。
-    const bandTop = yOf(85), bandBottom = yOf(65);
-
-    // v 为 null 的点不连线，用一个空心圆+断线表示"没有再收到读数"，
-    // 而不是"心率归零"。
-    let segments = [];
-    let current = [];
-    pts.forEach((p) => {
-      if (p.v == null) {
-        if (current.length) segments.push(current);
-        current = [];
-      } else {
-        current.push(p);
-      }
-    });
-    if (current.length) segments.push(current);
-
-    const pathsHtml = segments.map((seg) =>
-      `<polyline points="${seg.map((p) => `${xOf(p.min)},${yOf(p.v)}`).join(" ")}" fill="none" stroke="url(#hrGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />`
-    ).join("");
-
-    const dotsHtml = pts.map((p) => p.v != null
-      ? `<circle cx="${xOf(p.min)}" cy="${yOf(p.v)}" r="2.6" fill="#fff" stroke="#6d6dff" stroke-width="1.6" />`
-      : `<g transform="translate(${xOf(p.min)},${yOf(85)})"><circle r="6" fill="none" stroke="var(--warn)" stroke-width="1.6" stroke-dasharray="2.5 2.5" /></g>`
-    ).join("");
-
-    const hourTicks = [0, 360, 720, 1080, 1440].filter((m) => m <= maxX);
-    const ticksHtml = hourTicks.map((m) => `
-      <line x1="${xOf(m)}" y1="${padT}" x2="${xOf(m)}" y2="${H - padB}" stroke="var(--line)" stroke-width="1" />
-      <text x="${xOf(m)}" y="${H - 8}" font-size="9.5" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${String(Math.floor((m % 1440) / 60)).padStart(2, "0")}:00</text>
-    `).join("");
-
-    pane.innerHTML = `
-      <div class="hr-wrap">
-        <svg class="hr-chart" viewBox="0 0 ${W} ${H}" id="hr-svg">
-          <defs>
-            <linearGradient id="hrGrad" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stop-color="#6d6dff" /><stop offset="100%" stop-color="#a869ff" />
-            </linearGradient>
-          </defs>
-          <rect x="${padL}" y="${bandTop}" width="${chartW}" height="${bandBottom - bandTop}" fill="#31c9c9" opacity="0.08" />
-          <text x="${W - padR}" y="${bandTop - 4}" font-size="9" fill="var(--ink-faint)" text-anchor="end" font-family="JetBrains Mono, monospace">65-85 静息参考区间</text>
-          ${ticksHtml}
-          ${pathsHtml}
-          ${dotsHtml}
-          <line id="hr-scrub" x1="0" y1="${padT}" x2="0" y2="${H - padB}" stroke="var(--ink)" stroke-width="1" opacity="0" />
-        </svg>
-        <div class="hr-tooltip" id="hr-tooltip"></div>
-        <div class="hr-legend">
-          <span><span class="dot" style="background:#31c9c9;opacity:.5;"></span>65-85 bpm 静息参考区间</span>
-          <span><span class="dot" style="border:1.6px dashed var(--warn);background:transparent;"></span>未收到读数（设备离线/未佩戴/接触不良等）</span>
-        </div>
-      </div>
-      <div class="disclaimer">默认情况下手环每 20-45 分钟同步一次心率读数，间隔并不固定；进入运动模式后会切换为实时记录。</div>
-      <div class="hr-rawlog-toggle" id="hr-rawlog-toggle">高级设置 · 查看原始同步记录 ›</div>
-      <div id="hr-rawlog-panel" hidden></div>
-    `;
-
-    const rawToggle = pane.querySelector("#hr-rawlog-toggle");
-    const rawPanel = pane.querySelector("#hr-rawlog-panel");
-    rawToggle.addEventListener("click", () => {
-      const showing = !rawPanel.hidden;
-      if (showing) {
-        rawPanel.hidden = true;
-        rawToggle.textContent = "高级设置 · 查看原始同步记录 ›";
-        return;
-      }
-      rawToggle.textContent = "高级设置 · 收起原始同步记录 ‹";
-      rawPanel.hidden = false;
-      rawPanel.innerHTML = `
-        <div class="hr-rawlog-panel">
-          <div class="title">DEVICE EVENT LOG · 最近一次同步窗口</div>
-          <table>
-            ${DEVICE_LOG.map((e) => `
-              <tr>
-                <td class="mono">${e.t}</td>
-                <td class="ev">${e.event}</td>
-                <td class="val${/FAIL/.test(e.value) ? " fail" : ""}">${e.value}</td>
-              </tr>
-            `).join("")}
-          </table>
-        </div>
-      `;
-    });
-
-    const svg = pane.querySelector("#hr-svg");
-    const tooltip = pane.querySelector("#hr-tooltip");
-    const scrub = pane.querySelector("#hr-scrub");
-
-    function nearestPoint(clientX) {
-      const rect = svg.getBoundingClientRect();
-      const svgX = (clientX - rect.left) / rect.width * W;
-      let best = pts[0], bestDist = Infinity;
-      pts.forEach((p) => {
-        const d = Math.abs(xOf(p.min) - svgX);
-        if (d < bestDist) { bestDist = d; best = p; }
-      });
-      return best;
-    }
-
-    function showAt(clientX, clientY) {
-      const p = nearestPoint(clientX);
-      const rect = svg.getBoundingClientRect();
-      const px = xOf(p.min) / W * rect.width;
-      scrub.setAttribute("x1", xOf(p.min));
-      scrub.setAttribute("x2", xOf(p.min));
-      scrub.setAttribute("opacity", "1");
-      tooltip.style.left = px + "px";
-      tooltip.style.top = (yOf(p.v ?? 85) / H * rect.height) + "px";
-      const label = p.t === "00:20" && pts[pts.length - 1] === p ? "09-14 " + p.t : "09-13 " + p.t;
-      tooltip.innerHTML = p.v != null ? `<b>${p.v}</b> bpm<br/>${label}` : `<b>--</b> 未收到读数<br/>${label}`;
-      tooltip.classList.add("show");
-    }
-    function hide() {
-      tooltip.classList.remove("show");
-      scrub.setAttribute("opacity", "0");
-    }
-
-    let dragging = false;
-    svg.addEventListener("pointerdown", (e) => { dragging = true; showAt(e.clientX, e.clientY); });
-    svg.addEventListener("pointermove", (e) => { if (dragging) showAt(e.clientX, e.clientY); });
-    window.addEventListener("pointerup", () => { dragging = false; });
-    svg.addEventListener("mousemove", (e) => showAt(e.clientX, e.clientY));
-    svg.addEventListener("mouseleave", () => { if (!dragging) hide(); });
-  }
-
-  let sleepDate = "09-12";
-
-  function renderSleepTab(pane) {
-    pane.innerHTML = `
-      <div class="sleep-datetabs">
-        <button data-d="09-12">09-12 夜</button>
-        <button data-d="09-13">09-13 夜</button>
-      </div>
-      <div id="sleep-body"></div>
-    `;
-    pane.querySelectorAll(".sleep-datetabs button").forEach((b) => {
-      b.classList.toggle("active", b.dataset.d === sleepDate);
-      b.addEventListener("click", () => { sleepDate = b.dataset.d; renderSleepTab(pane); });
-    });
-    const body = pane.querySelector("#sleep-body");
-
-    if (sleepDate === "09-13") {
-      body.innerHTML = `
-        <div class="sleep-empty">
-          <b>未检测到有效睡眠</b>
-          佩戴时间不足，无法生成睡眠报告
-        </div>
-        <div class="disclaimer">生成睡眠报告需要至少 3 小时的连续有效佩戴数据。当晚设备同步记录中断于 09-14 00:20（见"心率"标签页），此后没有新的数据写入，不足以覆盖一个完整睡眠周期。</div>
       `;
       return;
     }
-
-    const total = SLEEP_STAGES.normal.reduce((s, seg) => s + seg.min, 0);
-    const barHtml = SLEEP_STAGES.normal.map((seg) =>
-      `<div class="seg" style="width:${(seg.min / total * 100).toFixed(2)}%;background:${SLEEP_STAGES.color[seg.stage]};" title="${SLEEP_STAGES.name[seg.stage]} ${seg.min}分钟"></div>`
-    ).join("");
+    const total = s.stages.reduce((sum, seg) => sum + seg.min, 0);
+    const barHtml = s.stages.map((seg) => `<div class="seg" style="width:${(seg.min / total * 100).toFixed(2)}%;background:${SLEEP_STAGES_COLOR[seg.stage]};" title="${SLEEP_STAGES_NAME[seg.stage]} ${seg.min}分钟"></div>`).join("");
     const byStage = {};
-    SLEEP_STAGES.normal.forEach((seg) => { byStage[seg.stage] = (byStage[seg.stage] || 0) + seg.min; });
-
-    body.innerHTML = `
-      <div style="font-size:11.5px;color:var(--ink-faint);margin-bottom:8px;">23:20 – 次日 07:10 · 共 ${(total / 60).toFixed(1)} 小时</div>
+    s.stages.forEach((seg) => { byStage[seg.stage] = (byStage[seg.stage] || 0) + seg.min; });
+    el.innerHTML = `
+      <div class="as-subtle">${d} 夜</div>
+      <div style="font-size:11.5px;color:var(--ink-faint);margin-bottom:8px;">${s.window} · 共 ${(total / 60).toFixed(1)} 小时</div>
       <div class="sleep-bar">${barHtml}</div>
       <div class="sleep-summary">
-        ${Object.keys(SLEEP_STAGES.name).map((k) => `<span><span class="dot" style="background:${SLEEP_STAGES.color[k]};"></span>${SLEEP_STAGES.name[k]} ${((byStage[k] || 0) / 60).toFixed(1)}h</span>`).join("")}
+        ${Object.keys(SLEEP_STAGES_NAME).map((k) => `<span><span class="dot" style="background:${SLEEP_STAGES_COLOR[k]};"></span>${SLEEP_STAGES_NAME[k]} ${((byStage[k] || 0) / 60).toFixed(1)}h</span>`).join("")}
       </div>
     `;
   }
+};
+
+SCREENS.sleepGoals = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("睡眠目标")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="stepper-row">
+          <div class="sr-label">睡眠目标</div>
+          <div class="stepper"><button data-adj="hours" data-d="-0.5">−</button><div class="sr-val mono" id="val-hours"></div><button data-adj="hours" data-d="0.5">＋</button></div>
+        </div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">目标入睡时间</div><input type="time" id="in-bedtime" value="${prefs.sleepGoals.bedtime}" style="border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:'JetBrains Mono',monospace;" /></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">目标起床时间</div><input type="time" id="in-waketime" value="${prefs.sleepGoals.waketime}" style="border:1px solid var(--line);border-radius:8px;padding:6px 10px;font-family:'JetBrains Mono',monospace;" /></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">睡眠规律度</div><div class="mr-value">78%</div></div>
+      </div>
+      <div class="menu-card">
+        <div class="toggle-row"><div class="tr-label">睡眠提醒</div><div class="toggle" id="toggle-sleepReminder"><div class="knob"></div></div></div>
+      </div>
+      <button class="save-btn" id="save-sleep-goals">保存</button>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  function refresh() {
+    body.querySelector("#val-hours").textContent = prefs.sleepGoals.hours + "h";
+    body.querySelector("#toggle-sleepReminder").classList.toggle("on", prefs.sleepGoals.reminder);
+  }
+  body.querySelectorAll("[data-adj]").forEach((btn) => btn.addEventListener("click", () => {
+    prefs.sleepGoals.hours = Math.max(4, Math.min(11, prefs.sleepGoals.hours + parseFloat(btn.dataset.d)));
+    refresh();
+  }));
+  body.querySelector("#toggle-sleepReminder").addEventListener("click", () => { prefs.sleepGoals.reminder = !prefs.sleepGoals.reminder; refresh(); });
+  body.querySelector("#save-sleep-goals").addEventListener("click", () => {
+    prefs.sleepGoals.bedtime = body.querySelector("#in-bedtime").value || prefs.sleepGoals.bedtime;
+    prefs.sleepGoals.waketime = body.querySelector("#in-waketime").value || prefs.sleepGoals.waketime;
+    savePrefs(); showToast("已保存");
+  });
+  refresh();
+};
+
+SCREENS.spo2Detail = function (body) {
+  body.innerHTML = `${detailTopbar("血氧饱和度")}<div class="as-content" id="spo2-body"></div>`;
+  bindDetailTopbar(body);
+  renderMonthRangeView(document.getElementById("spo2-body"), { unit: "%", data: SPO2_MONTH, minY: 88, maxY: 100, optMin: 95, optMax: 100 });
+};
+
+SCREENS.stressDetail = function (body) {
+  const STRESS_WEEK = [{ d: "09-08", v: 38 }, { d: "09-09", v: 42 }, { d: "09-10", v: 35 }, { d: "09-11", v: 46 }, { d: "09-12", v: 40 }];
+  body.innerHTML = `
+    ${detailTopbar("压力")}
+    <div class="as-content">
+      <div class="rv-stat-label">当前压力</div>
+      <div class="rv-stat-value">中等 · 40</div>
+      <div class="rv-chartbox">${svgBars(STRESS_WEEK, { max: 100, color: "var(--caution)" })}</div>
+      <div class="disclaimer">压力指数根据心率变异性（HRV）估算，仅供参考。</div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+};
+
+SCREENS.trendDetail = function (body) {
+  const stepsWeek = ACTIVITY_DATE_ORDER.filter((d) => d !== TODAY).map((d) => ({ d, v: ACTIVITY_BY_DATE[d].steps }));
+  body.innerHTML = `
+    ${detailTopbar("活动趋势")}
+    <div class="as-content">
+      <div class="as-subtle" style="margin-top:0;">近 7 天步数</div>
+      <div class="rv-chartbox">${svgBars([...stepsWeek, { d: TODAY, v: Math.max(ACTIVITY_BY_DATE[TODAY].steps, 3) }], { max: 12000, color: "var(--accent)" })}</div>
+      <div class="as-subtle">近 7 天活动时长（分钟）</div>
+      <div class="rv-chartbox">${svgBars([...ACTIVITY_DATE_ORDER.filter((d) => d !== TODAY).map((d) => ({ d, v: ACTIVITY_BY_DATE[d].exercise })), { d: TODAY, v: Math.max(ACTIVITY_BY_DATE[TODAY].exercise, 1) }], { max: 60, color: "#92e82a" })}</div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+};
+
+/* =====================================================================
+   十六、运动 tab
+   ===================================================================== */
+SCREENS.workout = function (body) {
+  body.innerHTML = `
+    <div class="as-topbar"><div class="as-avatar">周</div><div class="as-title">运动</div><div style="width:32px;"></div></div>
+    <div class="as-content">
+      <div class="as-subtle" style="margin-top:0;">开始运动</div>
+      <div class="workout-grid" id="workout-types"></div>
+
+      <div class="as-subtle">本周活动</div>
+      <div class="rv-chartbox" id="workout-week-chart"></div>
+
+      <div class="as-subtle">运动记录</div>
+      <div class="menu-card" id="workout-hist"></div>
+    </div>
+  `;
+  const grid = document.getElementById("workout-types");
+  grid.innerHTML = WORKOUT_TYPES.map((w) => `
+    <div class="workout-card" data-id="${w.id}"><div class="wc-ic">${ICON[w.icon]}</div><div class="wc-name">${w.name}</div></div>
+  `).join("");
+  grid.querySelectorAll(".workout-card").forEach((c) => {
+    c.addEventListener("click", () => { workoutPrepType = c.dataset.id; nav("workoutPrep", "workout"); });
+  });
+  document.getElementById("workout-week-chart").innerHTML = svgBars(
+    ACTIVITY_DATE_ORDER.map((d) => ({ d, v: Math.max(ACTIVITY_BY_DATE[d].steps, 30) })),
+    { max: 12000, color: "var(--accent)" }
+  );
+  const hist = document.getElementById("workout-hist");
+  hist.innerHTML = WORKOUT_HISTORY.map((w) => `
+    <div class="workout-hist-row">
+      <div class="wh-ic">${ICON.run}</div>
+      <div class="wh-main">
+        <div class="wh-type">${w.type}</div>
+        <div class="wh-meta">${w.duration}${w.extra ? " · " + w.extra : ""}${w.avgHr ? " · 平均 " + w.avgHr : ""}</div>
+      </div>
+      <div class="wh-date mono">${w.date}</div>
+    </div>
+  `).join("");
+};
+
+let workoutPrepType = "outdoor-run";
+SCREENS.workoutPrep = function (body) {
+  const w = WORKOUT_TYPES.find((x) => x.id === workoutPrepType) || WORKOUT_TYPES[0];
+  const needsGps = w.id === "outdoor-run" || w.id === "cycle" || w.id === "walk";
+  body.innerHTML = `
+    ${detailTopbar(w.name)}
+    <div class="as-content">
+      ${needsGps ? `<div class="prep-row"><span class="pr-label">GPS</span><span class="pr-val" id="gps-status">定位中……</span></div>` : ""}
+      <div class="prep-row"><span class="pr-label">心率设备</span><span class="pr-val">极光手环 · 已连接</span></div>
+      <div class="prep-row"><span class="pr-label">活动目标</span><span class="pr-val">${prefs.goals.kcal} kcal</span></div>
+      <button class="start-btn" id="start-workout-btn">开始</button>
+      <div class="find-band-status" id="start-status"></div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  if (needsGps) {
+    setTimeout(() => { const el = document.getElementById("gps-status"); if (el) el.textContent = "定位成功"; }, 1400);
+  }
+  document.getElementById("start-workout-btn").addEventListener("click", () => {
+    document.getElementById("start-status").textContent = "训练记录中……（演示版本不记录真实轨迹）";
+  });
+};
+
+/* =====================================================================
+   十七、设备 tab
+   ===================================================================== */
+SCREENS.device = function (body) {
+  body.innerHTML = `
+    <div class="as-topbar"><div class="as-avatar">周</div><div class="as-title">设备</div><div style="width:32px;"></div></div>
+    <div class="as-content">
+      <div class="device-card">
+        <div class="dc-head">
+          <div class="dc-icon">${ICON.band}</div>
+          <div><div class="dc-name">极光手环 三代</div><div class="dc-status"><span class="dot"></span>已连接</div></div>
+          <div class="dc-battery">63%</div>
+        </div>
+      </div>
+      <div class="menu-card" id="device-menu"></div>
+    </div>
+  `;
+  const menuItems = [
+    { label: "健康监测", screen: "healthMonitorSettings" },
+    { label: "心率监测频率", value: prefs.healthMonitor.hrFreq + " 分钟", screen: "healthMonitorSettings" },
+    { label: "闹钟与提醒", screen: "alarmsReminders" },
+    { label: "通知管理", screen: "notifications" },
+    { label: "抬腕亮屏", screen: "wristRaise" },
+    { label: "久坐提醒", screen: "sedentarySettings" },
+    { label: "喝水提醒", screen: "waterSettings" },
+    { label: "查找手环", screen: "findBand" },
+    { label: "固件更新", screen: "firmware" },
+    { label: "设备信息", screen: "deviceInfo" },
+  ];
+  const menu = document.getElementById("device-menu");
+  menu.innerHTML = menuItems.map((m) => `
+    <div class="menu-row" data-screen="${m.screen}">
+      <div class="mr-label">${m.label}</div>
+      ${m.value ? `<div class="mr-value">${m.value}</div>` : ""}
+      <div class="mr-chev">${ICON.chevron}</div>
+    </div>
+  `).join("");
+  menu.querySelectorAll(".menu-row").forEach((r) => r.addEventListener("click", () => nav(r.dataset.screen, "device")));
+};
+
+SCREENS.wristRaise = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("抬腕亮屏")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="toggle-row"><div class="tr-label">抬腕亮屏</div><div class="toggle on" id="tg-wrist"><div class="knob"></div></div></div>
+        <div class="toggle-row"><div><div class="tr-label">运动时保持常亮</div></div><div class="toggle" id="tg-wrist2"><div class="knob"></div></div></div>
+      </div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  body.querySelectorAll(".toggle").forEach((t) => t.addEventListener("click", () => t.classList.toggle("on")));
+};
+SCREENS.firmware = function (body) {
+  body.innerHTml = "";
+  body.innerHTML = `
+    ${detailTopbar("固件更新")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">当前版本</div><div class="mr-value mono">3.4.12</div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">最近更新</div><div class="mr-value mono">08-30</div></div>
+      </div>
+      <div class="disclaimer">已是最新版本。</div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+};
+SCREENS.deviceInfo = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("设备信息")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">型号</div><div class="mr-value">极光手环 三代</div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">设备编号</div><div class="mr-value mono">AF3-771092</div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">绑定账号</div><div class="mr-value mono">${USERNAME}</div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">配对时间</div><div class="mr-value mono">2025-11-02</div></div>
+      </div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+};
+
+SCREENS.healthMonitorSettings = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("健康监测")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="toggle-row"><div class="tr-label">全天心率监测</div><div class="toggle" id="tg-hrAllDay"><div class="knob"></div></div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">检测频率</div><div class="mr-value">每 ${prefs.healthMonitor.hrFreq} 分钟</div></div>
+        <div class="toggle-row"><div><div class="tr-label">高心率提醒</div><div class="tr-sub">阈值 ${prefs.healthMonitor.highHrThreshold} bpm</div></div><div class="toggle" id="tg-highHr"><div class="knob"></div></div></div>
+        <div class="toggle-row"><div class="tr-label">静息心率趋势</div><div class="toggle" id="tg-restingTrend"><div class="knob"></div></div></div>
+      </div>
+      <div class="disclaimer">高于阈值的读数会记录为一次普通的高心率通知，不代表任何异常判断。</div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  function refresh() {
+    body.querySelector("#tg-hrAllDay").classList.toggle("on", prefs.healthMonitor.hrAllDay);
+    body.querySelector("#tg-highHr").classList.toggle("on", prefs.healthMonitor.highHrAlert);
+    body.querySelector("#tg-restingTrend").classList.toggle("on", prefs.healthMonitor.restingTrend);
+  }
+  body.querySelector("#tg-hrAllDay").addEventListener("click", () => { prefs.healthMonitor.hrAllDay = !prefs.healthMonitor.hrAllDay; savePrefs(); refresh(); });
+  body.querySelector("#tg-highHr").addEventListener("click", () => { prefs.healthMonitor.highHrAlert = !prefs.healthMonitor.highHrAlert; savePrefs(); refresh(); });
+  body.querySelector("#tg-restingTrend").addEventListener("click", () => { prefs.healthMonitor.restingTrend = !prefs.healthMonitor.restingTrend; savePrefs(); refresh(); });
+  refresh();
+};
+
+SCREENS.sedentarySettings = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("久坐提醒")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="toggle-row"><div class="tr-label">久坐提醒</div><div class="toggle" id="tg-sed"><div class="knob"></div></div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">提醒时间</div><div class="mr-value mono">${prefs.sedentary.start}–${prefs.sedentary.end}</div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">间隔</div><div class="mr-value">${prefs.sedentary.interval} min</div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">免打扰</div><div class="mr-value mono">${prefs.sedentary.dndStart}–${prefs.sedentary.dndEnd}</div></div>
+      </div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  const tg = body.querySelector("#tg-sed");
+  tg.classList.toggle("on", prefs.sedentary.on);
+  tg.addEventListener("click", () => { prefs.sedentary.on = !prefs.sedentary.on; savePrefs(); tg.classList.toggle("on", prefs.sedentary.on); });
+};
+
+SCREENS.waterSettings = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("喝水提醒")}
+    <div class="as-content">
+      <div class="menu-card">
+        <div class="toggle-row"><div class="tr-label">喝水提醒</div><div class="toggle" id="tg-water"><div class="knob"></div></div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">提醒间隔</div><div class="mr-value">${prefs.water.interval} h</div></div>
+        <div class="menu-row" style="cursor:default;"><div class="mr-label">时间</div><div class="mr-value mono">${prefs.water.start}–${prefs.water.end}</div></div>
+      </div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  const tg = body.querySelector("#tg-water");
+  tg.classList.toggle("on", prefs.water.on);
+  tg.addEventListener("click", () => { prefs.water.on = !prefs.water.on; savePrefs(); tg.classList.toggle("on", prefs.water.on); });
+};
+
+SCREENS.findBand = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("查找手环")}
+    <div class="as-content">
+      <p style="font-size:12.5px;color:var(--ink-soft);line-height:1.8;">点击下方按钮，手环会震动提示，方便你找到它。</p>
+      <button class="find-band-btn" id="find-band-btn">使手环振动</button>
+      <div class="find-band-status" id="find-band-status"></div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  document.getElementById("find-band-btn").addEventListener("click", () => {
+    const s = document.getElementById("find-band-status");
+    s.textContent = "正在使手环振动……";
+    setTimeout(() => { s.textContent = "已发送至设备"; }, 2400);
+  });
+};
+
+SCREENS.notifications = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("通知管理")}
+    <div class="as-content">
+      <div class="as-subtle" style="margin-top:0;">最近通知</div>
+      <div class="menu-card" id="notif-list"></div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  document.getElementById("notif-list").innerHTML = NOTIFICATIONS.map((n) => `
+    <div class="notif-row"><div class="nr-time mono">${n.time}</div><div class="nr-text">${n.text}</div></div>
+  `).join("");
+};
+
+/* ---- 闹钟与提醒 ---- */
+SCREENS.alarmsReminders = function (body) {
+  body.innerHTML = `
+    ${detailTopbar("闹钟与提醒")}
+    <div class="as-content">
+      <div class="as-subtle" style="margin-top:0;">闹钟</div>
+      <div class="menu-card" id="alarm-list"></div>
+      <div class="add-row-btn" id="add-alarm-btn"><span class="plus">＋</span>新增闹钟</div>
+
+      <div class="as-subtle">日程提醒</div>
+      <div class="menu-card" id="schedule-list"></div>
+      <div class="add-row-btn" id="add-reminder-btn"><span class="plus">＋</span>新增提醒</div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+  renderAlarmList();
+  renderScheduleList();
+  document.getElementById("add-alarm-btn").addEventListener("click", openAddAlarmSheet);
+  document.getElementById("add-reminder-btn").addEventListener("click", openAddReminderSheet);
+
+  function renderAlarmList() {
+    const all = [...BASE_ALARMS, ...prefs.customAlarms];
+    const el = document.getElementById("alarm-list");
+    el.innerHTML = all.map((a, i) => {
+      const on = a.id in prefs.alarmState ? prefs.alarmState[a.id] : (a.defaultOn ?? true);
+      return `
+        <div class="alarm-row ${a.expired ? "expired" : ""}" data-idx="${i}">
+          <div class="ar-time mono">${a.time}</div>
+          <div class="ar-main">
+            <div class="ar-label${a.label ? "" : " unnamed"}">${a.label || "（未命名）"}</div>
+            <div class="ar-repeat">${a.date ? a.date : a.repeat}${a.expired ? '<span class="ar-tag">已过期</span>' : ""}</div>
+          </div>
+          <div class="toggle ${on ? "on" : ""}" data-toggle="${a.id}"><div class="knob"></div></div>
+        </div>
+      `;
+    }).join("");
+    el.querySelectorAll("[data-toggle]").forEach((t) => {
+      t.addEventListener("click", () => {
+        const id = t.dataset.toggle;
+        const cur = id in prefs.alarmState ? prefs.alarmState[id] : ((BASE_ALARMS.find((a) => a.id === id) || {}).defaultOn ?? true);
+        prefs.alarmState[id] = !cur;
+        savePrefs();
+        renderAlarmList();
+      });
+    });
+  }
+  function renderScheduleList() {
+    const all = [...BASE_SCHEDULE_REMINDERS, ...prefs.customReminders];
+    document.getElementById("schedule-list").innerHTML = all.map((r) => `
+      <div class="alarm-row">
+        <div class="ar-time mono" style="font-size:14px;min-width:52px;">${r.date}</div>
+        <div class="ar-main">
+          <div class="ar-label${r.label ? "" : " unnamed"}">${r.label || "全天"}</div>
+          <div class="ar-repeat">${r.repeat}</div>
+        </div>
+      </div>
+    `).join("");
+  }
+  window._reRenderAlarmScreen = () => { renderAlarmList(); renderScheduleList(); };
+};
+
+function openSheet(html, onOpen) {
+  let scrim = document.getElementById("sheet-scrim");
+  let sheet = document.getElementById("bottom-sheet");
+  if (!scrim) {
+    scrim = document.createElement("div"); scrim.className = "sheet-scrim"; scrim.id = "sheet-scrim";
+    document.body.appendChild(scrim);
+  }
+  if (!sheet) {
+    sheet = document.createElement("div"); sheet.className = "bottom-sheet"; sheet.id = "bottom-sheet";
+    document.body.appendChild(sheet);
+  }
+  sheet.innerHTML = `<div class="sheet-handle"></div>${html}`;
+  scrim.classList.add("open"); sheet.classList.add("open");
+  scrim.onclick = closeSheet;
+  if (onOpen) onOpen(sheet);
+}
+function closeSheet() {
+  document.getElementById("sheet-scrim")?.classList.remove("open");
+  document.getElementById("bottom-sheet")?.classList.remove("open");
+}
+
+function openAddAlarmSheet() {
+  openSheet(`
+    <div class="sheet-title">新增闹钟</div>
+    <div class="sheet-field"><input type="time" id="na-time" value="08:00" /></div>
+    <div class="sheet-field"><label>重复</label>
+      <select id="na-repeat">
+        <option value="永不">永不</option><option value="每天">每天</option>
+        <option value="工作日">工作日</option><option value="周末">周末</option>
+      </select>
+    </div>
+    <div class="sheet-field"><label>标签</label><input type="text" id="na-label" placeholder="闹钟" /></div>
+    <div class="sheet-field"><label>震动</label>
+      <select id="na-vib"><option>默认</option><option>轻柔</option><option>关闭</option></select>
+    </div>
+    <div class="sheet-field"><label>智能唤醒</label>
+      <select id="na-smart"><option>关闭</option><option>提前 10 分钟</option><option>提前 20 分钟</option></select>
+    </div>
+    <div class="sheet-field"><label>稍后提醒</label>
+      <select id="na-snooze"><option>5 分钟</option><option>10 分钟</option><option>关闭</option></select>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="na-cancel">取消</button>
+      <button class="btn-save" id="na-save">保存</button>
+    </div>
+  `, (sheet) => {
+    sheet.querySelector("#na-cancel").addEventListener("click", closeSheet);
+    sheet.querySelector("#na-save").addEventListener("click", () => {
+      const time = sheet.querySelector("#na-time").value || "08:00";
+      const repeat = sheet.querySelector("#na-repeat").value;
+      const label = sheet.querySelector("#na-label").value || "闹钟";
+      const id = "custom-" + Date.now();
+      prefs.customAlarms.push({ id, time, label, repeat, defaultOn: true });
+      prefs.alarmState[id] = true;
+      savePrefs();
+      closeSheet();
+      showToast("已新增闹钟");
+      window._reRenderAlarmScreen && window._reRenderAlarmScreen();
+    });
+  });
+}
+
+function openAddReminderSheet() {
+  openSheet(`
+    <div class="sheet-title">新增提醒</div>
+    <div class="sheet-field"><label>标题</label><input type="text" id="nr-title" placeholder="提醒事项" /></div>
+    <div class="sheet-field"><label>日期</label><input type="date" id="nr-date" value="2026-09-21" /></div>
+    <div class="sheet-field"><label>重复</label>
+      <select id="nr-repeat"><option value="永不">永不</option><option value="每年重复">每年</option><option value="每月重复">每月</option><option value="每周重复">每周</option></select>
+    </div>
+    <div class="sheet-field" style="display:flex;align-items:center;justify-content:space-between;">
+      <label style="margin:0;">同步至手环</label>
+      <div class="toggle on" id="nr-sync"><div class="knob"></div></div>
+    </div>
+    <div class="sheet-actions">
+      <button class="btn-cancel" id="nr-cancel">取消</button>
+      <button class="btn-save" id="nr-save">保存</button>
+    </div>
+  `, (sheet) => {
+    sheet.querySelector("#nr-sync").addEventListener("click", (e) => e.currentTarget.classList.toggle("on"));
+    sheet.querySelector("#nr-cancel").addEventListener("click", closeSheet);
+    sheet.querySelector("#nr-save").addEventListener("click", () => {
+      const dateRaw = sheet.querySelector("#nr-date").value;
+      const date = dateRaw ? dateRaw.slice(5).replace("-", "-") : "09-21";
+      const label = sheet.querySelector("#nr-title").value || null;
+      const repeat = sheet.querySelector("#nr-repeat").value;
+      prefs.customReminders.push({ id: "custom-r-" + Date.now(), date, label, repeat });
+      savePrefs();
+      closeSheet();
+      showToast("已新增提醒");
+      window._reRenderAlarmScreen && window._reRenderAlarmScreen();
+    });
+  });
+}
+
+/* =====================================================================
+   十八、我的 tab
+   ===================================================================== */
+SCREENS.profile = function (body) {
+  body.innerHTML = `
+    <div class="as-topbar"><div class="as-avatar">周</div><div class="as-title">我的</div><div style="width:32px;"></div></div>
+    <div class="as-content">
+      <div class="profile-head">
+        <div class="ph-avatar">周</div>
+        <div><div class="ph-name">周晏星</div><div class="ph-account">${USERNAME}</div></div>
+      </div>
+      <div class="menu-card" id="profile-menu"></div>
+    </div>
+  `;
+  const items = [
+    { label: "个人资料", screen: "placeholder:个人资料" },
+    { label: "我的目标", screen: "activityGoals" },
+    { label: "周报", screen: "weeklyReport" },
+    { label: "单位设置", screen: "placeholder:单位设置" },
+    { label: "数据权限", screen: "placeholder:数据权限" },
+    { label: "隐私", screen: "placeholder:隐私" },
+    { label: "帮助", screen: "placeholder:帮助" },
+    { label: "关于 AURORA", screen: "placeholder:关于 AURORA" },
+  ];
+  const menu = document.getElementById("profile-menu");
+  menu.innerHTML = items.map((m) => `<div class="menu-row" data-screen="${m.screen}"><div class="mr-label">${m.label}</div><div class="mr-chev">${ICON.chevron}</div></div>`).join("");
+  menu.querySelectorAll(".menu-row").forEach((r) => r.addEventListener("click", () => {
+    const s = r.dataset.screen;
+    if (s.startsWith("placeholder:")) { placeholderTitle = s.split(":")[1]; nav("placeholder", "profile"); }
+    else nav(s, "profile");
+  }));
+};
+
+let placeholderTitle = "";
+SCREENS.placeholder = function (body) {
+  body.innerHTML = `
+    ${detailTopbar(placeholderTitle)}
+    <div class="as-content">
+      <div class="empty-state"><b>${placeholderTitle}</b>该功能暂未开放</div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+};
+
+SCREENS.weeklyReport = function (body) {
+  const days = ACTIVITY_DATE_ORDER.filter((d) => d !== TODAY);
+  const avgSteps = Math.round(days.reduce((s, d) => s + ACTIVITY_BY_DATE[d].steps, 0) / days.length);
+  const avgExercise = Math.round(days.reduce((s, d) => s + ACTIVITY_BY_DATE[d].exercise, 0) / days.length);
+  const sleepDays = SLEEP_DATE_ORDER.filter((d) => !SLEEP_BY_DATE[d].noData);
+  const avgSleepMin = Math.round(sleepDays.reduce((s, d) => s + SLEEP_BY_DATE[d].totalMin, 0) / sleepDays.length);
+  body.innerHTML = `
+    ${detailTopbar("周报")}
+    <div class="as-content">
+      <div class="as-h1" style="font-size:16px;">09/08 – 09/14 周报</div>
+      <div class="report-stat-grid">
+        <div class="report-stat"><div class="rs-label">平均步数</div><div class="rs-val">${avgSteps.toLocaleString()}</div></div>
+        <div class="report-stat"><div class="rs-label">平均活动</div><div class="rs-val">${avgExercise} min</div></div>
+        <div class="report-stat"><div class="rs-label">平均睡眠</div><div class="rs-val">${Math.floor(avgSleepMin / 60)}h${String(avgSleepMin % 60).padStart(2, "0")}</div></div>
+        <div class="report-stat"><div class="rs-label">运动次数</div><div class="rs-val">${WORKOUT_HISTORY.filter((w) => w.date >= "09-08").length}</div></div>
+      </div>
+      <div class="as-subtle">趋势</div>
+      <div class="ov-card" style="cursor:default;"><div class="ov-caption">比上周活动时间 <span style="color:var(--ok);">+8%</span></div></div>
+    </div>
+  `;
+  bindDetailTopbar(body);
+};
 </script>
 <footer style="display:flex;justify-content:center;padding:10px 0 14px;"><img src="caip-watermark.png" alt="made by CAIP" style="display:block;width:88%;max-width:360px;height:auto;"></footer>
 </body>
