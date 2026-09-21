@@ -498,14 +498,25 @@
   const SPO2_MONTH = [
     { week: "09-01", v: 97 }, { week: "09-08", v: 96 }, { week: "09-15", v: 98 }, { week: "09-22", v: 94 },
   ];
-  // 今天活动量偏高——早班机落地直接彩排，下午又是一场品牌活动，跟上面
-  // REMINDERS 里那几条今日行程对应；步数和站立小时都比平时高，但站立
-  // 小时没有直接顶满 12，因为中间夹着航班和场地之间的乘车时间。
-  const ACTIVITY_TODAY = { move: 428, moveGoal: 450, exercise: 31, exerciseGoal: 30, stand: 11, standGoal: 12, steps: 11840, stepsGoal: 8000 };
-  const ACTIVITY_WEEK = [
-    { d: "周一", v: 420 }, { d: "周二", v: 380 }, { d: "周三", v: 512 }, { d: "周四", v: 290 },
-    { d: "周五", v: 460 }, { d: "周六", v: 340 }, { d: "周日", v: 428 },
-  ];
+  // 活动量按真实日期建档，不再是笼统的"今天/本周"——目标值（450千卡/
+  // 30分钟/12小时）是运动能量圆环这类产品常见的默认目标（30分钟运动、
+  // 12小时站立本身就是这类设备最通行的默认值，450千卡是中等强度用户的
+  // 常见个人目标区间，不是随手编的数字），7 天全部围绕这套目标算。
+  // 09-08 到 09-12 是平常强度的日常；09-13 是案发当天，跟 REMINDERS
+  // 里那几条真实行程对应（早班机→彩排→下午品牌活动），活动量明显偏高，
+  // 但站立小时没有顶满 12，因为中间夹着航班/场地之间的乘车时间；
+  // 09-14 是案发次日——人已经不在了，设备上没有任何新的佩戴/活动数据
+  // 写入，如实显示成全 0，不是漏填。
+  const ACTIVITY_BY_DATE = {
+    "09-08": { move: 268, moveGoal: 450, exercise: 18, exerciseGoal: 30, stand: 8, standGoal: 12, steps: 5210, stepsGoal: 8000 },
+    "09-09": { move: 312, moveGoal: 450, exercise: 22, exerciseGoal: 30, stand: 9, standGoal: 12, steps: 6480, stepsGoal: 8000 },
+    "09-10": { move: 287, moveGoal: 450, exercise: 20, exerciseGoal: 30, stand: 8, standGoal: 12, steps: 5890, stepsGoal: 8000 },
+    "09-11": { move: 341, moveGoal: 450, exercise: 24, exerciseGoal: 30, stand: 9, standGoal: 12, steps: 6720, stepsGoal: 8000 },
+    "09-12": { move: 296, moveGoal: 450, exercise: 21, exerciseGoal: 30, stand: 8, standGoal: 12, steps: 6100, stepsGoal: 8000 },
+    "09-13": { move: 428, moveGoal: 450, exercise: 31, exerciseGoal: 30, stand: 11, standGoal: 12, steps: 11840, stepsGoal: 8000 },
+    "09-14": { move: 0, moveGoal: 450, exercise: 0, exerciseGoal: 30, stand: 0, standGoal: 12, steps: 0, stepsGoal: 8000, noData: true },
+  };
+  const ACTIVITY_DATE_ORDER = Object.keys(ACTIVITY_BY_DATE);
   // 心率的"月"视图按周取点——09-08 这一周正好覆盖案发夜（09-13），
   // 这里的 127 跟"心率"标签页当日图表里的峰值是同一件事，只是换了个
   // 更粗的时间粒度看，不是新增的独立证据。
@@ -539,14 +550,16 @@
       ${ticks}${dots}
     </svg>`;
   }
-  function svgBars(points, { max, w = 340, h = 140, color = "#6d6dff" }) {
+  function svgBars(points, { max, w = 340, h = 140, color = "#6d6dff", highlightIndex = -1, highlightColor } = {}) {
     const padL = 10, padR = 10, padT = 10, padB = 20;
     const chartW = w - padL - padR, chartH = h - padT - padB;
     const bw = (chartW / points.length) * 0.48;
     const bars = points.map((p, i) => {
       const cx = padL + ((i + 0.5) / points.length) * chartW;
       const bh = Math.max((p.v / max) * chartH, 2);
-      return `<rect x="${cx - bw / 2}" y="${padT + chartH - bh}" width="${bw}" height="${bh}" rx="3" fill="${color}" />`;
+      const fill = i === highlightIndex ? (highlightColor || color) : color;
+      const op = highlightIndex >= 0 && i !== highlightIndex ? 0.35 : 1;
+      return `<rect x="${cx - bw / 2}" y="${padT + chartH - bh}" width="${bw}" height="${bh}" rx="3" fill="${fill}" opacity="${op}" />`;
     }).join("");
     const ticks = points.map((p, i) => {
       const cx = padL + ((i + 0.5) / points.length) * chartW;
@@ -564,8 +577,7 @@
     </svg>`;
   }
 
-  function renderActivityRings(el) {
-    const a = ACTIVITY_TODAY;
+  function renderActivityRings(el, a) {
     const rings = [
       { label: "活动能量", v: a.move, goal: a.moveGoal, color: "#ff375f", unit: "千卡" },
       { label: "运动时间", v: a.exercise, goal: a.exerciseGoal, color: "#92e82a", unit: "分钟" },
@@ -675,22 +687,23 @@
       </div>
       <div class="as-content">
         <div class="rings-card">
-          <div class="as-subtle" style="margin:0 0 12px;">今日活动</div>
+          <div class="as-subtle" style="margin:0 0 12px;">今日活动 · 09-14</div>
           <div class="rings-row" id="rings-row"></div>
-          <div class="disclaimer" style="margin-top:14px;">今天行程比较满：早班机落地直接彩排，下午还有一场品牌活动，中途在机场和场馆之间也有不短的乘车时间——活动量偏高，但不是那种从早到晚连轴转的类型。</div>
+          <div class="disclaimer" style="margin-top:14px;">设备今天（09-14）没有记录到任何新的活动数据。去"活动"页往前翻一天，能看到 09-13 那天完整的记录。</div>
         </div>
         <div class="as-subtle">近 7 天</div>
         <div id="ov-list"></div>
       </div>
     `;
     document.getElementById("as-exit").addEventListener("click", exitAppShell);
-    renderActivityRings(document.getElementById("rings-row"));
+    renderActivityRings(document.getElementById("rings-row"), ACTIVITY_BY_DATE["09-14"]);
     renderOverviewList(document.getElementById("ov-list"));
   }
 
   function renderOverviewList(el) {
+    const todayAct = ACTIVITY_BY_DATE["09-14"];
     const items = [
-      { key: "activity", glyph: "⚡", bg: "rgba(255,92,114,.15)", fg: "#ff5c72", name: "活动量", time: "今天", value: ACTIVITY_TODAY.move, unit: "千卡", pct: ACTIVITY_TODAY.move / ACTIVITY_TODAY.moveGoal, bar: "#ff5c72", caption: `目标 ${ACTIVITY_TODAY.moveGoal} 千卡 · 行程较满`, ok: true },
+      { key: "activity", glyph: "⚡", bg: "rgba(255,92,114,.15)", fg: "#ff5c72", name: "活动量", time: "今天", value: todayAct.move, unit: "千卡", pct: todayAct.moveGoal ? todayAct.move / todayAct.moveGoal : 0, bar: "#ff5c72", caption: "暂无数据 · 点击查看历史", ok: false },
       { key: "hr", glyph: "♥", bg: "var(--accent-soft)", fg: "var(--accent)", name: "心率", time: "09-13 23:47", value: "127", unit: "bpm", pct: (127 - 40) / (140 - 40), bar: "linear-gradient(90deg,#6d6dff,#a869ff)", caption: "高于静息参考区间", ok: false },
       { key: "sleep", glyph: "☾", bg: "rgba(49,201,201,.15)", fg: "#1fa3a3", name: "睡眠", time: "09-12 07:10", value: "5.9", unit: "小时", pct: 0.6, bar: "#31c9c9", caption: "低于近期平均", ok: false },
       { key: "spo2", glyph: "●", bg: "rgba(47,174,107,.15)", fg: "#2fae6b", name: "血氧饱和度", time: "今天 08:14", value: "97", unit: "%", pct: 0.94, bar: "#2fae6b", caption: "正常范围", ok: true },
@@ -789,7 +802,13 @@
     renderMonthRangeView(document.getElementById("spo2-body"), { unit: "%", data: SPO2_MONTH, minY: 88, maxY: 100, optMin: 95, optMax: 100 });
   }
 
+  // 每次点开"活动"页都从最后一天（09-14，案发次日）开始——这天设备上
+  // 没有任何新数据，如实显示成 0，玩家需要自己点‹往前翻一天才能看到
+  // 09-13 那个行程很满的案发当天。索引默认停在数组最后一个（09-14）。
+  let activityDateIdx = ACTIVITY_DATE_ORDER.length - 1;
+
   function renderAsActivityDetail(body) {
+    activityDateIdx = ACTIVITY_DATE_ORDER.length - 1; // 每次重新进入这一页都回到 09-14
     body.innerHTML = `
       <div class="as-topbar as-detail">
         <div class="as-back" id="act-back">‹</div>
@@ -797,17 +816,56 @@
         <div style="width:32px;"></div>
       </div>
       <div class="as-content">
-        <div class="rings-card"><div class="rings-row" id="act-rings"></div></div>
+        <div class="rv-datenav">
+          <span class="rv-arrow" id="act-prev" style="cursor:pointer;">‹</span>
+          <span class="rv-label" id="act-datelabel"></span>
+          <span class="rv-arrow" id="act-next" style="cursor:pointer;">›</span>
+        </div>
+        <div id="act-day-body"></div>
         <div class="as-subtle">本周消耗（千卡）</div>
-        <div class="rv-chartbox">${svgBars(ACTIVITY_WEEK, { max: 600, color: "#ff5c72" })}</div>
-        <div class="as-subtle">今日步数</div>
-        <div class="rv-stat-value">${ACTIVITY_TODAY.steps.toLocaleString()}<span style="font-size:14px;"> 步</span></div>
-        <div class="mini-bar" style="margin-bottom:8px;"><div class="fill" style="width:${Math.min(ACTIVITY_TODAY.steps / ACTIVITY_TODAY.stepsGoal, 1) * 100}%;background:#2fae6b;"></div></div>
-        <div class="disclaimer">目标 ${ACTIVITY_TODAY.stepsGoal.toLocaleString()} 步</div>
+        <div class="rv-chartbox" id="act-week-chart"></div>
       </div>
     `;
     document.getElementById("act-back").addEventListener("click", goHome);
-    renderActivityRings(document.getElementById("act-rings"));
+    document.getElementById("act-prev").addEventListener("click", () => {
+      if (activityDateIdx > 0) { activityDateIdx -= 1; renderActivityDay(); }
+    });
+    document.getElementById("act-next").addEventListener("click", () => {
+      if (activityDateIdx < ACTIVITY_DATE_ORDER.length - 1) { activityDateIdx += 1; renderActivityDay(); }
+    });
+    renderActivityDay();
+
+    function renderActivityDay() {
+      const date = ACTIVITY_DATE_ORDER[activityDateIdx];
+      const a = ACTIVITY_BY_DATE[date];
+      document.getElementById("act-datelabel").textContent = "2026年" + date.replace("-", "月") + "日";
+      document.getElementById("act-prev").style.opacity = activityDateIdx === 0 ? 0.3 : 1;
+      document.getElementById("act-next").style.opacity = activityDateIdx === ACTIVITY_DATE_ORDER.length - 1 ? 0.3 : 1;
+
+      const dayBody = document.getElementById("act-day-body");
+      if (a.noData) {
+        dayBody.innerHTML = `
+          <div class="sleep-empty" style="margin-bottom:20px;">
+            <b>暂无活动数据</b>
+            设备当天没有记录到任何新的佩戴/活动数据
+          </div>
+        `;
+      } else {
+        dayBody.innerHTML = `
+          <div class="rings-card" style="margin-bottom:20px;"><div class="rings-row" id="act-rings"></div></div>
+          <div class="as-subtle">当日步数</div>
+          <div class="rv-stat-value">${a.steps.toLocaleString()}<span style="font-size:14px;"> 步</span></div>
+          <div class="mini-bar" style="margin-bottom:8px;"><div class="fill" style="width:${Math.min(a.steps / a.stepsGoal, 1) * 100}%;background:#2fae6b;"></div></div>
+          <div class="disclaimer" style="margin-bottom:20px;">目标 ${a.stepsGoal.toLocaleString()} 步</div>
+        `;
+        renderActivityRings(document.getElementById("act-rings"), a);
+      }
+
+      document.getElementById("act-week-chart").innerHTML = svgBars(
+        ACTIVITY_DATE_ORDER.map((d) => ({ d, v: Math.max(ACTIVITY_BY_DATE[d].move, 3) })),
+        { max: 500, color: "#ff5c72", highlightIndex: activityDateIdx, highlightColor: "#a869ff" }
+      );
+    }
   }
 
   function renderAsDeviceTab(body) {
