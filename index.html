@@ -130,6 +130,21 @@
   .reminder-row .rlabel.unnamed{color:var(--ink-faint);font-style:italic;}
   .reminder-row .rrepeat{font-size:10.5px;color:var(--ink-faint);font-family:"JetBrains Mono",monospace;white-space:nowrap;}
 
+  .new-alarm-btn{
+    display:flex;align-items:center;justify-content:center;gap:7px;margin-top:12px;padding:11px 14px;
+    border:1.5px dashed var(--line);border-radius:10px;color:var(--accent);font-size:13px;font-weight:600;cursor:pointer;
+  }
+  .new-alarm-btn:hover{background:var(--accent-soft);border-color:var(--accent);}
+  .new-alarm-btn .plus{font-size:15px;font-weight:700;}
+  .expired-row{cursor:pointer;gap:10px;}
+  .expired-row .rlabel{margin-left:0;}
+  .expired-check{
+    width:17px;height:17px;border-radius:50%;border:1.6px solid var(--line);flex:none;
+    display:inline-flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;color:#fff;
+  }
+  .expired-row.selected .expired-check{background:var(--accent);border-color:var(--accent);}
+  .expired-row.selected .expired-check::after{content:"✓";}
+
   /* ---------- 心率图表 ---------- */
   .hr-wrap{background:var(--surface-2);border-radius:10px;padding:18px 16px 10px;position:relative;}
   .hr-chart{width:100%;height:auto;display:block;touch-action:none;cursor:crosshair;}
@@ -154,8 +169,6 @@
   .hr-rawlog-panel td.ev{color:#8fa1ff;}
   .hr-rawlog-panel td.val{color:#5fd3a8;}
   .hr-rawlog-panel td.val.fail{color:#ff8f8f;}
-  .hr-rawlog-legend{margin-top:12px;font-size:11px;color:var(--ink-faint);line-height:1.9;}
-  .hr-rawlog-legend b{color:var(--ink-soft);font-family:"JetBrains Mono",monospace;font-weight:600;}
 
   /* ---------- 睡眠 ---------- */
   .sleep-datetabs{display:flex;gap:8px;margin-bottom:14px;}
@@ -454,23 +467,25 @@
     { t: "00:20:02", event: "heart_rate_read", value: "FAILED" },
   ];
 
-  // 今天（09-13）这几条是案发当天的真实行程，不是循环闹钟——跟已有的
-  // w43（"落地之后还要直接去彩排"）、p012（"下午上海品牌活动，19:40
-  // 原定飞杭州"）、c25（19:26 Bubble 广播取消杭州行程）这几条线索对得
-  // 上：早班机落地是坐着，彩排是高强度活动，品牌活动多为站立候场，
-  // 19:40 原定的杭州航班取消了，也就少了一段本该坐着的时间——这一整天
-  // 活动量偏高、但穿插着不短的乘车/候场/飞机上的静坐时间，不是那种
-  // 从早到晚连轴动的类型。
   const REMINDERS = [
-    { time: "08:20", label: "机场 · 抵达", repeat: "今天" },
-    { time: "09:50", label: "彩排", repeat: "今天" },
-    { time: "14:00", label: "上海品牌活动", repeat: "今天" },
-    { time: "19:40", label: "飞杭州（已取消）", repeat: "今天" },
     { time: "07:00", label: "起床", repeat: "工作日" },
     { time: "09:30", label: "起床", repeat: "周末" },
     { time: "19:30", label: "健身时间", repeat: "每周三 / 周六" },
     { time: "03-04", label: "林安生日", repeat: "每年" },
     { time: "06-22", label: null, repeat: "每年" },
+  ];
+
+  // 案发当天（09-13）的真实行程不再当成"今天"的循环闹钟摆在活跃列表
+  // 里——现在"今天"是 09-14，这几条已经是过去时了。跟已有的 w43
+  // （"落地之后还要直接去彩排"）、p012（"下午上海品牌活动，19:40
+  // 原定飞杭州"）、c25（19:26 Bubble 广播取消杭州行程）这几条线索对
+  // 得上，只是这一版藏在"设定新闹钟"里的"过期的闹钟"列表里，需要玩家
+  // 自己点进去翻。
+  const EXPIRED_ALARMS = [
+    { date: "09-13", time: "08:20", label: "机场 · 抵达" },
+    { date: "09-13", time: "09:50", label: "彩排" },
+    { date: "09-13", time: "14:00", label: "上海品牌活动" },
+    { date: "09-13", time: "19:40", label: "飞杭州（已取消）" },
   ];
 
   const SLEEP_STAGES = {
@@ -689,7 +704,7 @@
         <div class="rings-card">
           <div class="as-subtle" style="margin:0 0 12px;">今日活动 · 09-14</div>
           <div class="rings-row" id="rings-row"></div>
-          <div class="disclaimer" style="margin-top:14px;">设备今天（09-14）没有记录到任何新的活动数据。去"活动"页往前翻一天，能看到 09-13 那天完整的记录。</div>
+          <div class="disclaimer" style="margin-top:14px;">设备今天（09-14）没有记录到任何新的活动数据。</div>
         </div>
         <div class="as-subtle">近 7 天</div>
         <div id="ov-list"></div>
@@ -707,7 +722,7 @@
       { key: "hr", glyph: "♥", bg: "var(--accent-soft)", fg: "var(--accent)", name: "心率", time: "09-13 23:47", value: "127", unit: "bpm", pct: (127 - 40) / (140 - 40), bar: "linear-gradient(90deg,#6d6dff,#a869ff)", caption: "高于静息参考区间", ok: false },
       { key: "sleep", glyph: "☾", bg: "rgba(49,201,201,.15)", fg: "#1fa3a3", name: "睡眠", time: "09-12 07:10", value: "5.9", unit: "小时", pct: 0.6, bar: "#31c9c9", caption: "低于近期平均", ok: false },
       { key: "spo2", glyph: "●", bg: "rgba(47,174,107,.15)", fg: "#2fae6b", name: "血氧饱和度", time: "今天 08:14", value: "97", unit: "%", pct: 0.94, bar: "#2fae6b", caption: "正常范围", ok: true },
-      { key: "device", glyph: "⏰", bg: "var(--surface-2)", fg: "var(--ink-faint)", name: "闹钟 / 提醒", time: "", value: `${REMINDERS.length}`, unit: "项", pct: 1, bar: "var(--ink-faint)", caption: "点击查看全部", ok: true },
+      { key: "device", glyph: "⏰", bg: "var(--surface-2)", fg: "var(--ink-faint)", name: "闹钟 / 提醒", time: "", value: `${REMINDERS.length}`, unit: "项", pct: 1, bar: "var(--ink-faint)", caption: "", ok: false },
     ];
     el.innerHTML = items.map((it) => `
       <div class="ov-card" data-key="${it.key}">
@@ -719,7 +734,7 @@
         </div>
         <div class="ov-value">${it.value}<span class="unit">${it.unit}</span></div>
         <div class="mini-bar"><div class="fill" style="width:${Math.min(it.pct, 1) * 100}%;background:${it.bar};"></div><div class="marker" style="left:${Math.min(it.pct, 1) * 100}%;"></div></div>
-        <div class="ov-caption"><span class="${it.ok ? "ok" : ""}">${it.ok ? "✓ " : ""}${it.caption}</span></div>
+        ${it.caption ? `<div class="ov-caption"><span class="${it.ok ? "ok" : ""}">${it.ok ? "✓ " : ""}${it.caption}</span></div>` : ""}
       </div>
     `).join("");
     el.querySelectorAll(".ov-card").forEach((c) => {
@@ -901,8 +916,30 @@
           </div>
         `).join("")}
       </div>
+      <div class="new-alarm-btn" id="new-alarm-btn"><span class="plus">+</span> 设定新闹钟</div>
+      <div id="expired-panel" hidden>
+        <div class="as-subtle" style="margin-top:18px;">过期的闹钟</div>
+        <div class="synclog">
+          ${EXPIRED_ALARMS.map((a, i) => `
+            <div class="reminder-row expired-row" data-i="${i}">
+              <span class="expired-check" id="exp-check-${i}"></span>
+              <span class="rtime mono">${a.date} ${a.time}</span>
+              <span class="rlabel">${a.label}</span>
+            </div>
+          `).join("")}
+        </div>
+      </div>
       <div class="disclaimer">提醒事项与设备本地时钟同步，删除或修改闹钟不会同步到云端历史记录。</div>
     `;
+    const btn = pane.querySelector("#new-alarm-btn");
+    const panel = pane.querySelector("#expired-panel");
+    btn.addEventListener("click", () => {
+      panel.hidden = !panel.hidden;
+      btn.innerHTML = panel.hidden ? `<span class="plus">+</span> 设定新闹钟` : `<span class="plus">−</span> 收起`;
+    });
+    pane.querySelectorAll(".expired-row").forEach((row) => {
+      row.addEventListener("click", () => row.classList.toggle("selected"));
+    });
   }
 
   function timeToMin(t) {
@@ -980,7 +1017,7 @@
           <span><span class="dot" style="border:1.6px dashed var(--warn);background:transparent;"></span>未收到读数（设备离线/未佩戴/接触不良等）</span>
         </div>
       </div>
-      <div class="disclaimer">默认情况下手环每 20-45 分钟同步一次心率读数，间隔并不固定；进入运动模式后会切换为实时记录。图表上的每一个点都是一次独立同步，点与点之间的空白时间段内手环并未持续采样——"未收到读数"只代表当次同步没有拿到有效数据，可能是设备离线、被摘下、接触不良或电量不足，不代表佩戴者在那一刻发生了什么。</div>
+      <div class="disclaimer">默认情况下手环每 20-45 分钟同步一次心率读数，间隔并不固定；进入运动模式后会切换为实时记录。</div>
       <div class="hr-rawlog-toggle" id="hr-rawlog-toggle">高级设置 · 查看原始同步记录 ›</div>
       <div id="hr-rawlog-panel" hidden></div>
     `;
@@ -1008,15 +1045,6 @@
               </tr>
             `).join("")}
           </table>
-        </div>
-        <div class="hr-rawlog-legend">
-          <b>wrist_detected</b>：佩戴检测传感器是否接触到皮肤<br/>
-          <b>heart_rate</b>：心率传感器捕获到的原始读数<br/>
-          <b>sync_queue</b>：本地记录等待上传的状态——pending 表示已捕获但还未确认送达云端，delivered 表示云端确认收到<br/>
-          <b>bluetooth</b>：手环与手机之间的蓝牙连接状态<br/>
-          <b>device_motion</b>：运动传感器检测到设备发生位移/加速度变化<br/>
-          <b>heart_rate_read</b>：主动读取心率的尝试结果<br/><br/>
-          "心率"图表上显示的时间点，对应的是 sync_queue 里 delivered 的那一刻，不是 heart_rate 本身被捕获的那一刻——两者之间可能隔着一段蓝牙断连、数据滞留在本地队列里的空档。
         </div>
       `;
     });
