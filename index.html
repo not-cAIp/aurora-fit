@@ -175,6 +175,7 @@
   .device-card .dc-icon{
     width:42px;height:42px;border-radius:12px;background:var(--accent-soft);color:var(--accent);
     display:flex;align-items:center;justify-content:center;flex:none;
+    background-image:url(aurora-band.png);background-size:220%;background-position:50% 35%;
   }
   .device-card .dc-icon svg{width:22px;height:22px;}
   .device-card .dc-name{font-size:14px;font-weight:700;}
@@ -980,7 +981,7 @@ SCREENS.home = function (body) {
 
       <div class="device-card">
         <div class="dc-head">
-          <div class="dc-icon">${ICON.band}</div>
+          <div class="dc-icon"></div>
           <div>
             <div class="dc-name">极光手环 三代</div>
             <div class="dc-status"><span class="dot"></span>已连接</div>
@@ -1536,7 +1537,7 @@ SCREENS.device = function (body) {
     <div class="as-content">
       <div class="device-card">
         <div class="dc-head">
-          <div class="dc-icon">${ICON.band}</div>
+          <div class="dc-icon"></div>
           <div><div class="dc-name">极光手环 三代</div><div class="dc-status"><span class="dot"></span>已连接</div></div>
           <div class="dc-battery">63%</div>
         </div>
