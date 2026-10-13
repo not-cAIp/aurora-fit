@@ -571,6 +571,47 @@
     padding:16px;font-size:14px;font-weight:700;cursor:pointer;
   }
   .find-band-status{text-align:center;font-size:13px;color:var(--ink-soft);margin-top:14px;min-height:20px;}
+  /* =====================================================================
+     登录后的 App Shell 深色主题——跟官网同一套视觉：黑底、青色强调、
+     Barlow Condensed 数字。只改变量和少数写死的颜色，布局/交互不动。
+     底部弹层、遮罩、提示条是挂在 body 下的，所以变量一并作用在它们身上。
+     ===================================================================== */
+  .appshell,.bottom-sheet,.sheet-scrim,.save-toast{
+    --bg:#05070c; --surface:#0c1018; --surface-2:#131927;
+    --ink:#f4f6fb; --ink-soft:#a3abbf; --ink-faint:#6c7489;
+    --line:rgba(255,255,255,.1);
+    --accent:#3ee6c4; --accent-soft:rgba(62,230,196,.12);
+    --grad1:#8f7bff; --grad2:#3ee6c4; --grad3:#3ee6c4;
+    --warn:#ff7a8d; --ok:#5be3a0; --caution:#ffb066; --muted:#5a6277;
+    color-scheme:dark;
+  }
+  .appshell{
+    color:var(--ink);
+    background:radial-gradient(760px 380px at 88% -90px,rgba(143,123,255,.2),transparent 70%) no-repeat,var(--bg);
+  }
+  .appshell .as-topbar{background:rgba(5,7,12,.82);backdrop-filter:blur(14px);}
+  .appshell .as-topbar .as-avatar,.appshell .profile-head .ph-avatar{color:#04100d;}
+  .appshell .as-bottomnav{background:rgba(5,7,12,.9);}
+  .appshell .as-bottomnav button{letter-spacing:.04em;}
+  .appshell .as-greeting{font-family:"Noto Sans SC","Inter",sans-serif;font-weight:900;font-size:32px;letter-spacing:-.01em;margin-bottom:6px;}
+  .appshell .as-h1{font-family:"Noto Sans SC","Inter",sans-serif;font-weight:900;}
+  .appshell .as-subtle{letter-spacing:.14em;}
+  .appshell .ov-card .ov-value,.appshell .rv-stat-value,.appshell .report-stat .rs-val{
+    font-family:"Barlow Condensed","Noto Sans SC",sans-serif;font-weight:800;letter-spacing:.01em;
+  }
+  .appshell .ov-card .ov-value{font-size:34px;}
+  .appshell .rv-stat-value{font-size:52px;}
+  .appshell .report-stat .rs-val{font-size:34px;}
+  .appshell .alarm-row .ar-time{font-family:"Barlow Condensed",sans-serif;font-size:28px;font-weight:700;}
+  .appshell .ov-card,.appshell .device-card,.appshell .rings-card,.appshell .menu-card,.appshell .report-stat,.appshell .workout-card,.appshell .hr-detail-card,.appshell .rv-indepth-card{border-radius:18px;}
+  .appshell .rv-indepth-head .qm,.hr-tooltip{background:var(--ink);color:#05070c;}
+  .appshell .save-btn,.bottom-sheet .sheet-actions .btn-save{color:#04100d;}
+  .appshell .start-btn{background:var(--accent);color:#04100d;}
+  .save-toast{background:var(--ink);color:#05070c;}
+  .appshell .ring-item .rv{color:var(--ink);}
+  .appshell .hr-rawlog-panel{border:1px solid var(--line);}
+  .bottom-sheet{color:var(--ink);border-top:1px solid var(--line);}
+  .menu-card .sleep-hist-row,.menu-card .notif-row,.menu-card .workout-hist-row{padding-left:16px;padding-right:16px;}
 </style>
 </head>
 <body>
@@ -905,7 +946,7 @@ const ACTIVITY_DATE_ORDER = Object.keys(ACTIVITY_BY_DATE);
 /* =====================================================================
    六、睡眠 —— 本周历史 + 09-13 夜（跨 09-14 凌晨）无法生成报告
    ===================================================================== */
-const SLEEP_STAGES_COLOR = { deep: "#4f4fe0", light: "#8f8fff", rem: "#31c9c9", awake: "#e7e9f3" };
+const SLEEP_STAGES_COLOR = { deep: "#4f4fe0", light: "#8f8fff", rem: "#31c9c9", awake: "#3a4256" };
 const SLEEP_STAGES_NAME = { deep: "深睡", light: "浅睡", rem: "REM", awake: "清醒" };
 // 09-12 这一晚有完整的分期数据，用来渲染细分色块；分钟数总和 391，
 // 对应"6h31"，跟下面 SLEEP_BY_DATE 里的数字对齐。
@@ -1002,7 +1043,7 @@ function svgScatter(points, { minY, maxY, optMin, optMax, w = 340, h = 170 }) {
     if (p.v == null) {
       return `<circle cx="${xOf(i)}" cy="${yOf((minY + maxY) / 2)}" r="4.5" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="2 2" />`;
     }
-    return `<circle cx="${xOf(i)}" cy="${yOf(Math.min(Math.max(p.v, minY), maxY))}" r="4.5" fill="var(--accent)" stroke="#fff" stroke-width="1.5" />`;
+    return `<circle cx="${xOf(i)}" cy="${yOf(Math.min(Math.max(p.v, minY), maxY))}" r="4.5" fill="var(--accent)" stroke="#131927" stroke-width="1.5" />`;
   }).join("");
   const ticks = points.map((p, i) => `<text x="${xOf(i)}" y="${h - 6}" font-size="9" fill="var(--ink-faint)" text-anchor="middle" font-family="JetBrains Mono, monospace">${p.week || p.d}</text>`).join("");
   const band = optMin != null ? `<rect x="${padL}" y="${bandTop}" width="${chartW}" height="${bandH}" fill="var(--ok)" opacity="0.12" rx="3" />` : "";
@@ -1080,7 +1121,7 @@ function renderMonthRangeView(pane, { unit, data, minY, maxY, optMin, optMax, pc
       <div class="rv-indepth-head"><h4>区间变化</h4><div class="qm">?</div></div>
       <div class="rv-indepth-sub">超出参考范围</div>
       <div class="rv-indepth-val">${valid.length - inRange} / ${valid.length}</div>
-      ${svgBars(valid.map((p) => ({ ...p, v: Math.abs(p.v - mid) })), { max: devMax, color: "#7c6fee" })}
+      ${svgBars(valid.map((p) => ({ ...p, v: Math.abs(p.v - mid) })), { max: devMax, color: "#8f7bff" })}
     </div>
   `;
 }
@@ -1424,7 +1465,7 @@ function renderHrDayChart(pane) {
     `<polyline points="${seg.map((p) => `${xOf(p.min)},${yOf(p.v)}`).join(" ")}" fill="none" stroke="url(#hrGrad)" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" />`
   ).join("");
   const dotsHtml = pts.map((p, i) => p.v != null
-    ? `<circle data-i="${i}" cx="${xOf(p.min)}" cy="${yOf(p.v)}" r="4" fill="#fff" stroke="#6d6dff" stroke-width="1.6" />`
+    ? `<circle data-i="${i}" cx="${xOf(p.min)}" cy="${yOf(p.v)}" r="4" fill="#0c1018" stroke="#3ee6c4" stroke-width="1.6" />`
     : `<g data-i="${i}" transform="translate(${xOf(p.min)},${yOf(85)})"><circle r="7" fill="none" stroke="var(--muted)" stroke-width="1.6" stroke-dasharray="2.5 2.5" /></g>`
   ).join("");
   const hourTicks = [0, 360, 720, 1080, 1440].filter((m) => m <= maxX);
@@ -1436,7 +1477,7 @@ function renderHrDayChart(pane) {
   pane.innerHTML = `
     <div class="hr-wrap">
       <svg class="hr-chart" viewBox="0 0 ${W} ${H}" id="hr-svg">
-        <defs><linearGradient id="hrGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#6d6dff" /><stop offset="100%" stop-color="#a869ff" /></linearGradient></defs>
+        <defs><linearGradient id="hrGrad" x1="0" y1="0" x2="1" y2="0"><stop offset="0%" stop-color="#3ee6c4" /><stop offset="100%" stop-color="#8f7bff" /></linearGradient></defs>
         <rect x="${padL}" y="${bandTop}" width="${chartW}" height="${bandBottom - bandTop}" fill="#31c9c9" opacity="0.08" />
         <text x="${padL + 4}" y="${bandTop - 4}" font-size="9" fill="var(--ink-faint)" text-anchor="start" font-family="JetBrains Mono, monospace">65-85 静息参考区间</text>
         ${ticksHtml}${pathsHtml}${dotsHtml}
