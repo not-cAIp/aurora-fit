@@ -611,6 +611,7 @@
   .appshell .ring-item .rv{color:var(--ink);}
   .appshell .hr-rawlog-panel{border:1px solid var(--line);}
   .bottom-sheet{color:var(--ink);border-top:1px solid var(--line);}
+  .appshell .is-off{opacity:.38;pointer-events:none;cursor:default;}
   .menu-card .sleep-hist-row,.menu-card .notif-row,.menu-card .workout-hist-row{padding-left:16px;padding-right:16px;}
 </style>
 </head>
@@ -1267,27 +1268,26 @@ function renderHealthOverviewList(el) {
     { key: "hr", glyph: "♥", bg: "var(--accent-soft)", fg: "var(--accent)", name: "心率", time: "今天", value: "--", unit: "", caption: "暂无近期数据" },
     { key: "sleep", glyph: "☾", bg: "rgba(49,201,201,.15)", fg: "#1fa3a3", name: "睡眠", time: "今天", value: "--", unit: "", caption: "暂无完整睡眠记录" },
     { key: "spo2", glyph: "●", bg: "rgba(47,174,107,.15)", fg: "var(--ok)", name: "血氧饱和度", time: "09-12", value: "97", unit: "%", caption: "" },
-    { key: "stress", glyph: "◐", bg: "rgba(224,138,60,.15)", fg: "var(--caution)", name: "压力", time: "09-12", value: "中等", unit: "", caption: "" },
+    { key: "stress", glyph: "◐", bg: "rgba(224,138,60,.15)", fg: "var(--caution)", name: "压力", time: "09-12", value: "中等", unit: "", caption: "", off: true },
   ];
   el.innerHTML = items.map((it) => `
-    <div class="ov-card" data-key="${it.key}">
+    <div class="ov-card${it.off ? " is-off" : ""}" data-key="${it.key}"${it.off ? ' aria-disabled="true"' : ""}>
       <div class="ov-head">
         <div class="ov-ic" style="background:${it.bg};color:${it.fg};">${it.glyph}</div>
         <div class="ov-name">${it.name}</div>
         <div class="ov-time mono">${it.time}</div>
-        <div class="ov-chev">›</div>
+        ${it.off ? "" : `<div class="ov-chev">›</div>`}
       </div>
       <div class="ov-value">${it.value}${it.unit ? `<span class="unit">${it.unit}</span>` : ""}</div>
       ${it.caption ? `<div class="ov-caption">${it.caption}</div>` : ""}
     </div>
   `).join("");
-  el.querySelectorAll(".ov-card").forEach((c) => {
+  el.querySelectorAll(".ov-card:not(.is-off)").forEach((c) => {
     c.addEventListener("click", () => {
       const k = c.dataset.key;
       if (k === "hr") nav("hrDetail", "home");
       else if (k === "sleep") nav("sleepDetail", "home");
       else if (k === "spo2") nav("spo2Detail", "home");
-      else if (k === "stress") nav("stressDetail", "home");
     });
   });
 }
@@ -1385,16 +1385,15 @@ SCREENS.health = function (body) {
   // 健康 tab 里再补一张"活动趋势"卡片，健康数据列表本身复用首页那份。
   const list = document.getElementById("health-list");
   const trendCard = document.createElement("div");
-  trendCard.className = "ov-card";
+  trendCard.className = "ov-card is-off";
+  trendCard.setAttribute("aria-disabled", "true");
   trendCard.innerHTML = `
     <div class="ov-head">
       <div class="ov-ic" style="background:rgba(109,109,255,.15);color:var(--grad1);">▤</div>
       <div class="ov-name">活动趋势</div>
-      <div class="ov-chev">›</div>
     </div>
     <div class="ov-caption">近 7 天步数 / 活动时长变化</div>
   `;
-  trendCard.addEventListener("click", () => nav("trendDetail", "health"));
   list.appendChild(trendCard);
 };
 
@@ -1687,33 +1686,7 @@ SCREENS.spo2Detail = function (body) {
   renderMonthRangeView(document.getElementById("spo2-body"), { unit: "%", data: SPO2_MONTH, minY: 88, maxY: 100, optMin: 95, optMax: 100 });
 };
 
-SCREENS.stressDetail = function (body) {
-  const STRESS_WEEK = [{ d: "09-08", v: 38 }, { d: "09-09", v: 42 }, { d: "09-10", v: 35 }, { d: "09-11", v: 46 }, { d: "09-12", v: 40 }];
-  body.innerHTML = `
-    ${detailTopbar("压力")}
-    <div class="as-content">
-      <div class="rv-stat-label">当前压力</div>
-      <div class="rv-stat-value">中等 · 40</div>
-      <div class="rv-chartbox">${svgBars(STRESS_WEEK, { max: 100, color: "var(--caution)" })}</div>
-      <div class="disclaimer">压力指数根据心率变异性（HRV）估算，仅供参考。</div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-};
 
-SCREENS.trendDetail = function (body) {
-  const stepsWeek = ACTIVITY_DATE_ORDER.filter((d) => d !== TODAY).map((d) => ({ d, v: ACTIVITY_BY_DATE[d].steps }));
-  body.innerHTML = `
-    ${detailTopbar("活动趋势")}
-    <div class="as-content">
-      <div class="as-subtle" style="margin-top:0;">近 7 天步数</div>
-      <div class="rv-chartbox">${svgBars([...stepsWeek, { d: TODAY, v: Math.max(ACTIVITY_BY_DATE[TODAY].steps, 3) }], { max: 12000, color: "var(--accent)" })}</div>
-      <div class="as-subtle">近 7 天活动时长（分钟）</div>
-      <div class="rv-chartbox">${svgBars([...ACTIVITY_DATE_ORDER.filter((d) => d !== TODAY).map((d) => ({ d, v: ACTIVITY_BY_DATE[d].exercise })), { d: TODAY, v: Math.max(ACTIVITY_BY_DATE[TODAY].exercise, 1) }], { max: 60, color: "#92e82a" })}</div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-};
 
 /* =====================================================================
    十六、运动 tab
@@ -1734,11 +1707,8 @@ SCREENS.workout = function (body) {
   `;
   const grid = document.getElementById("workout-types");
   grid.innerHTML = WORKOUT_TYPES.map((w) => `
-    <div class="workout-card" data-id="${w.id}"><div class="wc-ic">${ICON[w.icon]}</div><div class="wc-name">${w.name}</div></div>
+    <div class="workout-card is-off" data-id="${w.id}" aria-disabled="true"><div class="wc-ic">${ICON[w.icon]}</div><div class="wc-name">${w.name}</div></div>
   `).join("");
-  grid.querySelectorAll(".workout-card").forEach((c) => {
-    c.addEventListener("click", () => { workoutPrepType = c.dataset.id; nav("workoutPrep", "workout"); });
-  });
   document.getElementById("workout-week-chart").innerHTML = svgBars(
     ACTIVITY_DATE_ORDER.map((d) => ({ d, v: Math.max(ACTIVITY_BY_DATE[d].steps, 30) })),
     { max: 12000, color: "var(--accent)" }
@@ -1756,28 +1726,6 @@ SCREENS.workout = function (body) {
   `).join("");
 };
 
-let workoutPrepType = "outdoor-run";
-SCREENS.workoutPrep = function (body) {
-  const w = WORKOUT_TYPES.find((x) => x.id === workoutPrepType) || WORKOUT_TYPES[0];
-  const needsGps = w.id === "outdoor-run" || w.id === "cycle" || w.id === "walk";
-  body.innerHTML = `
-    ${detailTopbar(w.name)}
-    <div class="as-content">
-      ${needsGps ? `<div class="prep-row"><span class="pr-label">GPS</span><span class="pr-val" id="gps-status">定位中……</span></div>` : ""}
-      <div class="prep-row"><span class="pr-label">心率设备</span><span class="pr-val">极光手环 · 已连接</span></div>
-      <div class="prep-row"><span class="pr-label">活动目标</span><span class="pr-val">${prefs.goals.kcal} kcal</span></div>
-      <button class="start-btn" id="start-workout-btn">开始</button>
-      <div class="find-band-status" id="start-status"></div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-  if (needsGps) {
-    setTimeout(() => { const el = document.getElementById("gps-status"); if (el) el.textContent = "定位成功"; }, 1400);
-  }
-  document.getElementById("start-workout-btn").addEventListener("click", () => {
-    document.getElementById("start-status").textContent = "训练记录中……（演示版本不记录真实轨迹）";
-  });
-};
 
 /* =====================================================================
    十七、设备 tab
@@ -1798,68 +1746,27 @@ SCREENS.device = function (body) {
   `;
   const menuItems = [
     { label: "健康监测", screen: "healthMonitorSettings" },
-    { label: "心率监测频率", value: prefs.healthMonitor.hrFreq + " 分钟", screen: "healthMonitorSettings" },
+    { label: "心率监测频率", value: prefs.healthMonitor.hrFreq + " 分钟", screen: "healthMonitorSettings", off: true },
     { label: "闹钟与提醒", screen: "alarmsReminders" },
     { label: "通知管理", screen: "notifications" },
-    { label: "抬腕亮屏", screen: "wristRaise" },
+    { label: "抬腕亮屏", screen: "wristRaise", off: true },
     { label: "久坐提醒", screen: "sedentarySettings" },
-    { label: "喝水提醒", screen: "waterSettings" },
+    { label: "喝水提醒", screen: "waterSettings", off: true },
     { label: "查找手环", screen: "findBand" },
-    { label: "固件更新", screen: "firmware" },
-    { label: "设备信息", screen: "deviceInfo" },
+    { label: "固件更新", screen: "firmware", off: true },
+    { label: "设备信息", screen: "deviceInfo", off: true },
   ];
   const menu = document.getElementById("device-menu");
   menu.innerHTML = menuItems.map((m) => `
-    <div class="menu-row" data-screen="${m.screen}">
+    <div class="menu-row${m.off ? " is-off" : ""}" data-screen="${m.screen}"${m.off ? ' aria-disabled="true"' : ""}>
       <div class="mr-label">${m.label}</div>
       ${m.value ? `<div class="mr-value">${m.value}</div>` : ""}
-      <div class="mr-chev">${ICON.chevron}</div>
+      ${m.off ? "" : `<div class="mr-chev">${ICON.chevron}</div>`}
     </div>
   `).join("");
-  menu.querySelectorAll(".menu-row").forEach((r) => r.addEventListener("click", () => nav(r.dataset.screen, "device")));
+  menu.querySelectorAll(".menu-row:not(.is-off)").forEach((r) => r.addEventListener("click", () => nav(r.dataset.screen, "device")));
 };
 
-SCREENS.wristRaise = function (body) {
-  body.innerHTML = `
-    ${detailTopbar("抬腕亮屏")}
-    <div class="as-content">
-      <div class="menu-card">
-        <div class="toggle-row"><div class="tr-label">抬腕亮屏</div><div class="toggle on" id="tg-wrist"><div class="knob"></div></div></div>
-        <div class="toggle-row"><div><div class="tr-label">运动时保持常亮</div></div><div class="toggle" id="tg-wrist2"><div class="knob"></div></div></div>
-      </div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-  body.querySelectorAll(".toggle").forEach((t) => t.addEventListener("click", () => t.classList.toggle("on")));
-};
-SCREENS.firmware = function (body) {
-  body.innerHTml = "";
-  body.innerHTML = `
-    ${detailTopbar("固件更新")}
-    <div class="as-content">
-      <div class="menu-card">
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">当前版本</div><div class="mr-value mono">3.4.12</div></div>
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">最近更新</div><div class="mr-value mono">08-30</div></div>
-      </div>
-      <div class="disclaimer">已是最新版本。</div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-};
-SCREENS.deviceInfo = function (body) {
-  body.innerHTML = `
-    ${detailTopbar("设备信息")}
-    <div class="as-content">
-      <div class="menu-card">
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">型号</div><div class="mr-value">极光手环 二代</div></div>
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">设备编号</div><div class="mr-value mono">AF3-771092</div></div>
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">绑定账号</div><div class="mr-value mono">${USERNAME}</div></div>
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">配对时间</div><div class="mr-value mono">2025-11-02</div></div>
-      </div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-};
 
 SCREENS.healthMonitorSettings = function (body) {
   body.innerHTML = `
@@ -1904,22 +1811,6 @@ SCREENS.sedentarySettings = function (body) {
   tg.addEventListener("click", () => { prefs.sedentary.on = !prefs.sedentary.on; savePrefs(); tg.classList.toggle("on", prefs.sedentary.on); });
 };
 
-SCREENS.waterSettings = function (body) {
-  body.innerHTML = `
-    ${detailTopbar("喝水提醒")}
-    <div class="as-content">
-      <div class="menu-card">
-        <div class="toggle-row"><div class="tr-label">喝水提醒</div><div class="toggle" id="tg-water"><div class="knob"></div></div></div>
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">提醒间隔</div><div class="mr-value">${prefs.water.interval} h</div></div>
-        <div class="menu-row" style="cursor:default;"><div class="mr-label">时间</div><div class="mr-value mono">${prefs.water.start}–${prefs.water.end}</div></div>
-      </div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-  const tg = body.querySelector("#tg-water");
-  tg.classList.toggle("on", prefs.water.on);
-  tg.addEventListener("click", () => { prefs.water.on = !prefs.water.on; savePrefs(); tg.classList.toggle("on", prefs.water.on); });
-};
 
 SCREENS.findBand = function (body) {
   body.innerHTML = `
@@ -2123,34 +2014,20 @@ SCREENS.profile = function (body) {
     </div>
   `;
   const items = [
-    { label: "个人资料", screen: "placeholder:个人资料" },
+    { label: "个人资料", off: true },
     { label: "我的目标", screen: "activityGoals" },
     { label: "周报", screen: "weeklyReport" },
-    { label: "单位设置", screen: "placeholder:单位设置" },
-    { label: "数据权限", screen: "placeholder:数据权限" },
-    { label: "隐私", screen: "placeholder:隐私" },
-    { label: "帮助", screen: "placeholder:帮助" },
-    { label: "关于 AURORA", screen: "placeholder:关于 AURORA" },
+    { label: "单位设置", off: true },
+    { label: "数据权限", off: true },
+    { label: "隐私", off: true },
+    { label: "帮助", off: true },
+    { label: "关于 AURORA", off: true },
   ];
   const menu = document.getElementById("profile-menu");
-  menu.innerHTML = items.map((m) => `<div class="menu-row" data-screen="${m.screen}"><div class="mr-label">${m.label}</div><div class="mr-chev">${ICON.chevron}</div></div>`).join("");
-  menu.querySelectorAll(".menu-row").forEach((r) => r.addEventListener("click", () => {
-    const s = r.dataset.screen;
-    if (s.startsWith("placeholder:")) { placeholderTitle = s.split(":")[1]; nav("placeholder", "profile"); }
-    else nav(s, "profile");
-  }));
+  menu.innerHTML = items.map((m) => `<div class="menu-row${m.off ? " is-off" : ""}"${m.screen ? ` data-screen="${m.screen}"` : ""}${m.off ? ' aria-disabled="true"' : ""}><div class="mr-label">${m.label}</div>${m.off ? "" : `<div class="mr-chev">${ICON.chevron}</div>`}</div>`).join("");
+  menu.querySelectorAll(".menu-row:not(.is-off)").forEach((r) => r.addEventListener("click", () => nav(r.dataset.screen, "profile")));
 };
 
-let placeholderTitle = "";
-SCREENS.placeholder = function (body) {
-  body.innerHTML = `
-    ${detailTopbar(placeholderTitle)}
-    <div class="as-content">
-      <div class="empty-state"><b>${placeholderTitle}</b>该功能暂未开放</div>
-    </div>
-  `;
-  bindDetailTopbar(body);
-};
 
 SCREENS.weeklyReport = function (body) {
   const days = ACTIVITY_DATE_ORDER.filter((d) => d !== TODAY);
