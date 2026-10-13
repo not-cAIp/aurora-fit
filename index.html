@@ -4,7 +4,7 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <title>极光运动 AURORA</title>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+SC:wght@400;500;700;900&display=swap">
 <style>
   :root{
     --bg:#fafbfe; --surface:#ffffff; --surface-2:#f2f4fb;
@@ -23,91 +23,204 @@
   [hidden]{display:none!important;}
   a{color:var(--accent);}
 
-  header.top{
-    display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px 16px;
-    padding:14px 20px;position:sticky;top:0;background:rgba(250,251,254,.9);
-    backdrop-filter:blur(6px);border-bottom:1px solid var(--line);z-index:10;
-  }
-  .brand{display:flex;align-items:center;gap:9px;font-weight:800;font-size:15px;letter-spacing:.01em;white-space:nowrap;}
-  .brand .mark{
-    width:26px;height:26px;border-radius:8px;flex:none;
-    background-image:url(aurora-logo.jpg);background-size:cover;background-position:center;
-  }
-  .navlinks{display:flex;gap:18px;font-size:12.5px;color:var(--ink-soft);flex-wrap:wrap;}
-  .navlinks span{cursor:pointer;white-space:nowrap;}
-  .navlinks span:hover{color:var(--ink);}
-  .login-cta{
-    background:var(--ink);color:#fff;border:none;border-radius:100px;flex:none;
-    padding:8px 16px;font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;
-  }
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto;}}
 
-  main{max-width:920px;margin:0 auto;padding:0 20px 80px;}
-
-  .hero{padding:70px 0 50px;text-align:center;}
-  .hero .eyebrow{font-size:11.5px;letter-spacing:.12em;color:var(--accent);font-weight:700;margin-bottom:14px;}
-  .hero h1{
-    font-size:clamp(26px,6vw,38px);line-height:1.25;margin:0 0 16px;font-weight:800;
-    background:linear-gradient(120deg,var(--grad1),var(--grad3));
-    -webkit-background-clip:text;background-clip:text;color:transparent;
+  /* =====================================================================
+     官网（登录前）——深色、运动数据品牌风。所有变量和类名都带 mk 前缀，
+     不跟登录后的 App Shell 共用，互不影响。
+     ===================================================================== */
+  .mk{
+    --mk-bg:#05070c; --mk-s1:#0c1018; --mk-s2:#131927; --mk-line:rgba(255,255,255,.1);
+    --mk-ink:#f4f6fb; --mk-soft:#a3abbf; --mk-faint:#6c7489;
+    --mk-acc:#3ee6c4; --mk-violet:#8f7bff; --mk-pink:#ff375f;
+    background:var(--mk-bg);color:var(--mk-ink);
+    font-family:"Inter","Noto Sans SC",system-ui,sans-serif;-webkit-font-smoothing:antialiased;
   }
-  .hero p{font-size:14.5px;color:var(--ink-soft);max-width:480px;margin:0 auto 26px;line-height:1.8;}
-  .hero-cta{display:flex;gap:12px;justify-content:center;}
-  .btn-primary{
-    background:linear-gradient(120deg,var(--grad1),var(--grad3));color:#fff;border:none;border-radius:10px;
-    padding:12px 22px;font-size:13.5px;font-weight:700;cursor:pointer;
+  .mk a{color:inherit;text-decoration:none;}
+  .mk :focus-visible{outline:2px solid var(--mk-acc);outline-offset:3px;border-radius:4px;}
+  .mk-wrap{max-width:1160px;margin:0 auto;padding-inline:20px;}
+  .mk-disp{font-family:"Barlow Condensed","Noto Sans SC",sans-serif;text-transform:uppercase;letter-spacing:.02em;}
+
+  /* 顶部公告条 + 导航 */
+  .mk-promo{
+    background:var(--mk-acc);color:#04100d;text-align:center;font-size:12.5px;font-weight:600;
+    padding:9px 16px;letter-spacing:.01em;
   }
-  .btn-ghost{
-    background:var(--surface);color:var(--ink);border:1px solid var(--line);border-radius:10px;
-    padding:12px 22px;font-size:13.5px;font-weight:600;cursor:pointer;
+  .mk-promo a{text-decoration:underline;text-underline-offset:3px;margin-left:8px;}
+  header.mk-nav{
+    position:sticky;top:0;z-index:20;background:rgba(5,7,12,.82);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--mk-line);
   }
-
-  .hero-photo{border-radius:24px;margin:0 0 18px;overflow:hidden;}
-  .hero-photo img{display:block;width:100%;height:auto;}
-
-  .photo-caption{text-align:center;font-size:12px;color:var(--ink-faint);margin:0 0 52px;}
-  .photo-caption b{color:var(--ink-soft);font-weight:600;}
-
-  .grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:56px;}
-  .card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px;}
-  .card .ic{
-    width:38px;height:38px;border-radius:10px;margin-bottom:14px;
-    display:flex;align-items:center;justify-content:center;
-    background:var(--accent-soft);color:var(--accent);
+  .mk-nav-in{display:flex;align-items:center;gap:28px;height:64px;}
+  .mk-brand{display:flex;align-items:center;gap:10px;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:22px;letter-spacing:.22em;white-space:nowrap;}
+  .mk-brand .mk-mark{width:26px;height:26px;border-radius:7px;flex:none;background:url(aurora-logo.jpg) center/cover;}
+  .mk-links{display:flex;gap:26px;font-size:13px;color:var(--mk-soft);margin-left:12px;flex:1;}
+  .mk-links span{cursor:pointer;white-space:nowrap;transition:color .15s;}
+  .mk-links span:hover{color:var(--mk-ink);}
+  .mk-nav-cta{
+    background:none;color:var(--mk-ink);border:1px solid rgba(255,255,255,.3);border-radius:100px;margin-left:auto;
+    padding:9px 18px;font-size:12.5px;font-weight:700;cursor:pointer;white-space:nowrap;font-family:inherit;
   }
-  .card .ic svg{width:19px;height:19px;}
-  .card h3{font-size:14px;margin:0 0 6px;}
-  .card p{font-size:12.5px;color:var(--ink-soft);line-height:1.7;margin:0;}
+  .mk-nav-cta:hover{background:var(--mk-ink);color:#000;}
+  .mk-btn{
+    display:inline-flex;align-items:center;justify-content:center;border-radius:100px;border:1px solid transparent;
+    padding:15px 28px;font-size:14px;font-weight:700;cursor:pointer;letter-spacing:.02em;font-family:inherit;
+    transition:transform .15s,background .15s;
+  }
+  .mk-btn:hover{transform:translateY(-1px);}
+  .mk-btn.primary{background:var(--mk-acc);color:#04100d;}
+  .mk-btn.ghost{background:transparent;color:var(--mk-ink);border-color:rgba(255,255,255,.35);}
+  .mk-btn.ghost:hover{background:rgba(255,255,255,.08);}
 
-  .news{margin-bottom:56px;}
-  .news h2{font-size:15px;margin:0 0 14px;}
-  .news-item{border-bottom:1px solid var(--line);padding:14px 0;font-size:13px;color:var(--ink-soft);display:flex;justify-content:space-between;gap:20px;}
-  .news-item:last-child{border-bottom:none;}
-  .news-item .t{color:var(--ink);}
-  .news-item .d{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--ink-faint);white-space:nowrap;}
+  /* Hero */
+  .mk-hero{position:relative;min-height:min(86vh,800px);display:flex;align-items:flex-end;overflow:hidden;}
+  .mk-hero-visual{
+    position:absolute;inset:0;background:url(aurora-band.png) 71% center/auto 100% no-repeat;
+    -webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 45%,#000 66%,#000 94%,transparent 100%);
+    mask-image:linear-gradient(90deg,transparent 0,transparent 45%,#000 66%,#000 94%,transparent 100%);
+  }
+  .mk-hero::after{
+    content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg,rgba(5,7,12,.45) 0%,rgba(5,7,12,0) 28%,rgba(5,7,12,0) 58%,var(--mk-bg) 100%);
+  }
+  .mk-hero-inner{position:relative;z-index:2;padding-block:120px 64px;width:100%;}
+  .mk-eyebrow{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:14px;letter-spacing:.28em;color:var(--mk-acc);margin-bottom:20px;text-transform:uppercase;}
+  .mk-h1{
+    font-family:"Noto Sans SC","Inter",sans-serif;font-weight:900;margin:0 0 22px;
+    font-size:clamp(46px,9.4vw,118px);line-height:1.02;letter-spacing:-.01em;
+  }
+  .mk-lead{max-width:520px;font-size:15.5px;line-height:1.85;color:var(--mk-soft);margin:0 0 32px;}
+  .mk-cta{display:flex;gap:12px;flex-wrap:wrap;}
 
-  /* ---------- 登录门户 ---------- */
-  .portal{background:var(--surface-2);border-radius:18px;padding:34px 30px;margin-bottom:20px;}
-  .portal h2{font-size:16px;margin:0 0 4px;text-align:center;}
-  .portal p.sub{font-size:12.5px;color:var(--ink-faint);margin:0 0 20px;text-align:center;}
-  .login-box{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:22px;max-width:340px;margin:0 auto;}
-  .login-box label{display:block;font-size:11px;color:var(--ink-faint);font-weight:600;margin:0 0 5px;letter-spacing:.02em;}
+  /* 数据条 */
+  .mk-stats{border-top:1px solid var(--mk-line);border-bottom:1px solid var(--mk-line);}
+  .mk-stats-in{display:grid;grid-template-columns:repeat(4,1fr);}
+  .mk-stat{padding:30px 20px;border-left:1px solid var(--mk-line);}
+  .mk-stat:first-child{border-left:none;padding-left:0;}
+  .mk-stat b{display:block;font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:clamp(34px,5vw,56px);line-height:1;letter-spacing:.01em;}
+  .mk-stat span{display:block;margin-top:8px;font-size:12.5px;color:var(--mk-soft);}
+
+  /* 通用分区 */
+  .mk-sec{padding:104px 0;scroll-margin-top:64px;}
+  .mk-kicker{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:13px;letter-spacing:.26em;color:var(--mk-faint);text-transform:uppercase;margin-bottom:16px;}
+  .mk-h2{
+    font-family:"Noto Sans SC","Inter",sans-serif;font-weight:900;margin:0 0 18px;
+    font-size:clamp(32px,5.4vw,60px);line-height:1.08;letter-spacing:-.005em;text-wrap:balance;
+  }
+  .mk-sub{max-width:560px;font-size:15px;line-height:1.85;color:var(--mk-soft);margin:0;}
+
+  /* 三环 */
+  .mk-pillars{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:56px;}
+  .mk-pillar{background:var(--mk-s1);border:1px solid var(--mk-line);border-radius:22px;padding:32px 28px 30px;}
+  .mk-ring{position:relative;width:132px;height:132px;margin-bottom:26px;}
+  .mk-ring svg{width:100%;height:100%;transform:rotate(-90deg);}
+  .mk-ring .mk-ring-v{
+    position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;
+    font-family:"Barlow Condensed",sans-serif;font-weight:800;font-size:34px;line-height:1;
+  }
+  .mk-ring .mk-ring-v small{font-family:"Inter",sans-serif;font-weight:500;font-size:10.5px;color:var(--mk-faint);margin-top:5px;letter-spacing:.04em;}
+  .mk-pillar h3{margin:0 0 8px;font-size:19px;font-weight:700;}
+  .mk-pillar p{margin:0;font-size:13.5px;line-height:1.8;color:var(--mk-soft);}
+  .mk-note{margin-top:18px;font-size:11.5px;color:var(--mk-faint);}
+
+  /* 功能清单（原生 details） */
+  .mk-feat{margin-top:56px;border-top:1px solid var(--mk-line);}
+  .mk-feat details{border-bottom:1px solid var(--mk-line);}
+  .mk-feat summary{
+    list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:20px;
+    padding:26px 0;font-size:clamp(19px,2.6vw,28px);font-weight:700;
+  }
+  .mk-feat summary::-webkit-details-marker{display:none;}
+  .mk-feat summary::after{content:"+";font-weight:300;font-size:30px;color:var(--mk-acc);line-height:1;transition:transform .2s;}
+  .mk-feat details[open] summary::after{transform:rotate(45deg);}
+  .mk-feat details p{margin:0 0 28px;max-width:620px;font-size:14.5px;line-height:1.9;color:var(--mk-soft);}
+
+  /* 产品 */
+  .mk-prod{display:grid;grid-template-columns:1.05fr 1fr;gap:56px;align-items:center;}
+  .mk-prod-visual{
+    aspect-ratio:1/1;border-radius:26px;border:1px solid var(--mk-line);
+    background:url(aurora-band.png) 80% 52%/auto 210% no-repeat,var(--mk-s1);
+  }
+  .mk-prod-list{margin-top:34px;display:grid;gap:0;border-top:1px solid var(--mk-line);}
+  .mk-prod-list div{padding:20px 0;border-bottom:1px solid var(--mk-line);display:flex;gap:20px;}
+  .mk-prod-list b{flex:none;width:92px;font-size:14px;color:var(--mk-acc);font-weight:700;}
+  .mk-prod-list span{font-size:14px;line-height:1.75;color:var(--mk-soft);}
+
+  /* 佩戴方式 */
+  .mk-straps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:48px;}
+  .mk-strap{border:1px solid var(--mk-line);border-radius:18px;overflow:hidden;background:var(--mk-s1);}
+  .mk-strap i{display:block;height:150px;}
+  .mk-strap div{padding:16px 18px 20px;}
+  .mk-strap b{display:block;font-size:15px;margin-bottom:4px;}
+  .mk-strap span{font-size:12.5px;color:var(--mk-soft);line-height:1.7;}
+
+  /* 动态 */
+  .mk-news{margin-top:44px;border-top:1px solid var(--mk-line);}
+  .mk-news-row{display:grid;grid-template-columns:96px 1fr;gap:20px;padding:24px 0;border-bottom:1px solid var(--mk-line);align-items:baseline;}
+  .mk-news-row time{font-family:"Barlow Condensed",sans-serif;font-weight:700;font-size:22px;letter-spacing:.06em;color:var(--mk-faint);}
+  .mk-news-row p{margin:0;font-size:clamp(15px,2vw,19px);font-weight:500;line-height:1.6;}
+
+  /* 登录门户 */
+  .mk-portal{background:linear-gradient(180deg,var(--mk-bg),#0a0f1c 60%,var(--mk-bg));border-top:1px solid var(--mk-line);}
+  .mk-portal-in{display:grid;grid-template-columns:1fr minmax(300px,400px);gap:64px;align-items:center;}
+  .mk-portal .mk-sub{margin-bottom:0;}
+  .mk-portal-list{margin:26px 0 0;padding:0;list-style:none;display:grid;gap:12px;font-size:14px;color:var(--mk-soft);}
+  .mk-portal-list li::before{content:"";display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--mk-acc);margin-right:12px;vertical-align:middle;}
+  .login-box{
+    background:var(--mk-s1);border:1px solid var(--mk-line);border-radius:20px;padding:30px 28px;
+    box-shadow:0 30px 80px rgba(0,0,0,.45);
+  }
+  .login-box h3{margin:0 0 4px;font-size:17px;font-weight:700;}
+  .login-box p.lb-sub{margin:0 0 22px;font-size:12.5px;color:var(--mk-faint);}
+  .login-box label{display:block;font-size:11px;color:var(--mk-faint);font-weight:600;margin:0 0 6px;letter-spacing:.06em;text-transform:uppercase;}
   .login-box input{
-    width:100%;border:1px solid var(--line);border-radius:8px;padding:10px 12px;
-    font-size:13px;color:var(--ink);margin-bottom:12px;background:var(--surface-2);
-    font-family:"JetBrains Mono",monospace;box-sizing:border-box;
+    width:100%;border:1px solid var(--mk-line);border-radius:10px;padding:12px 14px;font-size:14px;color:var(--mk-ink);
+    margin-bottom:14px;background:var(--mk-bg);font-family:"JetBrains Mono",monospace;box-sizing:border-box;
   }
-  .login-box input:focus{outline:none;border-color:var(--accent);}
-  .login-box button{
-    width:100%;background:var(--ink);color:#fff;border:none;border-radius:8px;
-    padding:11px;font-size:13px;font-weight:700;cursor:pointer;
+  .login-box input:focus{outline:none;border-color:var(--mk-acc);}
+  .login-box button#li-btn{
+    width:100%;background:var(--mk-acc);color:#04100d;border:none;border-radius:100px;padding:14px;
+    font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;margin-top:4px;
   }
-  .login-box button:hover{opacity:.88;}
-  .login-err{font-size:11.5px;color:var(--warn);margin-top:10px;}
-  .forgot-pw{font-size:11.5px;color:var(--accent);margin-top:12px;text-align:center;cursor:pointer;}
-  .forgot-pw:hover{text-decoration:underline;}
-  .forgot-pw-hint{font-size:11.5px;color:var(--ink-faint);margin-top:8px;text-align:center;line-height:1.6;}
+  .login-box button#li-btn:hover{opacity:.9;}
+  .login-err{font-size:12px;color:#ff7a8d;margin-top:12px;}
+  .forgot-pw{font-size:12px;color:var(--mk-soft);margin-top:16px;text-align:center;cursor:pointer;}
+  .forgot-pw:hover{color:var(--mk-ink);text-decoration:underline;}
+  .forgot-pw-hint{font-size:12px;color:var(--mk-faint);margin-top:8px;text-align:center;line-height:1.6;}
 
-  footer{text-align:center;padding:30px 0;font-size:11px;color:var(--ink-faint);}
+  /* 页脚 */
+  .mk-foot{border-top:1px solid var(--mk-line);padding:34px 0 8px;}
+  .mk-foot-in{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font-size:12px;color:var(--mk-faint);}
+  .mk-wm{display:flex;justify-content:center;padding:8px 0 22px;}
+  .mk-wm img{display:block;width:88%;max-width:360px;height:auto;filter:invert(1);mix-blend-mode:screen;opacity:.55;}
+
+  @media (max-width:860px){
+    .mk-links{display:none;}
+    .mk-sec{padding:72px 0;}
+    .mk-pillars{grid-template-columns:1fr;}
+    .mk-prod{grid-template-columns:1fr;gap:36px;}
+    .mk-prod-visual{aspect-ratio:4/3;}
+    .mk-straps{grid-template-columns:repeat(2,1fr);}
+    .mk-portal-in{grid-template-columns:1fr;gap:36px;}
+    .mk-stats-in{grid-template-columns:repeat(2,1fr);}
+    .mk-stat:nth-child(3){border-left:none;padding-left:0;}
+    .mk-stat:nth-child(n+3){border-top:1px solid var(--mk-line);}
+    .mk-hero{min-height:720px;}
+    .mk-hero-visual{inset:0 0 34% 0;background-position:72% 30%;background-size:auto 150%;
+      -webkit-mask-image:linear-gradient(90deg,transparent 0,transparent 30%,#000 62%,#000 100%);
+      mask-image:linear-gradient(90deg,transparent 0,transparent 30%,#000 62%,#000 100%);}
+    .mk-hero::after{background:linear-gradient(180deg,rgba(5,7,12,.35) 0%,rgba(5,7,12,0) 25%,rgba(5,7,12,.2) 48%,var(--mk-bg) 70%);}
+    .mk-hero-inner{padding-block:60px 44px;}
+  }
+  @media (max-width:420px){
+    .mk-strap i{height:96px;}
+    .mk-strap div{padding:12px 14px 16px;}
+    .mk-news-row{grid-template-columns:1fr;gap:6px;}
+    .mk-nav-in{gap:14px;}
+    .mk-brand{letter-spacing:.14em;font-size:20px;}
+  }
+
 
   /* =====================================================================
      登录后的 App Shell
@@ -462,75 +575,173 @@
 </head>
 <body>
 
-<header class="top">
-  <div class="brand"><div class="mark"></div>极光运动 AURORA</div>
-  <div class="navlinks"><span id="nav-product">产品</span><span id="nav-news">动态</span><span id="nav-portal">设备云</span></div>
-  <button class="login-cta" id="nav-login-btn">登录设备云</button>
+<div class="mk" id="mk-root">
+
+<div class="mk-promo">极光手环三代 · 新配色「暮霭灰」现货发售<a href="#sec-product">了解更多 ›</a></div>
+
+<header class="mk-nav">
+  <div class="mk-wrap mk-nav-in">
+    <div class="mk-brand"><div class="mk-mark"></div>AURORA</div>
+    <div class="mk-links"><span id="nav-product">产品</span><span id="nav-news">动态</span><span id="nav-portal">设备云</span></div>
+    <button class="mk-nav-cta" id="nav-login-btn">登录设备云</button>
+  </div>
 </header>
 
 <main>
-  <section class="hero" id="sec-home">
-    <div class="eyebrow">AURORA FIT · 记录每一次心跳</div>
-    <h1>极光手环<br/>三代正式发售</h1>
-    <p>7×24 小时心率与睡眠监测，续航 14 天。轻若无物，只为记录你的每一次心跳。</p>
-    <div class="hero-cta">
-      <button class="btn-primary" id="hero-portal-btn">进入设备云</button>
-      <button class="btn-ghost" id="hero-news-btn">查看动态</button>
+  <section class="mk-hero" id="sec-home">
+    <div class="mk-hero-visual" role="img" aria-label="极光手环三代，暮霭灰"></div>
+    <div class="mk-wrap mk-hero-inner">
+      <div class="mk-eyebrow">Aurora Fit · 极光手环 三代</div>
+      <h1 class="mk-h1">解锁你的<br/>身体节奏</h1>
+      <p class="mk-lead">7×24 小时心率与睡眠监测，14 天续航。把每一次心跳、每一晚睡眠、每一步活动，整理成一份你看得懂的日报。</p>
+      <div class="mk-cta">
+        <button class="mk-btn primary" id="hero-portal-btn">进入设备云</button>
+        <button class="mk-btn ghost" id="hero-news-btn">查看动态</button>
+      </div>
     </div>
   </section>
 
-  <div class="hero-photo">
-    <img src="aurora-band.png" alt="极光手环三代" />
+  <div class="mk-stats">
+    <div class="mk-wrap mk-stats-in">
+      <div class="mk-stat"><b>14<span style="display:inline;font-size:.5em;margin-left:4px;">天</span></b><span>超长续航</span></div>
+      <div class="mk-stat"><b>7×24</b><span>全天候心率与睡眠监测</span></div>
+      <div class="mk-stat"><b>5ATM</b><span>日常与运动防水</span></div>
+      <div class="mk-stat"><b>22<span style="display:inline;font-size:.5em;margin-left:4px;">g</span></b><span>轻到忘记它在手腕上</span></div>
+    </div>
   </div>
-  <p class="photo-caption"><b>极光手环 三代</b> · 暮霭灰 · 硅胶表带 · 铝合金表框</p>
 
-  <section class="grid3" id="sec-product">
-    <div class="card">
-      <div class="ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l2-7 4 14 2-7h6"/></svg>
+  <section class="mk-sec" id="sec-product">
+    <div class="mk-wrap">
+      <div class="mk-kicker">完整的身体画像</div>
+      <h2 class="mk-h2">睡眠、心率、活动，<br/>三件事一起看。</h2>
+      <p class="mk-sub">单看一个数字，说明不了你的一天。极光把三条线放在同一张图里，让你看清身体是怎么过这一天的。</p>
+      <div class="mk-pillars">
+        <div class="mk-pillar">
+          <div class="mk-ring">
+            <svg viewBox="0 0 132 132"><circle cx="66" cy="66" r="58" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/><circle cx="66" cy="66" r="58" fill="none" stroke="#8f7bff" stroke-width="10" stroke-linecap="round" stroke-dasharray="296 365"/></svg>
+            <div class="mk-ring-v">6h31<small>昨夜 · 示例</small></div>
+          </div>
+          <h3>睡眠</h3>
+          <p>深睡、浅睡、REM 逐晚拆解，看清你是怎么休息的，而不只是睡了多久。</p>
+        </div>
+        <div class="mk-pillar">
+          <div class="mk-ring">
+            <svg viewBox="0 0 132 132"><circle cx="66" cy="66" r="58" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/><circle cx="66" cy="66" r="58" fill="none" stroke="#3ee6c4" stroke-width="10" stroke-linecap="round" stroke-dasharray="255 365"/></svg>
+            <div class="mk-ring-v">62<small>静息 bpm · 示例</small></div>
+          </div>
+          <h3>心率</h3>
+          <p>全天心率曲线。静息、通勤、运动、入睡，点一下曲线上的任意一点，就是那一刻的读数。</p>
+        </div>
+        <div class="mk-pillar">
+          <div class="mk-ring">
+            <svg viewBox="0 0 132 132"><circle cx="66" cy="66" r="58" fill="none" stroke="rgba(255,255,255,.08)" stroke-width="10"/><circle cx="66" cy="66" r="58" fill="none" stroke="#ff375f" stroke-width="10" stroke-linecap="round" stroke-dasharray="285 365"/></svg>
+            <div class="mk-ring-v">78%<small>今日目标 · 示例</small></div>
+          </div>
+          <h3>活动</h3>
+          <p>步数、活动时长、站立小时，三环合一。目标自己定，达成多少一目了然。</p>
+        </div>
       </div>
-      <h3>连续心率监测</h3><p>全天候采样，异常波动主动提醒，数据每 5 分钟自动同步一次。</p>
-    </div>
-    <div class="card">
-      <div class="ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5Z"/></svg>
-      </div>
-      <h3>睡眠分期分析</h3><p>深睡 / 浅睡 / REM 全阶段追踪，配合极光 App 给出改善建议。</p>
-    </div>
-    <div class="card">
-      <div class="ic">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="18" height="10" rx="2"/><path d="M22 10v4"/><path d="M6 10v4"/></svg>
-      </div>
-      <h3>14 天超长续航</h3><p>一周一充，出差旅行也不用带充电线。</p>
+      <div class="mk-note">以上为示意数据，仅用于展示界面。</div>
     </div>
   </section>
 
-  <section class="news" id="sec-news">
-    <h2>品牌动态</h2>
-    <div class="news-item"><span class="t">新配色「暮霭灰」上线，官方商城同步发售</span><span class="d">07-15</span></div>
-    <div class="news-item"><span class="t">618 预热：绑定新设备享专属折扣</span><span class="d">05-20</span></div>
-    <div class="news-item"><span class="t">极光手环三代正式发售</span><span class="d">03-01</span></div>
+  <section class="mk-sec" style="padding-top:0;">
+    <div class="mk-wrap">
+      <div class="mk-kicker">极光设备云</div>
+      <h2 class="mk-h2">打开设备云，<br/>能做的比你想的多。</h2>
+      <div class="mk-feat">
+        <details open><summary>全天心率曲线</summary><p>静息、通勤、运动、入睡，每一段都有自己的节奏。支持今日、昨日、7 日、30 日切换查看，拖动曲线即可看到任意时刻的读数。</p></details>
+        <details><summary>睡眠分期与睡眠目标</summary><p>每晚拆分深睡、浅睡、REM 与清醒时间，查看本周睡眠记录，也可以设定自己的目标时长与作息时间。</p></details>
+        <details><summary>每日活动目标</summary><p>步数、活动时长、活动消耗、站立小时，全部可以自定义，每周自动生成一份周报。</p></details>
+        <details><summary>闹钟与日程提醒</summary><p>手环震动闹钟，支持重复、标签与智能唤醒；日程提醒可以同步到手环，到点轻轻震一下。</p></details>
+        <details><summary>久坐与喝水提醒</summary><p>设定提醒时段、间隔与免打扰时间，坐太久了、该喝水了，手腕上会提醒你。</p></details>
+        <details><summary>查找手环</summary><p>手环不知道放哪儿了？在设备页点一下，让它震动，很快就能找到。</p></details>
+      </div>
+    </div>
   </section>
 
-  <section class="portal" id="sec-portal">
-    <h2>设备云 AURORA CLOUD</h2>
-    <p class="sub">登录你的极光账号，查看设备同步记录与健康数据。</p>
-
-    <div class="login-box" id="login-box">
-      <label>账号</label>
-      <input id="li-user" type="text" placeholder="用户名" autocomplete="off" />
-      <label>密码</label>
-      <input id="li-pass" type="password" placeholder="密码" autocomplete="off" />
-      <button id="li-btn">登录</button>
-      <div id="li-msg"></div>
-      <div class="forgot-pw" id="forgot-pw-link">忘记密码？</div>
-      <div id="forgot-pw-msg"></div>
+  <section class="mk-sec" style="padding-top:0;">
+    <div class="mk-wrap mk-prod">
+      <div class="mk-prod-visual" role="img" aria-label="极光手环三代近景"></div>
+      <div>
+        <div class="mk-kicker">为全天佩戴而生</div>
+        <h2 class="mk-h2">戴上，<br/>然后忘记它。</h2>
+        <p class="mk-sub">从晨跑到会议室，从午休到入睡。三代手环的设计目标只有一个：让你几乎感觉不到它的存在。</p>
+        <div class="mk-prod-list">
+          <div><b>全天候传感</b><span>心率传感器持续工作，白天夜里都在记录，不需要你去想它。</span></div>
+          <div><b>14 天续航</b><span>一周一充都绰绰有余，出差旅行也不用带充电线。</span></div>
+          <div><b>5ATM 防水</b><span>洗手、淋雨、游泳，日常场景都不用摘。</span></div>
+          <div><b>铝合金表框</b><span>暮霭灰配色，搭配硅胶表带，克制、不抢眼。</span></div>
+        </div>
+      </div>
     </div>
+  </section>
 
+  <section class="mk-sec" style="padding-top:0;">
+    <div class="mk-wrap">
+      <div class="mk-kicker">表带系列</div>
+      <h2 class="mk-h2">同一只手环，<br/>多种佩戴方式。</h2>
+      <div class="mk-straps">
+        <div class="mk-strap"><i style="background:linear-gradient(135deg,#59606e,#2c313c);"></i><div><b>暮霭灰</b><span>三代标准配色，铝合金表框。</span></div></div>
+        <div class="mk-strap"><i style="background:linear-gradient(135deg,#1a1d24,#0a0c10);"></i><div><b>运动硅胶</b><span>跑步、训练首选，亲肤耐汗。</span></div></div>
+        <div class="mk-strap"><i style="background:linear-gradient(135deg,#8d93a0,#5b6270);"></i><div><b>日常编织</b><span>细密编织，轻薄透气，百搭。</span></div></div>
+        <div class="mk-strap"><i style="background:linear-gradient(135deg,#6a4a38,#35241b);"></i><div><b>通勤真皮</b><span>磁吸快拆，十秒钟换一条。</span></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mk-sec" id="sec-news" style="padding-top:0;">
+    <div class="mk-wrap">
+      <div class="mk-kicker">品牌动态</div>
+      <h2 class="mk-h2">最近，极光在做什么。</h2>
+      <div class="mk-news">
+        <div class="mk-news-row"><time>09-02</time><p>极光设备云全新改版，新增周报与睡眠目标</p></div>
+        <div class="mk-news-row"><time>08-30</time><p>固件 3.4.12 发布：优化心率稳定性与抬腕亮屏响应</p></div>
+        <div class="mk-news-row"><time>07-15</time><p>新配色「暮霭灰」上线，官方商城同步发售</p></div>
+        <div class="mk-news-row"><time>05-20</time><p>618 预热：绑定新设备享专属折扣</p></div>
+        <div class="mk-news-row"><time>03-01</time><p>极光手环三代正式发售</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="mk-sec mk-portal" id="sec-portal">
+    <div class="mk-wrap mk-portal-in">
+      <div>
+        <div class="mk-kicker">AURORA CLOUD</div>
+        <h2 class="mk-h2">设备云。</h2>
+        <p class="mk-sub">登录你的极光账号，查看设备同步记录、健康数据与每日活动。</p>
+        <ul class="mk-portal-list">
+          <li>设备同步记录与连接状态</li>
+          <li>心率、睡眠、活动全天数据</li>
+          <li>目标、闹钟与提醒设置</li>
+        </ul>
+      </div>
+
+      <div class="login-box" id="login-box">
+        <h3>登录</h3>
+        <p class="lb-sub">极光账号</p>
+        <label>账号</label>
+        <input id="li-user" type="text" placeholder="用户名" autocomplete="off" />
+        <label>密码</label>
+        <input id="li-pass" type="password" placeholder="密码" autocomplete="off" />
+        <button id="li-btn">登录</button>
+        <div id="li-msg"></div>
+        <div class="forgot-pw" id="forgot-pw-link">忘记密码？</div>
+        <div id="forgot-pw-msg"></div>
+      </div>
+    </div>
   </section>
 </main>
 
-<footer>极光运动 AURORA © 本页面内容均为虚构</footer>
+<footer class="mk-foot">
+  <div class="mk-wrap">
+    <div class="mk-foot-in"><span>极光运动 AURORA © 本页面内容均为虚构</span><span>每一次心跳，都有光。</span></div>
+    <div class="mk-wm"><img src="caip-watermark.png" alt="made by CAIP"></div>
+  </div>
+</footer>
+
+</div>
+
 
 <script>
 /* =====================================================================
@@ -1923,6 +2134,5 @@ SCREENS.weeklyReport = function (body) {
   bindDetailTopbar(body);
 };
 </script>
-<footer style="display:flex;justify-content:center;padding:10px 0 14px;"><img src="caip-watermark.png" alt="made by CAIP" style="display:block;width:88%;max-width:360px;height:auto;"></footer>
 </body>
 </html>
